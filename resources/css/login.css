@@ -1,0 +1,13 @@
+main.card {
+    width: min(600px, 100vw - 1rem);
+}
+
+input#inputEmail {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+input#inputPassword {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}

@@ -1,0 +1,53 @@
+body {
+  background: linear-gradient(rgba(128, 128, 128, 0), rgba(128, 128, 128, 0.2)),
+    url("../img/background-register-1.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+main.card {
+  width: min(600px, 100vw - 1rem);
+}
+
+/* Column input section styles */
+
+form>div.col>:nth-child(1)>input {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+form>div.col>:nth-child(2)>input {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+/* ==================== */
+
+
+/* Row input section styles */
+
+.form-floating.row-el-1 {
+  padding-right: 0;
+}
+
+.row-el-1>input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.form-floating.row-el-2 {
+  padding-left: 0;
+}
+
+.row-el-2>input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* ==================== */
+
+input#inputProfile {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}

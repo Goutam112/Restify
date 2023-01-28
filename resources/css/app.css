@@ -1,0 +1,23 @@
+body {
+    margin: 125px 0.5rem;
+    background: linear-gradient(to right, #0061FF, #3bc4ff);
+    align-content: center;
+
+    flex-direction: column;
+    align-items: center;
+}
+
+nav.navbar {
+    width: 100vw;
+    padding: 5px 100px;
+}
+
+main {
+    width: min(1000px, 100vw - 1rem);
+    padding: 2rem 3rem;
+}
+
+footer {
+    width: 100vw;
+    background-color: white;
+}
