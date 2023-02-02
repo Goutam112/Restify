@@ -1,6 +1,6 @@
 body {
-  background: linear-gradient(rgba(128, 128, 128, 0), rgba(128, 128, 128, 0.2)),
-    url("../img/background-register-1.jpeg");
+  background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
+    url("../img/background-signup.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

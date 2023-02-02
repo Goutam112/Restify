@@ -1,6 +1,11 @@
 body {
+    background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
+        url("../img/background-home.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
     margin: 125px 0.5rem;
-    background: linear-gradient(to right, #0061FF, #3bc4ff);
     align-content: center;
 
     flex-direction: column;
@@ -15,9 +20,41 @@ nav.navbar {
 main {
     width: min(1000px, 100vw - 1rem);
     padding: 2rem 3rem;
+    margin: auto;
 }
 
 footer {
     width: 100vw;
     background-color: white;
+}
+
+a.notification-btn {
+    margin-right: 1rem;
+}
+
+a.notification-btn>svg:hover {
+    fill: #0045b4;
+}
+
+a.avatar-btn>svg:hover {
+    fill: #0045b4;
+}
+
+.main-searchbar>input#search {
+    font-size: 24px;
+    border-radius: 50px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    padding-left: 18px;
+}
+
+.main-searchbar>button {
+    border-radius: 50px;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    padding-right: 18px;
+}
+
+.dropdown {
+    display: inline;
 }

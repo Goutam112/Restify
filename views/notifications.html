@@ -14,6 +14,7 @@
   </script>
   <!-- STYLESHEETS -->
   <link rel="stylesheet" href="/csc309-restify/resources/css/app.css">
+  <link rel="stylesheet" href="/csc309-restify/resources/css/notifications.css">
   <title>Restify - Home</title>
 </head>
 
@@ -61,20 +62,34 @@
   </header>
 
   <main class="card d-block">
-    <h1 class="text-center mb-3 fw-bold">Welcome to Restify!</h1>
-    <div class="main-searchbar d-flex mt-4">
-      <input type="text" class="form-control" id="search" placeholder="Search for properties...">
-      <button type="button" class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search"
-          viewBox="0 0 16 16">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-      </button>
+    <h4>New Notifications</h4>
+
+    <div class="notifications-list-new list-group">
+      <a href="#" class="notification list-group-item list-group-item-action">Your guest has given your property a
+        rating!
+        <span class="text-secondary">6:09PM 07/02/2023</span></a>
+      <a href="#" class="notification list-group-item list-group-item-action">Your property reservation has been
+        completed!
+        <span class="text-secondary">8:18AM 06/02/2023</span>
+      </a>
+      <a href="#" class="notification list-group-item list-group-item-action">Your property guest has checked in!
+        <span class="text-secondary">8:14AM 03/02/2023</span>
+      </a>
     </div>
-    <div class="properties-list d-flex">
 
-
+    <h4 class="mt-5">Old Notifications</h4>
+    <div class="notifications-list-old list-group mb-2">
+      <a href="#" class="notification list-group-item list-group-item-action">Your property has received a new
+        reservation request! <span class="text-secondary">6:09PM 28/01/2023</span>
+      </a>
+      <a href="#" class="notification list-group-item list-group-item-action">Michael Corleone (Host) has given you a
+        rating!
+        <span class="text-secondary">5:15PM 23/01/2023</span>
+      </a>
+      <a href="#" class="notification list-group-item list-group-item-action">Your reservation has been
+        completed! <span class="text-secondary">8:09AM 23/01/2023</span></a>
+      <a href="#" class="notification list-group-item list-group-item-action">Your reservation request has been
+        accepted! <span class="text-secondary">12:10PM 20/01/2023</span></a>
     </div>
   </main>
 
