@@ -1,9 +1,11 @@
 body {
     background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
         url("../img/background-home.jpeg");
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: black;
 
     margin: 125px 0.5rem;
     align-content: center;
@@ -15,6 +17,7 @@ body {
 nav.navbar {
     width: 100vw;
     padding: 5px 100px;
+    border-bottom: 1px solid rgb(220, 220, 220);
 }
 
 main {
@@ -25,7 +28,8 @@ main {
 
 footer {
     width: 100vw;
-    background-color: white;
+    background-color: rgba(256, 256, 256);
+    border-top: 1px solid rgb(220, 220, 220);
 }
 
 a.notification-btn {
@@ -36,7 +40,7 @@ a.notification-btn>svg:hover {
     fill: #0045b4;
 }
 
-a.avatar-btn>svg:hover {
+button.avatar-btn>svg:hover {
     fill: #0045b4;
 }
 
@@ -57,4 +61,52 @@ a.avatar-btn>svg:hover {
 
 .dropdown {
     display: inline;
+}
+
+.property-filter>button {
+    border: 1.5px grey solid;
+    border-radius: 8px;
+    color: grey;
+}
+
+.property-filter>button:hover {
+    border: 1.5px grey solid;
+    background-color: rgb(235, 235, 235);
+    color: grey;
+}
+
+ul#filters>li {
+    padding: 0.1rem 0.25rem;
+}
+
+ul#filters>li input {
+    width: 80px;
+    margin-left: 10px;
+}
+
+.card.property {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.property img {
+    height: 150px;
+    object-fit: cover;
+}
+
+.property h5.card-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.property p.card-text {
+    font-size: 14px;
+}
+
+.property p.property-stats {
+    color: rgb(128, 128, 128);
+}
+
+.property a.btn {
+    font-size: 12px;
 }
