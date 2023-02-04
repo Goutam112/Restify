@@ -1,0 +1,31 @@
+td,tr a.my-rental-unit-row { 
+    text-decoration: none;
+    color: black;
+    padding: 1rem; 
+ }
+
+.no-decor {
+    text-decoration: none;
+    color: black;
+}
+
+img.my-rental-units-img {
+    max-width: 10rem;
+    height: auto;
+}
+
+button.delete-btn {
+    background-color: red;
+    color: white;
+}
+
+button.delete-btn:hover {
+    background-color: darkred;
+    color: white;
+}
+
+main {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
