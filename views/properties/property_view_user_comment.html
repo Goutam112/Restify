@@ -15,16 +15,16 @@
     <link rel="stylesheet" href="/csc309-restify/resources/css/property_view.css">
 </head>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- Booking Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Booking Request</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-            Are you sure you want to request a reservation?
+                Are you sure you want to request a reservation?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -34,55 +34,92 @@
     </div>
 </div>
 
+<!-- Create Comment Modal -->
+<div class="modal fade" id="createComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add a Rating</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="me-2">Rating:
+                    <span id="userRatingLabelRating">3</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20
+                        class="bi bi-star-fill align-text-bottom" viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                </label>
+                <div>
+                    <input type="range" class="form-range w-75" id="userRating" min="1" max="5" step="1"
+                    onchange="document.getElementById('userRatingLabelRating').innerText = document.getElementById('userRating').value">
+                </div>
+                <div>
+                    <label class="mb-2">Comments:</label>
+                    <div>
+                        <textarea class="w-100 h-100" rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/csc309-restify/views/properties/property_view.html#ratings-section">Add Rating</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <body class="d-flex">
     <header>
         <nav class="navbar bg-body-tertiary fixed-top mb-5">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="/csc309-restify/views/home.html">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd"
-                class="bi bi-r-square-fill align-text-bottom" viewBox="0 0 16 16">
-                <path d="M6.835 5.092v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417H6.835Z" />
-                <path
-                  d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm3.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5V4.002Z" />
-              </svg>
-              <span class="fs-2 fw-bold">Restify</span>
-            </a>
-            <div>
-              <a href="/csc309-restify/views/notifications.html" class="notification-btn btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd" class="bi bi-bell-fill"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
-                </svg>
-                <span class="badge badge-dark bg-primary">3</span>
-              </a>
-              <div class="dropdown">
-                <button class="avatar-btn btn dropdown-toggle" type="button" id="dropdownMenuButton"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd" class="bi bi-person-circle"
-                    viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path fill-rule="evenodd"
-                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                  </svg>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="#">My profile</a></li>
-                  <li><a class="dropdown-item" href="#">My reservations</a></li>
-                  <li><a class="dropdown-item" href="#">My properties</a></li>
-                  <li><a class="dropdown-item" href="/csc309-restify/views/home-2.html">Sign out</a></li>
-                </ul>
-              </div>
-            </div>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/csc309-restify/views/home.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd"
+                        class="bi bi-r-square-fill align-text-bottom" viewBox="0 0 16 16">
+                        <path
+                            d="M6.835 5.092v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417H6.835Z" />
+                        <path
+                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm3.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5V4.002Z" />
+                    </svg>
+                    <span class="fs-2 fw-bold">Restify</span>
+                </a>
+                <div>
+                    <a href="/csc309-restify/views/notifications.html" class="notification-btn btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd"
+                            class="bi bi-bell-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                        </svg>
+                        <span class="badge badge-dark bg-primary">3</span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="avatar-btn btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0d6efd"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">My profile</a></li>
+                            <li><a class="dropdown-item" href="#">My reservations</a></li>
+                            <li><a class="dropdown-item" href="#">My properties</a></li>
+                            <li><a class="dropdown-item" href="/csc309-restify/views/home-2.html">Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
         </nav>
     </header>
     <main class="card d-block">
         <h1 class="mb-2">Amazing House, Antarctica</h1>
         <div class="mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20 class="bi bi-star-fill align-text-bottom"
-            viewBox="0 0 16 16">
-            <path
-                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20
+                class="bi bi-star-fill align-text-bottom" viewBox="0 0 16 16">
+                <path
+                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
             </svg>
             <span class="">4.50</span>
             <a class="" href="#ratings-section">(123 Reviews)</a>
@@ -99,13 +136,16 @@
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="/csc309-restify/resources/img/background-signup.jpeg" class="d-block w-100 rounded" alt="...">
+                    <img src="/csc309-restify/resources/img/background-signup.jpeg" class="d-block w-100 rounded"
+                        alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="/csc309-restify/resources/img/background-home.jpeg" class="d-block w-100 rounded" alt="...">
+                    <img src="/csc309-restify/resources/img/background-home.jpeg" class="d-block w-100 rounded"
+                        alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="/csc309-restify/resources/img/background-login.jpeg" class="d-block w-100 rounded" alt="...">
+                    <img src="/csc309-restify/resources/img/background-login.jpeg" class="d-block w-100 rounded"
+                        alt="...">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselPropertyImg"
@@ -133,7 +173,8 @@
         <div class="d-flex align-items-center mb-4">
             <div class="me-2">
                 <a href="/csc309-restify/views/home.html">
-                    <img class="reviewer-pic img rounded-circle shadow" src="/csc309-restify/resources/img/bill-nye.jpg" alt="Reviewer picture">
+                    <img class="reviewer-pic img rounded-circle shadow" src="/csc309-restify/resources/img/bill-nye.jpg"
+                        alt="Reviewer picture">
                 </a>
             </div>
             <div>
@@ -149,7 +190,11 @@
             <hr>
             <h2>Your Next Destination</h2>
             <p>100 Fake Street, City, Province/State, Country, A1A 1A1</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.</p>
         </div>
         <!-- End description -->
 
@@ -179,14 +224,15 @@
         <div class="pb-3">
             <hr>
             <h2 class="mb-3" id="ratings-section">What Others Are Saying</h2>
-            <div class="overflow-auto border-top pt-2 border-bottom pb-1 ps-1 shadow-sm ratings">
+            <div class="overflow-auto border-top pt-2 border-bottom pb-1 ps-1 mb-3 shadow-sm ratings">
                 <!-- Entire new comment -->
                 <div class="d-flex flex-column p-1 mb-2">
                     <!-- Profile picture + info -->
                     <div class="d-flex flex-row mb-1">
                         <!-- Profile picture -->
                         <div class="d-flex flex-column me-2">
-                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle" src="/csc309-restify/resources/img/Albert-Einstein.jpg" alt="Reviewer picture"></a>
+                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle"
+                                    src="/csc309-restify/resources/img/Albert-Einstein.jpg" alt="Reviewer picture"></a>
                         </div>
                         <!-- Info -->
                         <div class="d-flex flex-column">
@@ -194,17 +240,22 @@
                             <div>Feb. 23, 2023</div>
                             <span>
                                 <span>4</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20 class="bi bi-star-fill align-text-bottom"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20
+                                    class="bi bi-star-fill align-text-bottom" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                                 </svg>
                             </span>
                         </div>
                     </div>
                     <!-- Actual review -->
                     <div>
-                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</div>
                     </div>
                 </div>
                 <!-- Entire host response comment -->
@@ -213,7 +264,8 @@
                     <div class="d-flex flex-row mb-1">
                         <!-- Profile picture -->
                         <div class="d-flex flex-column me-2">
-                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle" src="/csc309-restify/resources/img/bill-nye.jpg" alt="Reviewer picture"></a>
+                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle"
+                                    src="/csc309-restify/resources/img/bill-nye.jpg" alt="Reviewer picture"></a>
                         </div>
                         <!-- Info -->
                         <div class="d-flex flex-column">
@@ -224,7 +276,12 @@
                     </div>
                     <!-- Actual review -->
                     <div>
-                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</div>
                     </div>
                 </div>
                 <!-- Entire user response comment -->
@@ -233,7 +290,8 @@
                     <div class="d-flex flex-row mb-1">
                         <!-- Profile picture -->
                         <div class="d-flex flex-column me-2">
-                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle" src="/csc309-restify/resources/img/Albert-Einstein.jpg" alt="Reviewer picture"></a>
+                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle"
+                                    src="/csc309-restify/resources/img/Albert-Einstein.jpg" alt="Reviewer picture"></a>
                         </div>
                         <!-- Info -->
                         <div class="d-flex flex-column">
@@ -244,7 +302,12 @@
                     </div>
                     <!-- Actual review -->
                     <div>
-                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</div>
                     </div>
                 </div>
                 <!-- Entire new comment -->
@@ -253,7 +316,8 @@
                     <div class="d-flex flex-row mb-1">
                         <!-- Profile picture -->
                         <div class="d-flex flex-column me-2">
-                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle" src="/csc309-restify/resources/img/isaac-newton.jpg" alt="Reviewer picture"></a>
+                            <a href="/csc309-restify/views/home.html"><img class="commenter-pic img rounded-circle"
+                                    src="/csc309-restify/resources/img/isaac-newton.jpg" alt="Reviewer picture"></a>
                         </div>
                         <!-- Info -->
                         <div class="d-flex flex-column">
@@ -261,19 +325,30 @@
                             <div>Feb. 23, 2023</div>
                             <span>
                                 <span>1</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20 class="bi bi-star-fill align-text-bottom"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="gold" width=16 height=20
+                                    class="bi bi-star-fill align-text-bottom" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                                 </svg>
                             </span>
                         </div>
                     </div>
                     <!-- Actual review -->
                     <div>
-                        <div class="">Terrible. Just terrible. I don't want to say it's totally awful but it really is. I can't believe that someone actually thought that this was acceptable for a human being to stay in. This was simply the worst experience that I've ever had in my life, no joke. Cannot recommend for any person who was born on Earth. If I could give 0 stars, I absolutely would.</div>
+                        <div class="">Terrible. Just terrible. I don't want to say it's totally awful but it really is.
+                            I can't believe that someone actually thought that this was acceptable for a human being to
+                            stay in. This was simply the worst experience that I've ever had in my life, no joke. Cannot
+                            recommend for any person who was born on Earth. If I could give 0 stars, I absolutely would.
+                        </div>
                     </div>
                 </div>
+            </div>
+            <!-- Create new rating -->
+            <div>
+                <h5>You stayed at this property before.</h5>
+                <div class="mb-2">Care to share your thoughts?</div>
+                <button type="button" class="btn btn-warning border shadow" data-bs-toggle="modal"
+                    data-bs-target="#createComment">Rate Your Experience</a>
             </div>
         </div>
         <!-- End comments -->
@@ -352,7 +427,8 @@
                 <span>Your total is: </span><span class="fw-bold mt-2 mb-2 fs-3">$410.00</span>
             </div>
             <div>
-                <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
                     Request Booking
                 </button>
             </div>
@@ -360,7 +436,7 @@
         <!-- End booking -->
         <footer class="fixed-bottom text-center">
             <div class="text-center text-secondary p-3">
-              © 2023 Copyright: <a class="text-secondary" href="/csc309-restify/views/home.html">Restify.com</a>
+                © 2023 Copyright: <a class="text-secondary" href="/csc309-restify/views/home.html">Restify.com</a>
             </div>
         </footer>
     </main>
