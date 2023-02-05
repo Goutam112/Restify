@@ -1,0 +1,43 @@
+.image-upload>input {
+    display: none;
+  }
+
+  .unclickable {
+    pointer-events: none;
+  }
+
+  .img-container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+
+  .img-icon-centered {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .img-icon-centered:hover {
+    display: block;
+  }
+
+  .image-editable:hover + .img-icon-centered {
+    display: block;
+  }
+
+  .image-editable {
+    border: 3px solid transparent;
+    max-width: max(10rem, 20vw);
+  }
+
+  .image-editable:hover {
+    opacity: 80%;
+  }
+
+  .image-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
