@@ -65,436 +65,441 @@
     <main class="card d-block">
       <div class="container">
         <div>
-          <h1 class="text-center mb-4">Create Property</h1>
+          <h1 class="text-center mb-4">New Rental Unit Creation</h1>
         </div>
 
         <h2 class="mb-3">General</h2>
 
-        <form>
+        <form action="" method="POST">
           <div class="mb-3">
-            <label for="" class="form-label">Property Name</label>
-            <input type="email" class="form-control" id="" aria-describedby="">
+            <label for="property-name" class="form-label">Property Name</label>
+            <input type="email" class="form-control" id="property-name" aria-describedby="">
           </div>
-        </form>
 
-        <!-- Location -->
-        <div class="row">
-          <label>Location</label>
-          <div class="input-group mb-3">
-            <div class="form-floating">
-              <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                <option selected>Select Province</option>
-                <option value="1">ON</option>
-                <option value="2">AB</option>
-                <option value="3">BC</option>
-              </select>
-              <label for="">Province</label>
-            </div>
-            <div class="form-floating">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="City">
-              <label>City</label>
+
+          <!-- Location -->
+
+          <div class="mb-3">
+            <label>Country</label>
+            <input type="text" class="form-control" id="" placeholder="" aria-describedby="">
+          </div>
+
+          <div class="row">
+            <label>Province/State</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" aria-label="" placeholder="">
             </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label for="" class="form-label">Street Address</label>
-          <input type="text" class="form-control" id="" aria-describedby="">
-        </div>
-
-        <div class="mb-3">
-          <label for="" class="form-label">Description</label>
-          <textarea type="text" class="form-control" id="" rows="6"></textarea>
-        </div>
-
-        <!-- Images -->
-
-        <h5 class="mb-3">Edit Images</h5>
-
-        <div class="mb-3">
-          <!-- Flex wrap and justify left -->
-          <div class="d-flex flex-wrap flex-row justify-content-start">
-            <!-- Hide the file input button, but keep its functionality  -->
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
+          <div class="row">
+            <label>City</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" aria-label="" placeholder="">
             </div>
-
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
-            </div>
-
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
-            </div>
-
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
-            </div>
-
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
-            </div>
-
-            <div class="image-upload">
-              <label for="file-input">
-                <div class="img-container">
-                  <img class="image-editable"
-                    src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
-                  <!-- "Edit" icon-->
-                  <!-- Make it unclickable so that hover doesn't break when it's on top -->
-                  <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
-                  </button>
-                </div>
-              </label>
-              <input id="file-input" type="file" />
-            </div>
-
           </div>
-        </div>
 
-        <div class="mb-3">
-          <h3>Property Specifics</h3>
-          <form>
+          <div class="mb-3">
+            <label for="" class="form-label">Street Address</label>
+            <input type="text" class="form-control" id="" aria-describedby="">
+          </div>
+
+          <div class="mb-3">
+            <label for="" class="form-label">Description</label>
+            <textarea type="text" class="form-control" id="" rows="6"></textarea>
+          </div>
+
+          <!-- Images -->
+
+          <h5 class="mb-3">Edit Images</h5>
+
+          <div class="mb-3">
+            <!-- Flex wrap and justify left -->
+            <div class="d-flex flex-wrap flex-row justify-content-start">
+              <!-- Hide the file input button, but keep its functionality  -->
+              <div class="image-upload">
+                <label for="img-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="img-input" type="file" />
+              </div>
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <div class="img-container">
+                    <img class="image-editable"
+                      src="https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png" />
+                    <!-- "Edit" icon-->
+                    <!-- Make it unclickable so that hover doesn't break when it's on top -->
+                    <i class="unclickable img-icon-centered text-black bi bi-pencil-square"></i>
+                    </button>
+                  </div>
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h3>Property Specifics</h3>
             <div class="form-group">
-              <label for="formControlRange">Maximum Number of Guests: <span
-                  id="num-guests-value">10<!-- Default value --></span></label>
+              <label for="formControlRange">Maximum Number of Guests: <span id="num-guests-value">10</span></label>
               <input type="range" class="form-range" min="0" max="20" id="num-guests-slider"
                 onChange="document.getElementById('num-guests-value').innerText = document.getElementById('num-guests-slider').value">
             </div>
             <div class="form-group">
-              <label for="formControlRange">Beds: <span id="num-beds-value">5<!-- Default value --></span></label>
+              <label for="formControlRange">Beds: <span id="num-beds-value">5</span></label>
               <input type="range" class="form-range" min="0" max="10" id="num-beds-slider"
                 onChange="document.getElementById('num-beds-value').innerText = document.getElementById('num-beds-slider').value">
             </div>
             <div class="form-group">
-              <label for="formControlRange">Baths: <span id="num-baths-value">5<!-- Default value --></span></label>
+              <label for="formControlRange">Baths: <span id="num-baths-value">5</span></label>
               <input type="range" class="form-range" min="0" max="10" id="num-baths-slider"
                 onChange="document.getElementById('num-baths-value').innerText = document.getElementById('num-baths-slider').value">
             </div>
-          </form>
-        </div>
-
-        <!-- Amenities -->
-        <div class="mb-3">
-          <h5>Amenities</h5>
-
-          <div class="d-flex flex-wrap flex-row justify-content-start">
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity1">
-              <label class="form-check-label" for="amenity1">
-                Amenity 1
-              </label>
-            </div>
-
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity2">
-              <label class="form-check-label" for="amenity2">
-                Amenity 2
-              </label>
-            </div>
-
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity3">
-              <label class="form-check-label" for="amenity3">
-                Amenity 3
-              </label>
-            </div>
-
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity4">
-              <label class="form-check-label" for="amenity4">
-                Amenity 4
-              </label>
-            </div>
-
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity5">
-              <label class="form-check-label" for="amenity5">
-                Amenity 5
-              </label>
-            </div>
-
-            <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity6">
-              <label class="form-check-label" for="amenity6">
-                Amenity 6
-              </label>
-            </div>
-
           </div>
-        </div>
 
-        <div class="mb-3">
-          <h3>Pricing</h3>
+          <!-- Amenities -->
+          <div class="mb-3">
+            <h5>Amenities</h5>
 
-          <label for="nightly-price-input">Default Nightly Price</label>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="">$</span>
+            <div class="d-flex flex-wrap flex-row justify-content-start">
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity1">
+                <label class="form-check-label" for="amenity1">
+                  Amenity 1
+                </label>
+              </div>
+
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity2">
+                <label class="form-check-label" for="amenity2">
+                  Amenity 2
+                </label>
+              </div>
+
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity3">
+                <label class="form-check-label" for="amenity3">
+                  Amenity 3
+                </label>
+              </div>
+
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity4">
+                <label class="form-check-label" for="amenity4">
+                  Amenity 4
+                </label>
+              </div>
+
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity5">
+                <label class="form-check-label" for="amenity5">
+                  Amenity 5
+                </label>
+              </div>
+
+              <div class="me-3 form-check">
+                <input class="form-check-input" type="checkbox" value="" id="amenity6">
+                <label class="form-check-label" for="amenity6">
+                  Amenity 6
+                </label>
+              </div>
+
             </div>
-            <input type="text" class="form-control" id="nightly-price-input" aria-describedby="basic-addon3">
           </div>
 
           <div class="mb-3">
-            <div class="form-text">
-              Here, you can control:
+            <h3>Pricing</h3>
+
+            <label for="nightly-price-input">Default Nightly Price</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="">$</span>
+              </div>
+              <input type="text" class="form-control" id="nightly-price-input" aria-describedby="basic-addon3">
             </div>
-            <div class="form-text">
-              - Which months guests are not allowed to check-in to this property
+
+            <div class="mb-3">
+              <div class="form-text">
+                Here, you can control:
+              </div>
+              <div class="form-text">
+                - Which months guests are not allowed to check-in to this property
+              </div>
+              <div class="form-text">
+                - Custom nightly rates for each month, as a percentage of the regular nightly rate
+              </div>
             </div>
-            <div class="form-text">
-              - Custom nightly rates for each month, as a percentage of the regular nightly rate
+
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th class="" scope="col">Month</th>
+                    <th class="text-center" scope="col">Not Available?</th>
+                    <th class="text-center" scope="col">Percentage of nightly price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Jan</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Feb</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Mar</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Apr</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>May</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Jun</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Jul</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Aug</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Sep</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Oct</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Nov</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Dec</td>
+                    <td class="text-center">
+                      <input class="form-check-input" type="checkbox" value="" id="">
+                    </td>
+                    <td class="text-center">
+                      <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                          aria-describedby="" maxlength="3">
+                        <span class="input-group-text" id="">%</span>
+                      </div>
+                    </td>
+                  </tr>
+
+
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="" scope="col">Month</th>
-                <th class="text-center" scope="col">Unavailable?</th>
-                <th class="text-center" scope="col">Percentage of nightly price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>January</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
-                      aria-describedby="">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
+          <h2 class="mb-3">Contact Information</h2>
 
-              <tr>
-                <td>February</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
+          <div class="mb-2">
+            <!-- Contact info -->
+            <label for="" class="form-label">Contact Phone</label>
+            <input type="tel" class="form-control" id="" aria-describedby="">
+            <div id="" class="form-text mb-3">
+              Guests will contact you using this phone number.
+            </div>
 
-              <tr>
-                <td>March</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>April</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>May</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>June</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>July</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>August</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>September</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>October</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>November</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>December</td>
-                <td class="text-center">
-                  <input class="form-check-input" type="checkbox" value="" id="">
-                </td>
-                <td class="text-center">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="100" placeholder="100"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-
-        <h2 class="mb-3">Contact Information</h2>
-
-        <div class="mb-2">
-          <!-- Contact info -->
-          <label for="" class="form-label">Contact Phone</label>
-          <input type="tel" class="form-control" id="" aria-describedby="">
-          <div id="" class="form-text mb-3">
-            Guests will contact you using this phone number.
+            <label for="" class="form-label">Contact Email</label>
+            <input type="email" class="form-control" id="" aria-describedby="">
+            <div id="" class="form-text">Guests will contact you using this email.</div>
           </div>
-          <!-- Change to([123]) [456] [7899] -->
-          <label for="" class="form-label">Contact Email</label>
-          <input type="email" class="form-control" id="" aria-describedby="">
-          <div id="" class="form-text">Guests will contact you using this email.</div>
-        </div>
 
-        <button class="mt-3 btn btn-primary" type="submit">Create This Property</button>
+          <button class="mt-3 btn btn-primary" type="submit">Create This Property</button>
       </div>
+
+      </form>
+
+
     </main>
 
     <footer class="fixed-bottom text-center">
