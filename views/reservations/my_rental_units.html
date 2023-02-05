@@ -19,6 +19,25 @@
         <title>Restify - My Rental Units</title>
     </head>
 
+    <!-- Deletion message -->
+    <div class="modal fade" id="deletion-modal" tabindex="-1" aria-labelledby="deletion-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deletion-modal-label">Confirm the deletion of this unit</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this unit? Warning: You cannot undo this operation.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Nevermind</button>
+                    <button type="button" class="btn btn-danger">Yes, please proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <body>
         <header>
             <nav class="navbar bg-body-tertiary fixed-top mb-5">
@@ -119,7 +138,7 @@
                                                 <!-- We have to manually make this Delete button darken upon hover because buttons need extra work to match the styling of dropdown-item -->
                                                 <button type="button"
                                                     class="rounded-bottom dropdown-item delete-btn text-light"
-                                                    data-bs-toggle="modal" data-bs-target="#deletion-model">
+                                                    data-bs-toggle="modal" data-bs-target="#deletion-modal">
                                                     Delete
                                                 </button>
                                             </li>
@@ -160,7 +179,7 @@
                                                 <!-- We have to manually make this Delete button darken upon hover because buttons need extra work to match the styling of dropdown-item -->
                                                 <button type="button"
                                                     class="rounded-bottom dropdown-item delete-btn text-light"
-                                                    data-bs-toggle="modal" data-bs-target="#deletion-model">
+                                                    data-bs-toggle="modal" data-bs-target="#deletion-modal">
                                                     Delete
                                                 </button>
                                             </li>
