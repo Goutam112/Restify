@@ -110,3 +110,34 @@ ul#filters>li input {
 .property a.btn {
     font-size: 12px;
 }
+
+@media screen and (max-width: 480px) {
+
+    nav.navbar {
+        width: 100vw;
+        padding: 5px 10px;
+        border-bottom: 1px solid rgb(220, 220, 220);
+    }
+
+    main {
+        padding: 2rem 2.5rem;
+    }
+
+    .main-searchbar>input#search {
+        font-size: 18px;
+        padding-left: 12px;
+    }
+
+    .dropdown>h3 {
+        display: none;
+    }
+
+    .property-filter>button {
+        font-size: 14px;
+    }
+
+    .card.property {
+        width: 300px;
+        margin-bottom: 20px;
+    }
+}
