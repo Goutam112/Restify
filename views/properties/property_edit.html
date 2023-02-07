@@ -75,7 +75,7 @@
       <form action="" method="POST">
         <div class="mb-3">
           <label for="property-name" class="form-label">Property Name</label>
-          <input type="email" class="form-control" id="property-name" aria-describedby="">
+          <input type="email" value="My Awesome Property" class="form-control" id="property-name" aria-describedby="">
         </div>
 
 
@@ -83,31 +83,31 @@
 
         <div class="mb-3">
           <label>Country</label>
-          <input type="text" class="form-control" id="" placeholder="" aria-describedby="">
+          <input type="text" value="Antarctica" class="form-control" id="" placeholder="" aria-describedby="">
         </div>
 
         <div class="row">
           <label>Province/State</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="" placeholder="">
+            <input type="text" value="Queen Maud Land" class="form-control" aria-label="" placeholder="">
           </div>
         </div>
 
         <div class="row">
           <label>City</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="" placeholder="">
+            <input type="text" value="Best City" class="form-control" aria-label="" placeholder="">
           </div>
         </div>
 
         <div class="mb-3">
           <label for="" class="form-label">Street Address</label>
-          <input type="text" class="form-control" id="" aria-describedby="">
+          <input type="text" value="123 Random Street" class="form-control" id="" aria-describedby="">
         </div>
 
         <div class="mb-3">
           <label for="" class="form-label">Description</label>
-          <textarea type="text" class="form-control" id="" rows="6"></textarea>
+          <textarea type="text" class="form-control" id="" rows="6">A great property. The best property.</textarea>
         </div>
 
         <!-- Images -->
@@ -237,7 +237,7 @@
             </div>
 
             <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity2">
+              <input class="form-check-input" type="checkbox" value="" id="amenity2" checked>
               <label class="form-check-label" for="amenity2">
                 Amenity 2
               </label>
@@ -265,7 +265,7 @@
             </div>
 
             <div class="me-3 form-check">
-              <input class="form-check-input" type="checkbox" value="" id="amenity6">
+              <input class="form-check-input" type="checkbox" value="" id="amenity6" checked>
               <label class="form-check-label" for="amenity6">
                 Amenity 6
               </label>
@@ -282,7 +282,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="">$</span>
             </div>
-            <input type="text" class="form-control" id="nightly-price-input" aria-describedby="basic-addon3">
+            <input type="text" value="987" class="form-control" id="nightly-price-input" aria-describedby="basic-addon3">
           </div>
 
           <div class="mb-3">
@@ -310,7 +310,7 @@
                 <tr>
                   <td>Jan</td>
                   <td class="text-center">
-                    <input class="form-check-input" type="checkbox" value="" id="">
+                    <input class="form-check-input" type="checkbox" value="" id="" checked>
                   </td>
                   <td class="text-center">
                     <div class="input-group input-group-sm mb-3">
@@ -398,7 +398,7 @@
                   </td>
                   <td class="text-center">
                     <div class="input-group input-group-sm mb-3">
-                      <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                      <input type="text" class="form-control" value="200" placeholder="100" aria-label=""
                         aria-describedby="" maxlength="3">
                       <span class="input-group-text" id="">%</span>
                     </div>
@@ -412,7 +412,7 @@
                   </td>
                   <td class="text-center">
                     <div class="input-group input-group-sm mb-3">
-                      <input type="text" class="form-control" value="100" placeholder="100" aria-label=""
+                      <input type="text" class="form-control" value="250" placeholder="100" aria-label=""
                         aria-describedby="" maxlength="3">
                       <span class="input-group-text" id="">%</span>
                     </div>
@@ -464,7 +464,7 @@
                 <tr>
                   <td>Dec</td>
                   <td class="text-center">
-                    <input class="form-check-input" type="checkbox" value="" id="">
+                    <input class="form-check-input" type="checkbox" value="" id="" checked>
                   </td>
                   <td class="text-center">
                     <div class="input-group input-group-sm mb-3">
@@ -486,17 +486,17 @@
         <div class="mb-2">
           <!-- Contact info -->
           <label for="" class="form-label">Contact Phone</label>
-          <input type="tel" class="form-control" id="" aria-describedby="">
+          <input type="tel" value="(123) 456-7890" class="form-control" id="" aria-describedby="">
           <div id="" class="form-text mb-3">
             Guests will contact you using this phone number.
           </div>
 
           <label for="" class="form-label">Contact Email</label>
-          <input type="email" class="form-control" id="" aria-describedby="">
+          <input type="email" value="albert.einstein@mail.com" class="form-control" id="" aria-describedby="">
           <div id="" class="form-text">Guests will contact you using this email.</div>
         </div>
 
-        <button class="mt-3 btn btn-primary" type="submit">Save Settings</button>
+        <a href="/csc309-restify/views/properties/property_view_host.html" class="btn btn-primary" role="button">Save Settings</a>
     </div>
 
     </form>
