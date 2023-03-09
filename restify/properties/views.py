@@ -43,5 +43,13 @@ class RetrievePropertyView(generics.RetrieveAPIView):
         return get_object_or_404(Property, pk=property_id)
 
 
+class RetrievePropertiesView(generics.ListAPIView):
+    serializer_class = PropertySerializer
+
+    def get_queryset(self):
+        owner_id = self.kwargs["owner_pk"]
+        return Property.objects.filter(owner=owner_id)
+
+
 class CreateTestView(generics.CreateAPIView):
     serializer_class = TestSerializer
