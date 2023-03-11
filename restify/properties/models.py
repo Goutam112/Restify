@@ -46,7 +46,7 @@ class PriceModifier(models.Model):
 
 
 class PropertyImage(models.Model):
-    property = models.ForeignKey(Property, related_name="property_images", on_delete=models.CASCADE, null=True)
+    property = models.ForeignKey(Property, related_name="property_images", on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField()
 
     def __str__(self):

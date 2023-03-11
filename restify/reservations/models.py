@@ -1,3 +1,5 @@
+import enum
+
 from django.conf import settings
 from django.db import models
 
@@ -6,17 +8,23 @@ from properties.models import Property
 
 # Create your models here.
 
+class ReservationType(enum.Enum):
+    INCOMING = 1
+    OUTGOING = 1
+
+
+class Status(models.TextChoices):
+    PENDING = "PND"
+    DENIED = "DND"
+    EXPIRED = "EXP"
+    APPROVED = "APR"
+    CANCELLED = "CAN"
+    TERMINATED = "TRM"
+    COMPLETED = "CMP"
+    CANCELLATION_REQUESTED = "CRQ"
+
+
 class Reservation(models.Model):
-
-    class Status(models.TextChoices):
-        PENDING = "PND"
-        DENIED = "DND"
-        EXPIRED = "EXP"
-        APPROVED = "APR"
-        CANCELLED = "CAN"
-        TERMINATED = "TRM"
-        COMPLETED = "CMP"
-
     reserver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     start_date = models.DateField()
@@ -28,4 +36,3 @@ class Reservation(models.Model):
 
     class Meta:
         unique_together = ["property", "start_date", "end_date"]
-

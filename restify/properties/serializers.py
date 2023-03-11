@@ -31,7 +31,7 @@ class PropertyImageSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    price_modifiers = PriceModifierSerializer(many=True)
+    price_modifiers = PriceModifierSerializer(many=True, required=False)
     property_images = PropertyImageSerializer(many=True)
     amenities = AmenitySerializer(many=True)
 

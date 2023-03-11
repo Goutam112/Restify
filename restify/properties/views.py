@@ -41,13 +41,23 @@ class RetrievePropertyView(generics.RetrieveAPIView):
 
 
 class RetrievePropertiesView(generics.ListAPIView):
+    """
+    Retrieve all properties that belong to the requested user.
+    """
     serializer_class = PropertySerializer
     pagination_class = RetrievePropertiesPaginator
 
     def get_queryset(self):
         owner_id = self.kwargs["owner_pk"]
-        return Property.objects.filter(owner=owner_id)
 
+        filtered_properties = Property.objects.filter(owner=owner_id)
+
+        # sort_by = self.request.GET.get("sort_by", None)
+        #
+        # if sort_by == "price":
+        #     filtered_properties = filtered_properties.order_by(nightly_price=)
+
+        return filtered_properties
 
 class CreateTestView(generics.CreateAPIView):
     serializer_class = TestSerializer
