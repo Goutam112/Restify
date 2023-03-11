@@ -4,6 +4,7 @@ from rest_framework.generics import get_object_or_404
 
 from properties.models import Property
 from properties.serializers import PropertySerializer, TestSerializer
+from properties.paginators import RetrievePropertiesPaginator
 
 
 # Create your views here.
@@ -41,6 +42,7 @@ class RetrievePropertyView(generics.RetrieveAPIView):
 
 class RetrievePropertiesView(generics.ListAPIView):
     serializer_class = PropertySerializer
+    pagination_class = RetrievePropertiesPaginator
 
     def get_queryset(self):
         owner_id = self.kwargs["owner_pk"]
