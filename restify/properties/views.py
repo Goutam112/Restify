@@ -1,13 +1,9 @@
-import rest_framework.response
-from django.db import IntegrityError
-from rest_framework.response import Response
-from django.shortcuts import render
-from rest_framework import serializers, generics
+from rest_framework import generics
+from rest_framework import generics
 from rest_framework.generics import get_object_or_404
-from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from properties.serializers import PropertySerializer, TestSerializer, TestPriceModifierSerializer
-from properties.models import PriceModifier, Property, TestModel
+from properties.models import Property
+from properties.serializers import PropertySerializer, TestSerializer
 
 
 # Create your views here.
