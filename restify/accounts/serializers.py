@@ -36,9 +36,10 @@ class UserCreationSerializer(serializers.ModelSerializer):
 class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'phone_number', 'avatar']
+        fields = ['id', 'email', 'first_name', 'last_name', 'phone_number', 'avatar']
         extra_kwargs = {
-            'id': {'read_only': True}
+            'id': {'read_only': True},
+            'email': {'read_only': True},
         }
 
     def validate(self, attrs):
