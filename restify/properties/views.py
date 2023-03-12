@@ -1,9 +1,8 @@
 from rest_framework import generics
-from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 
 from properties.models import Property
-from properties.serializers import PropertySerializer, TestSerializer
+from properties.serializers import PropertySerializer
 from properties.paginators import RetrievePropertiesPaginator
 
 
@@ -58,6 +57,3 @@ class RetrievePropertiesView(generics.ListAPIView):
         #     filtered_properties = filtered_properties.order_by(nightly_price=)
 
         return filtered_properties
-
-class CreateTestView(generics.CreateAPIView):
-    serializer_class = TestSerializer

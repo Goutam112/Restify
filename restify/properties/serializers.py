@@ -1,9 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 import properties.models
-from properties.models import Property, TestModel, PriceModifier, TestPriceModifier, PropertyImage, Amenity
+from properties.models import Property, PriceModifier, PropertyImage, Amenity
 
 
 class PriceModifierSerializer(serializers.ModelSerializer):
@@ -16,12 +17,6 @@ class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenity
         exclude = ["properties"]
-
-
-class TestPriceModifierSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TestPriceModifier
-        exclude = ["test_model"]  # Exclude the foreign key reference, we'll inject it in TestModelSerializer
 
 
 class PropertyImageSerializer(serializers.ModelSerializer):
@@ -38,6 +33,12 @@ class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = '__all__'
+
+    def validate(self, attrs):
+        if attrs["start_date"] > attrs["end_date"]:
+            raise ValidationError("Start date cannot be later than the end date.")
+
+        return super().validate(attrs)
 
     def update_all_direct_property_fields(
             self, property: properties.models.Property, owner, name, description, address, country, state,
@@ -109,6 +110,11 @@ class PropertySerializer(serializers.ModelSerializer):
             PriceModifier.objects.create(property=property, month=price_modifier["month"],
                                          price_modifier=price_modifier["price_modifier"])
 
+        if len(price_modifiers) == 0:
+            for month in [i for i in range(1, 13)]:
+                PriceModifier.objects.create(property=property, month=month,
+                                             price_modifier=1.0)
+
         for image in property_images:
             PropertyImage.objects.create(property=property, image=image)
 
@@ -122,27 +128,3 @@ class PropertySerializer(serializers.ModelSerializer):
                 added_amenity.properties.add(property)
 
         return property
-
-
-class TestSerializer(serializers.ModelSerializer):
-    test_price_modifiers = TestPriceModifierSerializer(many=True)  # List of price_modifiers
-
-    class Meta:
-        model = TestModel
-        # We'll take in a list of price_modifiers in our JSON input, expect they don't have any associated TestModel
-        fields = ['thing', 'test_price_modifiers']
-
-    def create(self, validated_data):
-        # Pop "price_modifiers" from our JSON input so that all PriceModifier fields are removed
-        test_price_modifiers = validated_data.pop("test_price_modifiers")
-
-        # Because we popped "price_modifiers", only fields related to Property are left in validated_data
-        test_model = TestModel.objects.create(**validated_data)
-
-        # For each price_modifier object in our JSON list, serialize it and save into our database
-        # while injecting the TestModel we just created into it
-        for test_price_modifier in test_price_modifiers:
-            TestPriceModifier.objects.create(test_model=test_model, month=test_price_modifier["month"],
-                                             price_modifier=test_price_modifier["price_modifier"])
-
-        return test_model
