@@ -25,10 +25,10 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.update({'reserver': self.context['request'].user})
-        super().create(validated_data)
+        return super().create(validated_data)
 
     def validate(self, attrs):
-        current_user = self.context['request'].user
+        current_user = self.context.get('request').user
 
         if current_user == attrs["property"].owner:
             raise serializers.ValidationError(detail="You cannot reserve your own property.")
