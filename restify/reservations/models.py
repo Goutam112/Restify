@@ -14,14 +14,14 @@ class ReservationType(enum.Enum):
 
 
 class Status(models.TextChoices):
-    PENDING = "PND"
-    DENIED = "DND"
-    EXPIRED = "EXP"
-    APPROVED = "APR"
-    CANCELLED = "CAN"
-    TERMINATED = "TRM"
-    COMPLETED = "CMP"
-    CANCELLATION_REQUESTED = "CRQ"
+    PENDING = "Pending"
+    DENIED = "Denied"
+    EXPIRED = "Expired"
+    APPROVED = "Approved"
+    CANCELLED = "Cancelled"
+    TERMINATED = "Terminated"
+    COMPLETED = "Completed"
+    CANCELLATION_REQUESTED = "CancellationRequested"
 
 
 class Reservation(models.Model):
@@ -29,7 +29,7 @@ class Reservation(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(choices=Status.choices, max_length=3, default=Status.PENDING)
+    status = models.CharField(choices=Status.choices, max_length=32, default=Status.PENDING)
 
     def __str__(self):
         return f"Reservation at {self.property.name} by {self.reserver.email} on {self.start_date}"

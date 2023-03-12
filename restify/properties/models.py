@@ -32,7 +32,6 @@ class Property(models.Model):
 
 
 class PriceModifier(models.Model):
-
     # The property has multiple price modifiers, so call that set "price_modifiers"
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="price_modifiers")
     month = models.PositiveIntegerField()
@@ -46,11 +45,19 @@ class PriceModifier(models.Model):
 
 
 class PropertyImage(models.Model):
-    property = models.ForeignKey(Property, related_name="property_images", on_delete=models.CASCADE, null=True, blank=True)
+    property = models.ForeignKey(Property, related_name="property_images", on_delete=models.CASCADE, null=True,
+                                 blank=True)
     image = models.ImageField()
 
     def __str__(self):
         return f"Image for {self.property.name}"
+
+
+class AmenityObject(models.TextChoices):
+    WIFI = "WiFi"
+    KITCHEN = "Kitchen"
+    POOL = "Pool"
+    BACKYARD = "Backyard"
 
 
 class Amenity(models.Model):
@@ -59,20 +66,3 @@ class Amenity(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class TestModel(models.Model):
-    thing = models.PositiveIntegerField()
-
-
-class TestPriceModifier(models.Model):
-
-    test_model = models.ForeignKey(TestModel, related_name="test_price_modifiers", on_delete=models.CASCADE)
-    month = models.PositiveIntegerField()
-    price_modifier = models.DecimalField(max_digits=3, decimal_places=2)
-
-    def __str__(self):
-        return f"{self.test_model}: Month {self.month} at multiplier {self.price_modifier}"
-
-    class Meta:
-        unique_together = ['test_model', 'month', 'price_modifier']
