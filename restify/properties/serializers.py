@@ -25,7 +25,7 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         exclude = ['property']
 
 
-class PropertySerializer(serializers.ModelSerializer):
+class CreatePropertySerializer(serializers.ModelSerializer):
     price_modifiers = PriceModifierSerializer(many=True, required=False)
     property_images = PropertyImageSerializer(many=True, required=False)
     amenities = AmenitySerializer(many=True, required=False)
@@ -34,9 +34,50 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = '__all__'
 
+    def create(self, validated_data):
+        # Pop "price_modifiers" from our JSON input so that all PriceModifier fields are removed
+        # "price_modifiers" is an array of dictionaries mapping month to price_modifier
+        price_modifiers = validated_data.pop("price_modifiers")
+        property_images = validated_data.pop("property_images")
+        amenities = validated_data.pop("amenities")
+
+        # Because we popped "price_modifiers", only fields related to Property are left in validated_data
+        property = Property.objects.create(**validated_data)
+
+        for price_modifier in price_modifiers:
+            PriceModifier.objects.create(property=property, month=price_modifier["month"],
+                                         price_modifier=price_modifier["price_modifier"])
+
+        if len(price_modifiers) == 0:
+            for month in [i for i in range(1, 13)]:
+                PriceModifier.objects.create(property=property, month=month,
+                                             price_modifier=1.0)
+
+        for image in property_images:
+            PropertyImage.objects.create(property=property, image=image)
+
+        for amenity in amenities:
+            amenity_name = amenity["name"]
+            try:
+                added_amenity = Amenity.objects.get(name=amenity_name)
+                added_amenity.properties.add(property)
+            except ObjectDoesNotExist as ex:
+                added_amenity = Amenity.objects.create(name=amenity_name)
+                added_amenity.properties.add(property)
+
+        return property
+
+
+class PropertySerializer(CreatePropertySerializer):
+    class Meta:
+        model = Property
+        fields = '__all__'
+        read_only_fields = ["id"]
+
     def validate(self, attrs):
-        if attrs["start_date"] > attrs["end_date"]:
-            raise ValidationError("Start date cannot be later than the end date.")
+
+        if self.context.get("current_user") != attrs["owner"]:
+            raise ValidationError("You must be the owner of this property in order to modify it.")
 
         return super().validate(attrs)
 
@@ -95,36 +136,3 @@ class PropertySerializer(serializers.ModelSerializer):
         property_to_update.save()
 
         return property_to_update
-
-    def create(self, validated_data):
-        # Pop "price_modifiers" from our JSON input so that all PriceModifier fields are removed
-        # "price_modifiers" is an array of dictionaries mapping month to price_modifier
-        price_modifiers = validated_data.pop("price_modifiers")
-        property_images = validated_data.pop("property_images")
-        amenities = validated_data.pop("amenities")
-
-        # Because we popped "price_modifiers", only fields related to Property are left in validated_data
-        property = Property.objects.create(**validated_data)
-
-        for price_modifier in price_modifiers:
-            PriceModifier.objects.create(property=property, month=price_modifier["month"],
-                                         price_modifier=price_modifier["price_modifier"])
-
-        if len(price_modifiers) == 0:
-            for month in [i for i in range(1, 13)]:
-                PriceModifier.objects.create(property=property, month=month,
-                                             price_modifier=1.0)
-
-        for image in property_images:
-            PropertyImage.objects.create(property=property, image=image)
-
-        for amenity in amenities:
-            amenity_name = amenity["name"]
-            try:
-                added_amenity = Amenity.objects.get(name=amenity_name)
-                added_amenity.properties.add(property)
-            except ObjectDoesNotExist as ex:
-                added_amenity = Amenity.objects.create(name=amenity_name)
-                added_amenity.properties.add(property)
-
-        return property

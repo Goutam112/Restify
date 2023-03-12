@@ -8,10 +8,6 @@ from properties.models import Property
 
 # Create your models here.
 
-class ReservationType(enum.Enum):
-    INCOMING = 1
-    OUTGOING = 1
-
 
 class Status(models.TextChoices):
     PENDING = "Pending"
@@ -32,4 +28,4 @@ class Reservation(models.Model):
     status = models.CharField(choices=Status.choices, max_length=32, default=Status.PENDING)
 
     def __str__(self):
-        return f"Reservation at {self.property.name} by {self.reserver.email} on {self.start_date}"
+        return f" {self.pk} | Reservation at {self.property.name} by {self.reserver.email} on {self.start_date}"

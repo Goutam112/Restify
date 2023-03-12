@@ -28,7 +28,7 @@ class Property(models.Model):
     nightly_price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return f"{self.name} owned by {str(self.owner)} with id {self.pk}"
+        return f"{self.pk} | {self.name} owned by {str(self.owner)}"
 
 
 class PriceModifier(models.Model):

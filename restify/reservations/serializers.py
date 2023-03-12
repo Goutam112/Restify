@@ -36,6 +36,9 @@ class ReservationSerializer(serializers.ModelSerializer):
         start_date = attrs["start_date"]
         end_date = attrs["end_date"]
 
+        if attrs["start_date"] > attrs["end_date"]:
+            raise ValidationError("Start date cannot be later than the end date.")
+
         # Check if any reservations on the same Property have any overlapping dates
 
         # Don't count denied, terminated, expired, or cancelled
@@ -120,9 +123,8 @@ class ReservationActionHostSerializer(ReservationActionSerializer):
 
         reservation_to_update = self.get_reservation_to_update()
 
-        # TODO: UNCOMMENT THIS
-        # if current_user != reservation_to_update.property.owner:
-        #     raise serializers.ValidationError(detail="You can only modify your own property's reservations.")
+        if current_user != reservation_to_update.property.owner:
+            raise serializers.ValidationError(detail="You can only modify your own property's reservations.")
 
         return super().validate(attrs)
 

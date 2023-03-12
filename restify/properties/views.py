@@ -1,19 +1,27 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
+from accounts.models import User
 from properties.models import Property
-from properties.serializers import PropertySerializer
+from properties.serializers import CreatePropertySerializer, PropertySerializer
 from properties.paginators import RetrievePropertiesPaginator
 
 
 # Create your views here.
 
-class CreatePropertyView(generics.CreateAPIView):
+
+class PropertyView(generics.GenericAPIView):
+    """
+    An abstract class meant for views that work with one single property.
+    """
     serializer_class = PropertySerializer
 
-
-class UpdatePropertyView(generics.RetrieveUpdateAPIView):
-    serializer_class = PropertySerializer
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["current_user"] = self.request.user
+        return context
 
     def get_object(self):
         """
@@ -23,23 +31,46 @@ class UpdatePropertyView(generics.RetrieveUpdateAPIView):
         return get_object_or_404(Property, pk=property_id)
 
 
-class DeletePropertyView(generics.DestroyAPIView):
+class CreatePropertyView(PropertyView, generics.CreateAPIView):
+    serializer_class = CreatePropertySerializer
+
+
+class UpdatePropertyView(PropertyView, generics.RetrieveUpdateAPIView):
     serializer_class = PropertySerializer
 
-    def get_object(self):
-        property_id = self.kwargs["pk"]
-        return get_object_or_404(Property, pk=property_id)
 
-
-class RetrievePropertyView(generics.RetrieveAPIView):
+class DeletePropertyView(PropertyView, generics.DestroyAPIView):
     serializer_class = PropertySerializer
 
-    def get_object(self):
-        property_id = self.kwargs["pk"]
-        return get_object_or_404(Property, pk=property_id)
+    def destroy(self, request, *args, **kwargs):
+        property = self.get_object()
+        if self.request.user != property.owner:
+            return Response(data={'error': "You cannot delete a property that you don't own."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        self.perform_destroy(property)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class RetrievePropertiesView(generics.ListAPIView):
+class RetrievePropertyView(PropertyView, generics.RetrieveAPIView):
+    serializer_class = PropertySerializer
+    permission_classes = []  # Doesn't require login to access this view
+
+
+class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
+    """
+    Retrieve all properties.
+    """
+    serializer_class = PropertySerializer
+    pagination_class = RetrievePropertiesPaginator
+    permission_classes = []  # Doesn't require login to access this view
+
+    def get_queryset(self):
+        filtered_properties = Property.objects.all()
+
+        return filtered_properties
+
+
+class RetrieveUserPropertiesView(PropertyView, generics.ListAPIView):
     """
     Retrieve all properties that belong to the requested user.
     """
@@ -47,13 +78,6 @@ class RetrievePropertiesView(generics.ListAPIView):
     pagination_class = RetrievePropertiesPaginator
 
     def get_queryset(self):
-        owner_id = self.kwargs["owner_pk"]
-
-        filtered_properties = Property.objects.filter(owner=owner_id)
-
-        # sort_by = self.request.GET.get("sort_by", None)
-        #
-        # if sort_by == "price":
-        #     filtered_properties = filtered_properties.order_by(nightly_price=)
+        filtered_properties = Property.objects.filter(owner=self.request.user)
 
         return filtered_properties
