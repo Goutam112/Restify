@@ -21,7 +21,11 @@ from reservations.models import Reservation, Status
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = '__all__'
+        exclude = ['reserver']
+
+    def create(self, validated_data):
+        validated_data.update({'reserver': self.context['request'].user})
+        super().create(validated_data)
 
     def validate(self, attrs):
         current_user = self.context['request'].user
