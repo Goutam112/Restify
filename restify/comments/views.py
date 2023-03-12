@@ -7,6 +7,7 @@ from comments.models import Review
 from comments.serializers import UserReviewCreationSerializer, UserReviewSerializer, PropertyThreadSerializer, \
     PropertyReviewCreationSerializer, PropertyReplyCreationSerializer
 from comments.paginators import UserCommentPaginator, PropertyCommentPaginator
+from notifications.models import Notification
 from properties.models import Property
 from reservations.models import Reservation
 
@@ -67,6 +68,15 @@ class CreatePropertyReview(generics.CreateAPIView):
         context['subject_content_type'] = ContentType.objects.get_for_model(model=Property)
         context['commenter'] = self.request.user
         return context
+
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+
+        prop = Property.objects.get(pk=self.kwargs.get('subject_id'))
+
+        Notification.objects.create(content='host_property_new_comment',
+                                    receiver=prop.owner
+                                    )
 
 
 class CreatePropertyReply(generics.CreateAPIView):

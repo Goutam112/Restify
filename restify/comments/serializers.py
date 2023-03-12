@@ -4,7 +4,7 @@ from accounts.models import User
 from accounts.serializers import UserSerializer
 from comments.models import Review, Reply
 from properties.models import Property
-from reservations.models import Reservation
+from reservations.models import Reservation, Status
 
 
 class UserReviewCreationSerializer(serializers.ModelSerializer):
@@ -76,7 +76,7 @@ class PropertyReviewCreationSerializer(serializers.ModelSerializer):
 
         commenter_completed_or_terminated_property = Reservation.objects.filter(
             reserver=commenter,
-            status__in=[Reservation.Status.COMPLETED, Reservation.Status.TERMINATED]
+            status__in=[Status.COMPLETED, Status.TERMINATED]
         ).exists()
 
         commenter_already_left_review = Review.objects.filter(

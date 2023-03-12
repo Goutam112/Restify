@@ -4,12 +4,13 @@ from accounts.models import User
 CONTENT = [
     ('HOST', (
         ('host_new_reservation', 'New reservation'),
-        ('host_cancellation_request', 'Cancellation Request')
+        ('host_cancellation_request', 'Cancellation Request'),
+        ('host_property_new_comment', 'New comment on property'),
     )),
     ('GUEST', (
         ('guest_approved_reservation', 'Approved reservation'),
-        ('guest_cancellation_request', 'Cancellation Request')
-    ))
+        ('guest_cancellation_request', 'Cancellation Request'),
+    )),
 ]
 class Notification(models.Model):
     content = models.CharField(choices=CONTENT, max_length=200) # simplify the description
