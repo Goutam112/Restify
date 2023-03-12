@@ -23,4 +23,5 @@ urlpatterns = [
     path('properties/', include('properties.urls', namespace='properties')),
     path('reservations/', include('reservations.urls', namespace='reservations')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('notifications/', include('notifications.urls', namespace='notifications'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
