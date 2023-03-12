@@ -8,7 +8,6 @@ from properties.models import Property
 
 # Create your models here.
 
-
 class Status(models.TextChoices):
     PENDING = "Pending"
     DENIED = "Denied"
@@ -26,6 +25,8 @@ class Reservation(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(choices=Status.choices, max_length=32, default=Status.PENDING)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    seconds_before_expiry = models.BigIntegerField(default=None, null=True, blank=True)
 
     def __str__(self):
         return f" {self.pk} | Reservation at {self.property.name} by {self.reserver.email} on {self.start_date}"

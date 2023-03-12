@@ -44,17 +44,37 @@ class CreatePropertySerializer(serializers.ModelSerializer):
         # Because we popped "price_modifiers", only fields related to Property are left in validated_data
         property = Property.objects.create(**validated_data)
 
+        i = 0
         for price_modifier in price_modifiers:
+            if i > 12:
+                break
             PriceModifier.objects.create(property=property, month=price_modifier["month"],
                                          price_modifier=price_modifier["price_modifier"])
+            i += 1
 
-        if len(price_modifiers) == 0:
-            for month in [i for i in range(1, 13)]:
-                PriceModifier.objects.create(property=property, month=month,
-                                             price_modifier=1.0)
+        # Ensure that each month has a price modifier
 
+        if len(price_modifiers) < 12:
+            for i in range(1, 13):
+                if len(PriceModifier.objects.filter(property=property, month=i)) == 0:
+                    PriceModifier.objects.create(property=property, month=i, price_modifier=1.0)
+
+        i = 0
         for image in property_images:
+            # Don't create more than NUM IMAGES images, even if more is supplied
+            if i > properties.models.NUM_IMAGES:
+                break
             PropertyImage.objects.create(property=property, image=image)
+            i += 1
+
+        # If less than NUM IMAGES was passed in, pad the rest with empty images
+
+        num_images_added = len(PropertyImage.objects.filter(property=property))
+
+        if num_images_added < properties.models.NUM_IMAGES:
+            diff = properties.models.NUM_IMAGES - num_images_added
+            for _ in range(0, diff):
+                PropertyImage.objects.create(property=property)
 
         for amenity in amenities:
             amenity_name = amenity["name"]

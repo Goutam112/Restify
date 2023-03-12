@@ -3,6 +3,9 @@ from django.db import models
 
 
 # Create your models here.
+
+NUM_IMAGES = 6
+
 class Property(models.Model):
     """
     A representation of a Property.
@@ -47,10 +50,10 @@ class PriceModifier(models.Model):
 class PropertyImage(models.Model):
     property = models.ForeignKey(Property, related_name="property_images", on_delete=models.CASCADE, null=True,
                                  blank=True)
-    image = models.ImageField()
+    image = models.ImageField(default="empty_image.jpg")
 
     def __str__(self):
-        return f"Image for {self.property.name}"
+        return f"Image for Property {self.property.pk}"
 
 
 class AmenityObject(models.TextChoices):

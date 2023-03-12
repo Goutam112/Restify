@@ -17,4 +17,4 @@ class Notification(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.CASCADE) 
 
     def __str__(self):
-        return f"{self.receiver}-{self.category}: {self.content}"
+        return f"{self.receiver}: {self.content}"

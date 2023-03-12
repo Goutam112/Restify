@@ -1,15 +1,13 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
 
-import reservations.models
+from notifications.models import Notification
 from reservations.models import Reservation
+from reservations.models import Status
 from reservations.paginators import RetrieveReservationsPaginator
 from reservations.serializers import ReservationSerializer, ReservationApprovalSerializer, ReservationDenySerializer, \
     ReservationCompleteSerializer, ReservationCancellationRequestSerializer, ReservationCancelSerializer, \
     ReservationTerminateSerializer
-from reservations.models import Status
 
 
 # Create your views here.
@@ -20,6 +18,11 @@ class CreateReservationRequestView(generics.CreateAPIView):
     this Reservation is an unapproved reservation request.
     """
     serializer_class = ReservationSerializer
+
+    def perform_create(self, serializer):
+        Notification.objects.create(content="host_new_reservation", receiver=serializer.validated_data.get("property").owner)
+        print("Host notified of new reservation request")
+        return super().perform_create(serializer)
 
 
 class UpdateReservationView(generics.RetrieveUpdateAPIView):
@@ -65,6 +68,13 @@ class ApproveReservationView(ReservationActionView):
 
     serializer_class = ReservationApprovalSerializer
 
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        reservation = Reservation.objects.get(pk=self.kwargs.get("reservation_id"))
+        reserver = reservation.reserver
+        Notification.objects.create(content="guest_approved_reservation", receiver=reserver)
+        print("Guest notified of new reservation request approval")
+
 
 class DenyReservationView(ReservationActionView):
     new_status = Status.DENIED
@@ -89,13 +99,29 @@ class RequestReservationCancelView(ReservationActionView):
 
     serializer_class = ReservationCancellationRequestSerializer
 
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        reservation = Reservation.objects.get(pk=self.kwargs.get("reservation_id"))
+        owner = reservation.property.owner
+        Notification.objects.create(content="host_cancellation_request", receiver=owner)
+        print("Host notified of new cancellation request")
 
-class ApproveReservationCancelView(ReservationActionView):
+
+class ConfirmReservationCancelRequestView(ReservationActionView):
     new_status = Status.CANCELLED
 
     allowed_statuses = [Status.CANCELLATION_REQUESTED]
 
     serializer_class = ReservationCancelSerializer
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        reservation = Reservation.objects.get(pk=self.kwargs.get("reservation_id"))
+        reserver = reservation.reserver
+        Notification.objects.create(content="guest_cancellation_request", receiver=reserver)
+        print("Guest notified of reservation cancel request confirmed")
+
+
 
 
 class TerminateReservationView(ReservationActionView):
@@ -122,13 +148,9 @@ class RetrieveReservationsView(generics.ListAPIView):
         filtered_reservations = Reservation.objects.all()
 
         if requested_status is not None:
-            # If the requested status matches any of the choices in our database, this will be non-empty
-
             statuses = [Status.choices[i][1].lower() for i in range(0, len(Status.choices))]
 
             if requested_status.lower() in statuses:
-                # The database holds the statuses as abbreviations found at Status[TYPE]. Since status is given
-                # in lowercase in the GET params, we have to make them uppercase.
                 filtered_reservations = filtered_reservations.filter(status__iexact=requested_status)
             else:
                 print(
