@@ -28,16 +28,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('repeat_password')
 
-        extra_fields = {'first_name': validated_data.get('first_name'),
-                        'last_name': validated_data.get('last_name'),
-                        'phone_number': validated_data.get('phone_number'),
-                        }
-
-        if validated_data.get('avatar') is not None:
-            extra_fields.update({'avatar': validated_data.get('avatar')})
-
-        user = User.objects.create_user(email=validated_data.get('email'), password=validated_data.get('password'),
-                                        **extra_fields)
+        user = User.objects.create_user(**validated_data)
 
         return user
 
