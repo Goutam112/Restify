@@ -31,6 +31,30 @@ class UserCreationSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+class UserEditSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'phone_number', 'avatar']
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
+
+    def validate(self, attrs):
+        if attrs.get('phone_number') is not None:
+            cleaned_phone_number = _clean_phone_number(attrs.get('phone_number'))
+
+            if len(cleaned_phone_number) != 10 or not cleaned_phone_number.isnumeric():
+                raise serializers.ValidationError({'phone_number': 'Phone number is invalid.'})
+
+            attrs.update({'phone_number': cleaned_phone_number})
+
+        return super().validate(attrs)
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
