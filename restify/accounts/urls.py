@@ -6,5 +6,6 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('signup/', views.CreateUser.as_view(), name='signup'),
-    path('view/<pk>', views.ViewProfile.as_view(), name='view'),
+    path('profile/view/<pk>/', views.ViewProfile.as_view(), name='view_profile'),
+    path('profile/edit/', views.EditProfile.as_view(), name='edit_profile')
 ]
