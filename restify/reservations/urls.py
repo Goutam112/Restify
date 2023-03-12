@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('create/', CreateReservationRequestView.as_view(), name='create_reservation'),
     path('retrieve/all/', RetrieveReservationsView.as_view(), name='retrieve_reservations'),
+    path('retrieve/all/<int:user_id>/', RetrieveReservationsView.as_view(), name='retrieve_reservations'),
     path('update/<int:reservation_id>/', UpdateReservationView.as_view(), name='update_reservation'),
     path('approve/<int:reservation_id>/', ApproveReservationView.as_view(), name='approve_reservation'),
     path('deny/<int:reservation_id>/', DenyReservationView.as_view(), name='deny_reservation'),

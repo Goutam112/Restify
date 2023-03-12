@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 import reservations.models
 from reservations.models import Reservation
+from reservations.paginators import RetrieveReservationsPaginator
 from reservations.serializers import ReservationSerializer, ReservationApprovalSerializer, ReservationDenySerializer, \
     ReservationCompleteSerializer, ReservationCancellationRequestSerializer, ReservationCancelSerializer, \
     ReservationTerminateSerializer
@@ -111,10 +112,14 @@ class DeleteReservationView(generics.DestroyAPIView):
 
 class RetrieveReservationsView(generics.ListAPIView):
     serializer_class = ReservationSerializer
+    pagination_class = RetrieveReservationsPaginator
 
     def get_queryset(self):
 
-        user = self.request.user
+        user = self.kwargs["user_id"]
+
+        if user is None:
+            user = self.request.user
 
         requested_status = self.request.GET.get("status", None)
 
@@ -125,12 +130,12 @@ class RetrieveReservationsView(generics.ListAPIView):
             status_matches = [Status.choices[i][1] for i in range(0, len(Status.choices)) if
                               Status.choices[i][1].lower() == requested_status]
 
-            if len(status_matches) != 0:
-                # There should only be one status type in our database that matches the request
-                status = status_matches[0]
+            statuses = [Status.choices[i][1].lower() for i in range(0, len(Status.choices))]
+
+            if requested_status.lower() in statuses:
                 # The database holds the statuses as abbreviations found at Status[TYPE]. Since status is given
                 # in lowercase in the GET params, we have to make them uppercase.
-                filtered_reservations = filtered_reservations.filter(status__iexact=Status[status.upper()])
+                filtered_reservations = filtered_reservations.filter(status__iexact=Status[requested_status.upper()])
             else:
                 print(
                     "You provided a status filter with an unknown status. Check that your status is supported by the database.")

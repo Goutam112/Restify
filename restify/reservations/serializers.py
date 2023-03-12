@@ -1,8 +1,10 @@
 import datetime
 
 import rest_framework
+from django.db.models import Q
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.fields import CharField
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -13,7 +15,7 @@ from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
 import reservations.models
-from reservations.models import Reservation
+from reservations.models import Reservation, Status
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -27,6 +29,28 @@ class ReservationSerializer(serializers.ModelSerializer):
         if current_user == attrs["property"].owner:
             raise serializers.ValidationError(detail="You cannot reserve your own property.")
 
+        start_date = attrs["start_date"]
+        end_date = attrs["end_date"]
+
+        # Check if any reservations on the same Property have any overlapping dates
+
+        # Don't count denied, terminated, expired, or cancelled
+        # Note that pending requests still count, so they prevent you from reserving on days that
+        # a pending reservation reserves
+        prohibited_statuses = {Status.DENIED, Status.TERMINATED, Status.EXPIRED, Status.CANCELLED}
+
+        filtered_reservations = Reservation.objects \
+            .exclude(status__in=prohibited_statuses) \
+            .filter(property=attrs["property"])
+
+        # filter for any reservations that overlap in this date
+        filtered_reservations = filtered_reservations.filter(
+            Q(start_date__gte=start_date, start_date__lte=end_date) |
+            Q(start_date__lte=start_date, end_date__gte=start_date))
+
+        if len(filtered_reservations) > 0:
+            raise ValidationError(detail="Your reservation date range overlaps with an existing reservation.")
+
         return super().validate(attrs)
 
 
@@ -34,6 +58,7 @@ class ReservationActionSerializer(serializers.ModelSerializer):
     """
     A serializer that dDoes the heavy-lifting validation when trying to modify a Reservation's status.
     """
+
     class Meta:
         model = Reservation
         fields = ["status"]
@@ -59,8 +84,8 @@ class ReservationActionSerializer(serializers.ModelSerializer):
         The error string returned upon a ValidationError for not having a valid current status.
         Override this to customize it.
         """
-        return f"You are trying to modify the status of a reservation with an incompatible existing status."\
-               f" The reservation should have a status in {self.context['allowed_statuses']} but your"\
+        return f"You are trying to modify the status of a reservation with an incompatible existing status." \
+               f" The reservation should have a status in {self.context['allowed_statuses']} but your" \
                f" reservation currently has status {self.get_reservation_to_update().status}."
 
     def validate(self, attrs):
@@ -101,21 +126,21 @@ class ReservationActionHostSerializer(ReservationActionSerializer):
 class ReservationApprovalSerializer(ReservationActionHostSerializer):
 
     def set_status_error_string(self):
-        return f"You tried to approve a non-pending reservation. The "\
+        return f"You tried to approve a non-pending reservation. The " \
                f"reservation currently has status {self.get_reservation_to_update().status}."
 
 
 class ReservationDenySerializer(ReservationActionHostSerializer):
 
     def set_status_error_string(self):
-        return f"You tried to deny a non-pending reservation. The "\
+        return f"You tried to deny a non-pending reservation. The " \
                f"reservation currently has status {self.get_reservation_to_update().status}."
 
 
 class ReservationCompleteSerializer(ReservationActionHostSerializer):
 
     def set_status_error_string(self):
-        return f"You tried to complete a non-approved reservation. The "\
+        return f"You tried to complete a non-approved reservation. The " \
                f"reservation currently has status {self.get_reservation_to_update().status}."
 
     def validate(self, attrs):
@@ -138,7 +163,7 @@ class ReservationCompleteSerializer(ReservationActionHostSerializer):
 class ReservationCancellationRequestSerializer(ReservationActionSerializer):
 
     def set_status_error_string(self):
-        return f"You tried to request a cancellation for a non-pending or non-approved reservation. The "\
+        return f"You tried to request a cancellation for a non-pending or non-approved reservation. The " \
                f"reservation currently has status {self.get_reservation_to_update().status}."
 
 

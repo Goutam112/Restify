@@ -33,6 +33,3 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"Reservation at {self.property.name} by {self.reserver.email} on {self.start_date}"
-
-    class Meta:
-        unique_together = ["property", "start_date", "end_date"]
