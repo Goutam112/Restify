@@ -91,6 +91,8 @@ class CreatePropertyReply(generics.CreateAPIView):
 
 
 class ListPropertyReviews(generics.ListAPIView):
+    permission_classes = []
+
     pagination_class = PropertyCommentPaginator
     serializer_class = PropertyThreadSerializer
 
