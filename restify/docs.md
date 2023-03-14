@@ -64,6 +64,24 @@ No
 }
 ```
 
+### LOG IN
+#### Endpoint: 
+localhost:8000/api/token/
+#### Description: 
+Retrieve an access token for authentication. 
+The access token lasts for 24 hours.
+#### Methods: 
+POST
+#### Authentication: 
+No
+#### Payload: 
+```json
+{
+    "email": "",
+    "password": ""
+}
+```
+
 ### VIEW PROFILE
 #### Endpoint: 
 localhost:8000/accounts/profile/view/&lt;int:user_id>/
@@ -93,4 +111,79 @@ Yes
 }
 ```
 
+## Comments
 
+### CREATE USER COMMENT
+#### Endpoint: 
+localhost:8000/comments/user/&lt;int:user_id>/review/create/
+#### Description: 
+Leave a comment and rating on a `User` who has completed a stay at your property.
+#### Methods: 
+POST
+#### Authentication: 
+Yes
+#### Payload: 
+```json
+{
+    "content": "",
+    "rating": null
+}
+```
+
+### VIEW USER COMMENTS
+#### Endpoint: 
+localhost:8000/comments/user/&lt;int:user_id>/review/
+#### Description: 
+See all comments about a `User` who completed a stay at your property.
+#### Methods: 
+GET
+#### Authentication: 
+Yes
+
+### VIEW PROPERTY COMMENTS
+#### Endpoint: 
+localhost:8000/comments/property/&lt;int:property_id>/review/
+#### Description: 
+See all comments (and their replies) on a `Property`.
+#### Methods: 
+GET
+#### Authentication: 
+No
+
+### CREATE PROPERTY COMMENT
+#### Endpoint: 
+localhost:8000/comments/property/&lt;int:property_id>/review/create/
+#### Description: 
+Create a new comment thread (`Rating`) on a `Property`.
+Only users who have stayed at the property or had their reservations
+terminated by the host may leave a single comment.
+#### Methods: 
+POST
+#### Authentication: 
+Yes
+#### Payload: 
+```json
+{
+    "content": "",
+    "rating": null
+}
+```
+
+### CREATE PROPERTY REPLY
+#### Endpoint: 
+localhost:8000/comments/property/&lt;int:property_id>/reply/create/
+#### Description: 
+Create a new `Reply` to an existing `Rating` on a `Property`. Only
+the property host and the original `Rating` commenter may create 
+a reply in alternating fashion.
+#### Methods: 
+POST
+#### Authentication: 
+Yes
+#### Payload: 
+```json
+{
+    "content": "",
+    "reply_to": null
+}
+```
