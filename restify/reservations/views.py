@@ -7,7 +7,7 @@ from reservations.models import Status
 from reservations.paginators import RetrieveReservationsPaginator
 from reservations.serializers import ReservationSerializer, ReservationApprovalSerializer, ReservationDenySerializer, \
     ReservationCompleteSerializer, ReservationCancellationRequestSerializer, ReservationCancelSerializer, \
-    ReservationTerminateSerializer
+    ReservationTerminateSerializer, ReservationDenyCancellationRequestSerializer
 
 
 # Create your views here.
@@ -20,7 +20,8 @@ class CreateReservationRequestView(generics.CreateAPIView):
     serializer_class = ReservationSerializer
 
     def perform_create(self, serializer):
-        Notification.objects.create(content="host_new_reservation", receiver=serializer.validated_data.get("property").owner)
+        Notification.objects.create(content="host_new_reservation",
+                                    receiver=serializer.validated_data.get("property").owner)
         print("Host notified of new reservation request")
         return super().perform_create(serializer)
 
@@ -107,6 +108,14 @@ class RequestReservationCancelView(ReservationActionView):
         print("Host notified of new cancellation request")
 
 
+class DenyReservationCancellationRequestView(ReservationActionView):
+    new_status = Status.PENDING
+
+    allowed_statuses = [Status.CANCELLATION_REQUESTED]
+
+    serializer_class = ReservationDenyCancellationRequestSerializer
+
+
 class ConfirmReservationCancelRequestView(ReservationActionView):
     new_status = Status.CANCELLED
 
@@ -120,8 +129,6 @@ class ConfirmReservationCancelRequestView(ReservationActionView):
         reserver = reservation.reserver
         Notification.objects.create(content="guest_cancellation_request", receiver=reserver)
         print("Guest notified of reservation cancel request confirmed")
-
-
 
 
 class TerminateReservationView(ReservationActionView):

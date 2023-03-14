@@ -173,6 +173,13 @@ class ReservationCancellationRequestSerializer(ReservationActionSerializer):
                f"reservation currently has status {self.get_reservation_to_update().status}."
 
 
+class ReservationDenyCancellationRequestSerializer(ReservationActionSerializer):
+
+    def set_status_error_string(self):
+        return f"You tried to deny a request to cancel a reservation that hasn't requested to cancel. The " \
+               f"reservation currently has status {self.get_reservation_to_update().status}."
+
+
 class ReservationCancelSerializer(ReservationActionHostSerializer):
     def set_status_error_string(self):
         return f"You tried to cancel a reservation that wasn't requested to be canceled. The " \

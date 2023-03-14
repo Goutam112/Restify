@@ -3,7 +3,7 @@ from django.urls import path
 
 from reservations.views import CreateReservationRequestView, RetrieveReservationsView, UpdateReservationView, \
     ApproveReservationView, DenyReservationView, CompleteReservationView, RequestReservationCancelView, \
-    ConfirmReservationCancelRequestView, TerminateReservationView
+    ConfirmReservationCancelRequestView, TerminateReservationView, DenyReservationCancellationRequestView
 
 app_name = "reservations"
 urlpatterns = [
@@ -17,5 +17,6 @@ urlpatterns = [
     path('complete/<int:reservation_id>/', CompleteReservationView.as_view(), name='complete_reservation'),
     path('req_cancellation/<int:reservation_id>/', RequestReservationCancelView.as_view(), name='req_cancellation_reservation'),
     path('cancel/<int:reservation_id>/', ConfirmReservationCancelRequestView.as_view(), name='cancel_reservation'),
+    path('deny_cancellation_req/<int:reservation_id>/', DenyReservationCancellationRequestView.as_view(), name='deny_cancel_reservation'),
     path('terminate/<int:reservation_id>/', TerminateReservationView.as_view(), name='terminate_reservation'),
 ]

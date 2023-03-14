@@ -149,6 +149,67 @@ See all comments (and their replies) on a `Property`.
 GET
 #### Authentication: 
 No
+### CREATE NEW PROPERTY
+
+#### Endpoint:
+localhost:8000/properties/create/
+#### Description:
+Create a new `Property`, with its parameters set in the JSON payload.
+#### Methods:
+POST
+#### Authentication:
+Yes
+#### Payload:
+```json
+{
+    "price_modifiers": [{"month": ..., "price_modifier": ...}, {"month": ..., "price_modifier": ...}],
+    "property_images": [...],
+    "amenities": [{"name": ...}, {"name": ...}, {"name": ...}],
+    "name": "...",
+    "description": "...",
+    "address": "...",
+    "country": "...",
+    "state": "...",
+    "city": "...",
+    "max_num_guests": ...,
+    "num_beds": ...,
+    "num_baths": ...,
+    "nightly_price": ...,
+    "owner": ...
+}
+```
+
+
+### UPDATE PROPERTY
+
+#### Endpoint:
+localhost:8000/properties/update/&lt;int:pk>/
+#### Description:
+Update a `Property` with the given ID, with its parameters set in the JSON payload.
+Returns the `Property` with the given ID on a GET request to allow for access to its current values.
+#### Methods:
+GET, PUT, PATCH
+#### Authentication:
+Yes
+#### Payload:
+```json
+{
+    "price_modifiers": [{"month": ..., "price_modifier": ...}, {"month": ..., "price_modifier": ...}],
+    "property_images": [...],
+    "amenities": [{"name": ...}, {"name": ...}, {"name": ...}],
+    "name": "...",
+    "description": "...",
+    "address": "...",
+    "country": "...",
+    "state": "...",
+    "city": "...",
+    "max_num_guests": ...,
+    "num_beds": ...,
+    "num_baths": ...,
+    "nightly_price": ...,
+    "owner": ...
+}
+```
 
 ### CREATE PROPERTY COMMENT
 #### Endpoint: 
@@ -187,3 +248,168 @@ Yes
     "reply_to": null
 }
 ```
+### DELETE PROPERTY
+
+#### Endpoint:
+localhost:8000/properties/delete/&lt;int:pk>/
+#### Description:
+Delete a `Property` with the given ID.
+#### Methods:
+DELETE
+#### Authentication:
+Yes
+
+
+
+### RETRIEVE PROPERTY
+
+#### Endpoint:
+localhost:8000/properties/retrieve/&lt;int:pk>/
+#### Description:
+Retrieve a `Property` with the given ID.
+#### Methods:
+GET
+#### Authentication:
+No
+
+
+### RETRIEVE ALL PROPERTIES
+
+#### Endpoint:
+localhost:8000/properties/retrieve/all/
+#### Description:
+Retrieve all `Properties`.
+#### Methods:
+GET
+#### Authentication:
+No
+
+
+### RETRIEVE ALL PROPERTIES FOR USER
+
+#### Endpoint:
+localhost:8000/properties/retrieve/user/
+#### Description:
+Retrieve all `Properties` owned by the current user.
+#### Methods:
+GET
+#### Authentication:
+Yes
+
+
+### CREATE NEW RESERVATION
+
+#### Endpoint:
+localhost:8000/reservations/create/
+#### Description:
+Create a new `Reservation` that is set to a `Status` of PENDING.
+The reservation start date, end date, property, and expiry duration are specified in the JSON payload.
+#### Methods:
+POST
+#### Authentication:
+Yes
+#### Payload:
+```json
+{
+    "start_date": "2023-02-13",
+    "end_date": "2023-02-14",
+    "property": 1,
+    "seconds_before_expiry": null,
+}
+```
+
+
+### RETRIEVE RESERVATIONS
+
+#### Endpoint:
+localhost:8000/reservations/retrieve/all/?type={...}&status={...}
+#### Description:
+Retrieve all `Reservations` with two filters: type (incoming or outgoing) and status (pending, completed, etc.).
+#### Methods:
+GET
+#### Authentication:
+Yes
+
+
+### APPROVE RESERVATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/approve/&lt;int:reservation_id>/
+#### Description:
+Approve a `Reservation` with the specified ID in the URL.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### DENY RESERVATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/deny/&lt;int:reservation_id>/
+#### Description:
+Deny a `Reservation` with the specified ID in the URL.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### Complete RESERVATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/deny/&lt;int:reservation_id>/
+#### Description:
+Set the `Reservation` with the specified ID in the URL to have status COMPLETED.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### CREATE RESERVATION CANCELLATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/req_cancellation/&lt;int:reservation_id>/
+#### Description:
+Set a `Reservation` with the specified ID in the URL to have status CANCELLATION_REQUESTED.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### CONFIRM RESERVATION CANCELLATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/cancel/&lt;int:reservation_id>/
+#### Description:
+Approve the `Reservation`'s cancellation request with the specified ID in the URL.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### DENY RESERVATION CANCELLATION REQUEST
+
+#### Endpoint:
+localhost:8000/reservations/deny_cancellation_req/&lt;int:reservation_id>
+#### Description:
+Deny the `Reservation`'s cancellation request with the specified ID in the URL.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
+
+
+### TERMINATE RESERVATION
+
+#### Endpoint:
+localhost:8000/reservations/terminate/&lt;int:reservation_id>/
+#### Description:
+Terminate the `Reservation` with the specified ID in the URL.
+#### Methods:
+PUT, PATCH
+#### Authentication:
+Yes
