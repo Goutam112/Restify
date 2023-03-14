@@ -69,12 +69,12 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
         properties = Property.objects.all()
 
         # FILTERING PROPERTIES DATA
-        country_filter = forms.CharField(required=False).clean(self.request.GET.get('country', None))
+        country_filter = forms.CharField(required=False, initial='').clean(self.request.GET.get('country', None))
         min_price_filter = forms.IntegerField(required=False).clean(self.request.GET.get('minPrice', None))
         max_price_filter = forms.IntegerField(required=False).clean(self.request.GET.get('maxPrice', None))
-        num_guests_filter = forms.IntegerField(required=False).clean(self.request.GET.get('numGuests', None))
+        num_guests_filter = forms.IntegerField(required=False).clean(self.request.GET.get('minGuests', None))
 
-        if country_filter is not None:
+        if country_filter != '':
             properties = properties.filter(country__iexact=country_filter)
         if min_price_filter is not None and max_price_filter is not None and min_price_filter > max_price_filter:
             print("minPrice not lte maxPrice")
@@ -90,25 +90,21 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
                 properties = properties.filter(max_num_guests__gte=int(num_guests_filter))
 
         # ORDERING PROPERTIES DATA
-        num_beds_order = self.request.GET.get('bedsOrder', None)
-        if num_beds_order is not None:
-            if 'asc' in num_beds_order.lower():
-                num_beds_order = 'num_beds'
-            if 'desc' in num_beds_order.lower():
-                num_beds_order = '-num_beds'
-            else:
-                print('bedsOrder: (ASC/DESC) only')
-            properties.order_by(num_beds_order)
-        price_order = self.request.GET.get('priceOrder', None)
-        if price_order is not None:
-            if 'asc' in price_order.lower():
-                price_order = 'nightly_price'
-            elif 'desc' in price_order.lower():
-                price_order = '-nightly_price'
-            else:
-                print("priceOrder: (ASC/DESC) only")
-            properties.order_by(price_order)
+        order_list = [('priceasc', 'priceasc'), ('pricedesc', 'pricedesc'), ('bedsasc', 'bedsasc'), ('bedsdesc', 'bedsdesc')]
+        order_by = forms.ChoiceField(required=False, initial='', choices=order_list).clean(self.request.GET.get('orderBy', None).lower())
 
+        if order_by != '':
+            if order_by == order_list[0][0]:
+                properties = properties.order_by('nightly_price')
+            elif order_by == order_list[1][0]:
+                properties = properties.order_by('-nightly_price')
+            elif order_by == order_list[2][0]:
+                properties = properties.order_by('num_beds')
+            elif order_by == order_list[3][0]:
+                properties = properties.order_by('-num_beds')
+            else:
+                print("Invalid orderBy choice: Choose [ priceASC / priceDESC / bedsASC / bedDESC ]")
+        
         return properties
 
 
