@@ -77,7 +77,7 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
         if country_filter != '':
             properties = properties.filter(country__iexact=country_filter)
         if min_price_filter is not None and max_price_filter is not None and min_price_filter > max_price_filter:
-            print("minPrice not lte maxPrice")
+            raise ValidationError("minPrice not lte maxPrice", code=400)
         else:
             if min_price_filter is not None:
                 properties = properties.filter(nightly_price__gte=min_price_filter)
@@ -85,13 +85,13 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
                 properties = properties.filter(nightly_price__lte=int(max_price_filter))
         if num_guests_filter is not None:
             if num_guests_filter <= 0:
-                print("minGuests has to be greater than 0")
+                raise ValidationError("minGuests has to be greater than 0", code=400)
             else:
                 properties = properties.filter(max_num_guests__gte=int(num_guests_filter))
 
         # ORDERING PROPERTIES DATA
         order_list = [('priceasc', 'priceasc'), ('pricedesc', 'pricedesc'), ('bedsasc', 'bedsasc'), ('bedsdesc', 'bedsdesc')]
-        order_by = forms.ChoiceField(required=False, initial='', choices=order_list).clean(self.request.GET.get('orderBy', None).lower())
+        order_by = forms.ChoiceField(required=False, initial='', choices=order_list).clean(self.request.GET.get('orderBy', '').lower())
 
         if order_by != '':
             if order_by == order_list[0][0]:
@@ -103,7 +103,7 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
             elif order_by == order_list[3][0]:
                 properties = properties.order_by('-num_beds')
             else:
-                print("Invalid orderBy choice: Choose [ priceASC / priceDESC / bedsASC / bedDESC ]")
+                raise ValidationError("Invalid orderBy choice: Choose [ priceASC / priceDESC / bedsASC / bedDESC ]", code=400)
         
         return properties
 
