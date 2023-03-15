@@ -413,3 +413,56 @@ Terminate the `Reservation` with the specified ID in the URL.
 PUT, PATCH
 #### Authentication:
 Yes
+
+
+## Notifications
+
+### VIEW LIST OF NOTIFICATIONS
+#### Endpoint:
+localhost:8000/notifications/list/
+#### Description:
+View list of notifications you have received
+#### Methods:
+GET
+#### Authentication:
+Yes
+
+### READ NOTIFICATION
+#### Endpoint:
+localhost:8000/notifications/<int:notification_id>
+#### Description:
+View a specific notification with id: `notification_id`
+#### Methods:
+GET
+#### Authentication:
+Yes
+
+### CLEAR NOTIFICATION
+#### Endpoint: 
+localhost:8000/notifications/clear/<int:notification_id>/
+#### Description:
+Clear (Delete) a specific notification with id: `notification_id`
+#### Methods:
+DELETE
+#### Authentication:
+Yes
+
+### RECEIVING NOTIFICATION
+#### Endpoint:
+localhost:8000/notifications/create/
+#### Description:
+Generate a notification that can either be one of `[ host_new_reservation, host_cancellation_request, host_property_new_comment, guest_approved_reservation, guest_cancellation_request ]`
+#### Methods:
+GET, POST
+#### Authentication:
+Yes
+#### Staff:
+Yes
+#### Payload: 
+```json
+{
+    "content": "",
+    "created_when": "2023-03-10",
+    "receiver": ""
+}
+```
