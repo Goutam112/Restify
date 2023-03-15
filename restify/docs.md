@@ -284,7 +284,7 @@ GET
 #### Authentication:
 No
 #### FILTERING & ORDERING:
-List of all properties can be filtered and sorted by using GET parameters. Endpoint: localhost:8000/properties/retrieve/all/?<filter/order>=<param>&<filter/order>=<param>
+List of all properties can be filtered and sorted by using GET parameters. Endpoint: localhost:8000/properties/retrieve/all/?{filter/order}={param}&{filter/order}={param}
 
 Filtering parameters: country, minPrice, maxPrice, minGuests
 Ordering parameter: orderBy (choices: `[ priceASC, priceDESC, bedsASC, bedsDESC ]`)
