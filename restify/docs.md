@@ -286,10 +286,10 @@ No
 #### FILTERING & ORDERING:
 List of all properties can be filtered and sorted by using GET parameters. Endpoint: localhost:8000/properties/retrieve/all/?{filter/order}={param}&{filter/order}={param}
 
-Filtering parameters: country, minPrice, maxPrice, minGuests
+Filtering parameters: country, minPrice, maxPrice, minGuests \
 Ordering parameter: orderBy (choices: `[ priceASC, priceDESC, bedsASC, bedsDESC ]`)
 
-Eg: `localhost:8000/properties/retrieve/all/?country=Canada&minGuests=10&minPrice=550&maxPrice=675&orderBy=priceASC` gives all properties in Canada with space for at least 10 guests and nightly price between $550 and $675, sorted based on price lowest-highest
+Usage example: `localhost:8000/properties/retrieve/all/?country=Canada&minGuests=10&minPrice=550&maxPrice=675&orderBy=priceASC` gives all properties in Canada with space for at least 10 guests and nightly price between $550 and $675, sorted based on price lowest-highest
 
 
 
