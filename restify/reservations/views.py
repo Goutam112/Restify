@@ -110,7 +110,7 @@ class RequestReservationCancelView(ReservationActionView):
 
 
 class DenyReservationCancellationRequestView(ReservationActionView):
-    new_status = Status.PENDING
+    new_status = Status.APPROVED
 
     allowed_statuses = [Status.CANCELLATION_REQUESTED]
 
