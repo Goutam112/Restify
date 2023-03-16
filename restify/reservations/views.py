@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 from notifications.models import Notification
@@ -160,8 +161,7 @@ class RetrieveReservationsView(generics.ListAPIView):
             if requested_status.lower() in statuses:
                 filtered_reservations = filtered_reservations.filter(status__iexact=requested_status)
             else:
-                print(
-                    "You provided a status filter with an unknown status. Check that your status is supported by the database.")
+                raise ValidationError("The filtered status doesn't exist.")
 
         reservation_type = self.request.GET.get("type", None)
 
@@ -175,6 +175,7 @@ class RetrieveReservationsView(generics.ListAPIView):
             filtered_reservations = filtered_reservations.filter(reserver=user)
         else:
             # For safety, don't show all reservations if the params get bypassed
-            filtered_reservations = filtered_reservations.filter(property__owner=user)
+            # filtered_reservations = filtered_reservations.filter(property__owner=user)
+            raise ValidationError("You must specify to filter for incoming or outgoing reservation requests.")
 
         return filtered_reservations

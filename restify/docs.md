@@ -188,7 +188,7 @@ localhost:8000/properties/update/&lt;int:pk>/
 Update a `Property` with the given ID, with its parameters set in the JSON payload.
 Returns the `Property` with the given ID on a GET request to allow for access to its current values.
 #### Methods:
-GET, PUT, PATCH
+GET, PUT
 #### Authentication:
 Yes
 #### Payload:
@@ -363,7 +363,7 @@ PUT, PATCH
 Yes
 
 
-### Complete RESERVATION REQUEST
+### COMPLETE RESERVATION REQUEST
 
 #### Endpoint:
 localhost:8000/reservations/deny/&lt;int:reservation_id>/

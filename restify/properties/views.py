@@ -90,8 +90,10 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
                 properties = properties.filter(max_num_guests__gte=int(num_guests_filter))
 
         # ORDERING PROPERTIES DATA
-        order_list = [('priceasc', 'priceasc'), ('pricedesc', 'pricedesc'), ('bedsasc', 'bedsasc'), ('bedsdesc', 'bedsdesc')]
-        order_by = forms.ChoiceField(required=False, initial='', choices=order_list).clean(self.request.GET.get('orderBy', '').lower())
+        order_list = [('priceasc', 'priceasc'), ('pricedesc', 'pricedesc'), ('bedsasc', 'bedsasc'),
+                      ('bedsdesc', 'bedsdesc')]
+        order_by = forms.ChoiceField(required=False, initial='', choices=order_list).clean(
+            self.request.GET.get('orderBy', '').lower())
 
         if order_by != '':
             if order_by == order_list[0][0]:
@@ -103,10 +105,10 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
             elif order_by == order_list[3][0]:
                 properties = properties.order_by('-num_beds')
             else:
-                raise ValidationError("Invalid orderBy choice: Choose [ priceASC / priceDESC / bedsASC / bedDESC ]", code=400)
-        
-        return properties
+                raise ValidationError("Invalid orderBy choice: Choose [ priceASC / priceDESC / bedsASC / bedDESC ]",
+                                      code=400)
 
+        return properties
 
 
 class RetrieveUserPropertiesView(PropertyView, generics.ListAPIView):

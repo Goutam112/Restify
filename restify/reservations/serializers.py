@@ -1,20 +1,10 @@
 import datetime
 
-import rest_framework
 from django.db.models import Q
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import CharField
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-
-import reservations.models
-from reservations.models import Reservation
-from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
-import reservations.models
 from reservations.models import Reservation, Status
 
 
@@ -24,19 +14,19 @@ class ReservationSerializer(serializers.ModelSerializer):
         exclude = ['reserver']
 
     def create(self, validated_data):
-        validated_data.update({'reserver': self.context['request'].user})
+        validated_data.update({'reserver': self.context.get('request').user})
         return super().create(validated_data)
 
     def validate(self, attrs):
         current_user = self.context.get('request').user
 
-        if current_user == attrs["property"].owner:
+        if current_user == attrs.get("property").owner:
             raise serializers.ValidationError(detail="You cannot reserve your own property.")
 
-        start_date = attrs["start_date"]
-        end_date = attrs["end_date"]
+        start_date = attrs.get("start_date")
+        end_date = attrs.get("end_date")
 
-        if attrs["start_date"] > attrs["end_date"]:
+        if attrs.get("start_date") > attrs.get("end_date"):
             raise ValidationError("Start date cannot be later than the end date.")
 
         # Check if any reservations on the same Property have any overlapping dates
@@ -171,6 +161,16 @@ class ReservationCancellationRequestSerializer(ReservationActionSerializer):
     def set_status_error_string(self):
         return f"You tried to request a cancellation for a non-pending or non-approved reservation. The " \
                f"reservation currently has status {self.get_reservation_to_update().status}."
+
+    def update(self, instance, validated_data):
+        reservation = instance
+        if reservation.status == Status.PENDING:
+            status = Status.CANCELLED
+        else:  # reservation.status == Status.APPROVED:
+            status = Status.CANCELLATION_REQUESTED
+        reservation.status = status
+        reservation.save()
+        return reservation
 
 
 class ReservationDenyCancellationRequestSerializer(ReservationActionSerializer):

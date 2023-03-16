@@ -18,7 +18,7 @@ class Property(models.Model):
     Properties have a Many-To-Many relationship:
     - Each Property has a set of Amenity objects
     """
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
     name = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField()
     address = models.CharField(max_length=255)

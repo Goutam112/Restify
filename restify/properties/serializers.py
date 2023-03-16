@@ -95,8 +95,7 @@ class PropertySerializer(CreatePropertySerializer):
         read_only_fields = ["id"]
 
     def validate(self, attrs):
-
-        if self.context.get("current_user") != attrs["owner"]:
+        if self.context.get("current_user") != attrs.get("owner"):
             raise ValidationError("You must be the owner of this property in order to modify it.")
 
         return super().validate(attrs)
