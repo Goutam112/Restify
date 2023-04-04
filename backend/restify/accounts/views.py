@@ -19,6 +19,14 @@ class ViewProfile(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class GetLoggedInUser(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
 class EditProfile(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
