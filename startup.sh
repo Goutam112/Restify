@@ -31,4 +31,6 @@ pip install djangorestframework-simplejwt;
 
 pip install django-apscheduler;
 
+pip install django-cors-headers;
+
 
