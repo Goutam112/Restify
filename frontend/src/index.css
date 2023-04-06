@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
+    url("../../backend/resources/img/background-home.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: black;
+
+  margin: 125px 0.5rem;
+  align-content: center;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  width: min(1000px, 100vw - 1rem);
+  padding: 2rem 3rem;
+  margin: auto;
+}
+
+@media screen and (max-width: 480px) {
+  main {
+    padding: 2rem 2.5rem;
+  }
+}
