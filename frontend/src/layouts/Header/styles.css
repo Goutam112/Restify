@@ -1,0 +1,30 @@
+nav.navbar {
+  width: 100vw;
+  padding: 5px 100px;
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+a.notification-btn {
+  margin-right: 1rem;
+}
+
+a.notification-btn>svg:hover {
+  fill: #0045b4;
+}
+
+button.avatar-btn>svg:hover {
+  fill: #0045b4;
+}
+
+.dropdown {
+  display: inline;
+}
+
+@media screen and (max-width: 480px) {
+
+  nav.navbar {
+    width: 100vw;
+    padding: 5px 10px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+  }
+}
