@@ -1,0 +1,16 @@
+.notification {
+  padding: 1rem;
+}
+
+.notifications-list-new>.notification {
+  background-color: rgba(223, 238, 253, 0.717);
+}
+
+.notifications-list-new>.notification:hover {
+  background-color: rgba(223, 238, 253, 1);
+}
+
+.paginator-custom {
+  margin-top: 25px;
+  align-items: center;
+}

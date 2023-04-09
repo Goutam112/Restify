@@ -3,10 +3,10 @@ import "./styles.css";
 
 export default function Footer() {
   return (
-    <footer class="fixed-bottom text-center">
-      <div class="text-center text-secondary p-3">
+    <footer className="fixed-bottom text-center">
+      <div className="text-center text-secondary p-3">
         © 2023 Copyright:{" "}
-        <a class="text-secondary" href="/csc309-restify/views/home.html">
+        <a className="text-secondary" href="/">
           Restify.com
         </a>
       </div>

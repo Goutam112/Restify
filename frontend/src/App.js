@@ -5,8 +5,9 @@ import './App.css';
 
 // ####### HAVEN'T MADE THESE PAGES YET #######
 import Home from './pages/Home';
-// import Login from './pages/Login';
-// import Register from './pages/Register'
+import NotificationsPage from './pages/NotificationsPage';
+import Login from './pages/Login';
+import Register from './pages/Register'
 
 function App () {
   return (
@@ -14,8 +15,9 @@ function App () {
       <Routes>
         <Route path='/'>
           <Route index element={ <Home /> } />
-          {/* <Route path='login' element={ <Login /> } />
-          <Route path='register' element={ <Register /> } /> */}
+          <Route path='login' element={ <Login /> } />
+          <Route path='register' element={ <Register /> } />
+          <Route path='notifications' element={ <NotificationsPage /> } />
           <Route path='accounts'>
             {/* <Route path='profile/view/:userID' element={<ViewProfile />} />
             <Route path='profile/edit' element={<EditProfile />} /> */}
