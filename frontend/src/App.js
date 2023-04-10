@@ -1,5 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import CreateProperty from './pages/CreateProperty/CreateProperty';
+import MyRentalUnits from './pages/MyRentalUnits/MyRentalUnits';
+import UpdateProperty from './pages/UpdateProperty/UpdateProperty';
+import MyReservations from './pages/MyReservations/MyReservations';
 // import ViewProfile from './accounts/pages/viewProfile';
 // import EditProfile from './accounts/pages/editProfile';
 
@@ -21,6 +25,14 @@ function App () {
           <Route path='accounts'>
             {/* <Route path='profile/view/:userID' element={<ViewProfile />} />
             <Route path='profile/edit' element={<EditProfile />} /> */}
+          </Route>
+          <Route path='properties'>
+            <Route index element={<MyRentalUnits></MyRentalUnits>}></Route>
+            <Route path='create' element={<CreateProperty />} /> 
+            <Route path='update/:propertyID' element={<UpdateProperty />} />
+          </Route>
+          <Route path='reservations'>
+            <Route path='retrieve/all' element={<MyReservations></MyReservations>}></Route>
           </Route>
         </Route>
       </Routes>
