@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 import properties.models
+from accounts.serializers import UserSerializer
 from properties.models import Property, PriceModifier, PropertyImage, Amenity
 
 
@@ -101,6 +102,7 @@ class CreatePropertySerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(CreatePropertySerializer):
+    owner = UserSerializer()
     class Meta:
         model = Property
         fields = '__all__'
