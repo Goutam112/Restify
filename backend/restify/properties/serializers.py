@@ -33,10 +33,20 @@ class CreatePropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = '__all__'
+        # fields = [field.name for field in model._meta.fields]
+        # fields.append("price_modifiers")
+        # fields.append("amenities")
+        # fields.append("property_images")
 
     def create(self, validated_data):
         # Pop "price_modifiers" from our JSON input so that all PriceModifier fields are removed
         # "price_modifiers" is an array of dictionaries mapping month to price_modifier
+        # print(validated_data)
+        # print(self.initial_data)
+        # price_modifiers = self.initial_data["price_modifiers"]
+        # print(price_modifiers)
+        # print(price_modifiers[0])
+        print("VALIDATED DATA: " + str(validated_data))
         price_modifiers = validated_data.pop("price_modifiers")
         property_images = validated_data.pop("property_images")
         amenities = validated_data.pop("amenities")
@@ -59,12 +69,14 @@ class CreatePropertySerializer(serializers.ModelSerializer):
                 if len(PriceModifier.objects.filter(property=property, month=i)) == 0:
                     PriceModifier.objects.create(property=property, month=i, price_modifier=1.0)
 
+        print("GOT HERE 1")
+
         i = 0
-        for image in property_images:
+        for property_image_dict in property_images:
             # Don't create more than NUM IMAGES images, even if more is supplied
             if i > properties.models.NUM_IMAGES:
                 break
-            PropertyImage.objects.create(property=property, image=image)
+            PropertyImage.objects.create(property=property, image=property_image_dict.get("image"))
             i += 1
 
         # If less than NUM IMAGES was passed in, pad the rest with empty images
@@ -138,8 +150,20 @@ class PropertySerializer(CreatePropertySerializer):
 
         PropertyImage.objects.filter(property=property_to_update).delete()
 
-        for image in property_images:
-            PropertyImage.objects.create(property=property_to_update, image=image)
+        i = 0
+        for property_image_dict in property_images:
+            # Don't create more than NUM IMAGES images, even if more is supplied
+            if i > properties.models.NUM_IMAGES:
+                break
+            PropertyImage.objects.create(property=property_to_update, image=property_image_dict.get("image"))
+            i += 1
+
+        num_images_added = len(PropertyImage.objects.filter(property=property_to_update))
+
+        if num_images_added < properties.models.NUM_IMAGES:
+            diff = properties.models.NUM_IMAGES - num_images_added
+            for _ in range(0, diff):
+                PropertyImage.objects.create(property=property_to_update)
 
         Amenity.objects.filter(properties=property_to_update).delete()
 
