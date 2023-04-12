@@ -10,7 +10,19 @@
   background-color: rgba(223, 238, 253, 1);
 }
 
+main#notificationsPage {
+  width: min(750px, 100vw - 1rem);
+  padding: 2rem 3rem;
+  margin: auto;
+}
+
 .paginator-custom {
   margin-top: 25px;
   align-items: center;
+}
+
+@media screen and (max-width: 480px) {
+  main#notificationsPage {
+    padding: 0.75rem 1.25rem;
+  }
 }

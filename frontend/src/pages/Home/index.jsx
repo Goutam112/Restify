@@ -48,12 +48,12 @@ function Home() {
         setPropertyList && setPropertyList(data.results);
       })
       .catch((err) => console.error("Fetch properties ERROR:", err));
-  }, [queryParams, setPropertyList]);
+  }, [queryParams]);
 
   return (
     <>
       <Header />
-      <main className="card d-block">
+      <main className="card d-block" id="landingPage">
         <h1 className="text-center mb-3 fw-bold">Welcome to Restify!</h1>
         <Searchbar />
         <div className="dropdown d-flex justify-content-between">

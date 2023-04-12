@@ -2,6 +2,7 @@ import { React } from "react";
 import "./styles.css";
 
 export default function PropertyCard(props) {
+  console.log("props", props);
   const {
     name,
     property_images,
@@ -17,7 +18,7 @@ export default function PropertyCard(props) {
     city && state && country ? `${city}, ${state}, ${country}` : "";
 
   const details = amenities.length > 0 ? `${amenities[0]}` : "";
-  const property_image = property_images ? property_images[0] : "";
+  const property_image = property_images ? property_images[0].image : "";
 
   return (
     <div className="card property">
