@@ -2,16 +2,19 @@ from rest_framework import serializers
 
 from accounts.models import User
 from accounts.serializers import UserSerializer
+from comments.models import RatingInfo
 from comments.models import Review, Reply
 from properties.models import Property
 from reservations.models import Reservation, Status
 
 
 class UserReviewCreationSerializer(serializers.ModelSerializer):
+    commenter = UserSerializer(required=False)
+
     class Meta:
         model = Review
-        fields = ['id', 'content', 'rating']
-        extra_kwargs = {'id': {'read_only': True}}
+        fields = ['id', 'content', 'rating', 'post_datetime', 'commenter']
+        extra_kwargs = {'id': {'read_only': True}, 'commenter': {'read_only': True}, 'post_datetime': {'read_only': True}}
 
     def validate(self, attrs):
         user_id = self.context.get('subject_id')
@@ -24,11 +27,12 @@ class UserReviewCreationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'subject_id': 'Invalid user provided to review.'})
 
         commenter_hosted_subject = Reservation.objects.filter(reserver=user_id,
+                                                              status=Status.COMPLETED,
                                                               property__owner=commenter)
 
         if not commenter_hosted_subject.exists():
             raise serializers.ValidationError(
-                {'commenter': 'You cannot create reviews on users who have not stayed at any of your properties.'}
+                {'commenter': 'You cannot create reviews on users who have not completed stays at any of your properties.'}
             )
 
         # NOTE: hosts can leave as many reviews as they'd like on users
@@ -51,11 +55,16 @@ class UserReviewSerializer(serializers.ModelSerializer):
 
 
 class PropertyReviewCreationSerializer(serializers.ModelSerializer):
+    commenter = UserSerializer(required=False)
+    replies = []
+
     class Meta:
         model = Review
-        fields = ['id', 'content', 'post_datetime', 'rating']
+        fields = ['id', 'content', 'post_datetime', 'rating', 'commenter', 'replies']
         extra_kwargs = {
-            'id': {'read_only': True}
+            'id': {'read_only': True},
+            'commenter': {'read_only': True},
+            'replies': {'read_only': True}
         }
 
     def validate(self, attrs):
@@ -105,11 +114,15 @@ class PropertyReviewCreationSerializer(serializers.ModelSerializer):
 
 
 class PropertyReplyCreationSerializer(serializers.ModelSerializer):
+    commenter = UserSerializer(required=False)
+
     class Meta:
         model = Reply
-        fields = ['id', 'content', 'post_datetime', 'reply_to']
+        fields = ['id', 'content', 'post_datetime', 'reply_to', 'commenter']
         extra_kwargs = {
-            'id': {'read_only': True}
+            'id': {'read_only': True},
+            'commenter': {'read_only': True},
+            'reply_to': {'write_only': True}
         }
 
     def validate(self, attrs):
@@ -192,3 +205,8 @@ class PropertyThreadSerializer(serializers.ModelSerializer):
         response = super().to_representation(instance)
         response['replies'] = sorted(response['replies'], key=lambda reply: reply['post_datetime'])
         return response
+
+
+class PropertyRatingInfoSerializer(serializers.Serializer):
+    avg_rating = serializers.FloatField()
+    num_ratings = serializers.IntegerField()

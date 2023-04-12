@@ -24,3 +24,9 @@ class Review(Comment):
 
 class Reply(Comment):
     reply_to = models.ForeignKey(to=Review, on_delete=models.CASCADE, related_name='replies')
+
+
+class RatingInfo():
+    def __init__(self, avg_rating, num_ratings):
+        self.avg_rating = avg_rating
+        self.num_ratings = num_ratings
