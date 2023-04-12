@@ -53,7 +53,7 @@ export default function Register() {
   return (
     <>
       <Header />
-      <main className="card d-block">
+      <main id="register-card" className="card d-block">
         <h1 className="text-center mb-3">Sign up</h1>
         <form onSubmit={handleRegister}>
           <div className="name-section row g-2">

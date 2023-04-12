@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <>
       <Header />
-      <main className="card d-block">
+      <main id="login-card" className="card d-block">
         <h1 className="text-center mb-3">Log in</h1>
         <form onSubmit={handleLogin}>
           <div className="form-floating">

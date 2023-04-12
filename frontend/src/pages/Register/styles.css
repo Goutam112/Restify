@@ -13,7 +13,7 @@ body {
   font-weight: 600;
 }
 
-main.card {
+main.card#register-card {
   width: min(600px, 100vw - 1rem);
 }
 
