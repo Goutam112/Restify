@@ -9,8 +9,8 @@ from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation, Status
 
 
+
 class ReservationSerializer(serializers.ModelSerializer):
-    property = PropertySerializerWithUserSerializer()
     class Meta:
         model = Reservation
         exclude = ['reserver']
@@ -51,6 +51,9 @@ class ReservationSerializer(serializers.ModelSerializer):
             raise ValidationError(detail="Your reservation date range overlaps with an existing reservation.")
 
         return super().validate(attrs)
+
+class ReservationSerializerWithPropertySerializer(ReservationSerializer):
+    property = PropertySerializerWithUserSerializer()
 
 
 class ReservationActionSerializer(serializers.ModelSerializer):

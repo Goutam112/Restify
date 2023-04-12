@@ -8,9 +8,10 @@ from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation
 from reservations.models import Status
 from reservations.paginators import RetrieveReservationsPaginator
-from reservations.serializers import ReservationSerializer, ReservationApprovalSerializer, ReservationDenySerializer, \
+from reservations.serializers import ReservationSerializerWithPropertySerializer, ReservationApprovalSerializer, \
+    ReservationDenySerializer, \
     ReservationCompleteSerializer, ReservationCancellationRequestSerializer, ReservationCancelSerializer, \
-    ReservationTerminateSerializer, ReservationDenyCancellationRequestSerializer
+    ReservationTerminateSerializer, ReservationDenyCancellationRequestSerializer, ReservationSerializer
 
 
 # Create your views here.
@@ -35,7 +36,7 @@ class UpdateReservationView(generics.RetrieveUpdateAPIView):
 
     Not likely to be used.
     """
-    serializer_class = ReservationSerializer
+    serializer_class = ReservationSerializerWithPropertySerializer
 
     def get_object(self):
         return get_object_or_404(Reservation, pk=self.kwargs["reservation_id"])
@@ -143,11 +144,11 @@ class TerminateReservationView(ReservationActionView):
 
 
 class DeleteReservationView(generics.DestroyAPIView):
-    serializer_class = ReservationSerializer
+    serializer_class = ReservationSerializerWithPropertySerializer
 
 
 class RetrieveReservationsView(generics.ListAPIView):
-    serializer_class = ReservationSerializer
+    serializer_class = ReservationSerializerWithPropertySerializer
     property = PropertySerializerWithUserSerializer()
     pagination_class = RetrieveReservationsPaginator
 
