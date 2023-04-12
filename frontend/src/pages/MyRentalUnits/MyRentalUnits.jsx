@@ -28,9 +28,9 @@ headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`)
 //     return <MainBody></MainBody>;
 // }
 
-async function getRentalUnitsFromBackend() {
+async function getRentalUnitsFromBackend(page, setNumPages) {
     try {
-        let response = await fetch("http://localhost:8000/properties/retrieve/user/", {
+        let response = await fetch(`http://localhost:8000/properties/retrieve/user/?page=${page}`, {
             method: "GET",
             headers: headers,
         });
@@ -39,6 +39,8 @@ async function getRentalUnitsFromBackend() {
             console.error("Problem fetching user rental properties");
         }
         let json = await response.json();
+
+        setNumPages(Math.ceil(json.count / 3));
 
         return json.results;
     } catch (error) {
@@ -141,23 +143,52 @@ function CreatePropertyRedirectButton() {
     );
 }
 
+function PageNumberElement({pageNum, setPage}) {
+    return (
+        <li class="page-item">
+            <button onClick={() => {
+                setPage(pageNum);
+            }} class="page-link" href="#">{pageNum}</button>
+        </li>
+    );
+}
+
+function PageNumber({numPages, setPage}) {
+    let pageNumberComponents = [];
+
+    console.log("Page number:")
+    console.log(numPages);
+
+    for (let i = 0; i < numPages; i++) {
+        pageNumberComponents.push(<PageNumberElement setPage={setPage} key={i + 1} pageNum={i + 1}></PageNumberElement>)
+    }
+
+    return (
+        <ul class="pagination justify-content-center">
+            {pageNumberComponents}
+        </ul>
+    );
+}
 
 export default function MyRentalUnits() {
 
     const [rentalUnits, setRentalUnits] = useState([]);
     const [rows, setRows] = useState([]);
 
+    const [page, setPage] = useState(1);
+    const [numPages, setNumPages] = useState(1);
+
     // let rows = [];
 
 
     useEffect(() => {
-        getRentalUnitsFromBackend().then((data) => {
+        getRentalUnitsFromBackend(page, setNumPages).then((data) => {
             // console.log(`Data: ${JSON.stringify(data)}`);
-            setRentalUnits(data)
+            setRentalUnits(data);
             // console.log(`Rental units: ${rentalUnits}`)
         });
 
-        }, []);
+        }, [page]);
 
 
     useEffect(() => {
@@ -211,6 +242,7 @@ export default function MyRentalUnits() {
                                     </MyRentalUnitsContext.Provider>
                                 </tbody>
                             </table>
+                            <PageNumber numPages={numPages} setPage={setPage}></PageNumber>
                         </div>
                     </div>
                 </main>
