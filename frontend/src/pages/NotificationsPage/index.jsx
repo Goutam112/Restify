@@ -21,7 +21,9 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     fetch(`http://localhost:8000/notifications/list/?page=${page}`, {
-      headers: { Authorization: `Bearer ${localStorage.token}` },
+      headers: {
+        Authorization: `Bearer ${localStorage.token ? localStorage.token : ""}`,
+      },
     })
       .then((res) => {
         return res.json();
@@ -47,7 +49,7 @@ export default function NotificationsPage() {
           <p>
             Page: <b>{page}</b>
           </p>
-          <div className="btn-group" role="group" aria-label="Basic example">
+          <div className="btn-group" role="group">
             <button
               id="notificationPrev"
               onClick={prevPage}

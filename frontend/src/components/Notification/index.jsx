@@ -22,7 +22,11 @@ export default function Notification(props) {
       `http://localhost:8000/notifications/clear/${props.notification.id}`,
       {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.token}` },
+        headers: {
+          Authorization: `Bearer ${
+            localStorage.token ? localStorage.token : ""
+          }`,
+        },
       }
     )
       .then((res) => window.location.replace("/notifications"))
