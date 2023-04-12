@@ -1,0 +1,33 @@
+.card.property {
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.property img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.property h5.card-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.property p.card-text {
+  font-size: 14px;
+}
+
+.property p.property-stats {
+  color: rgb(128, 128, 128);
+}
+
+.property a.btn {
+  font-size: 12px;
+}
+
+@media screen and (max-width: 480px) {
+  .card.property {
+    width: 300px;
+    margin-bottom: 20px;
+  }
+}

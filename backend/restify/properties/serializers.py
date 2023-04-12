@@ -3,8 +3,10 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
+import properties
 import properties.models
-from properties.models import Property, PriceModifier, PropertyImage, Amenity
+from accounts.serializers import UserSerializer
+from properties.models import Property, PriceModifier, PropertyImage, Amenity, MonthAvailability
 
 
 class PriceModifierSerializer(serializers.ModelSerializer):
@@ -25,21 +27,39 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         exclude = ['property']
 
 
+class MonthAvailabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MonthAvailability
+        exclude = ['property']
+
+
 class CreatePropertySerializer(serializers.ModelSerializer):
     price_modifiers = PriceModifierSerializer(many=True, required=False)
     property_images = PropertyImageSerializer(many=True, required=False)
     amenities = AmenitySerializer(many=True, required=False)
+    month_availabilities = MonthAvailabilitySerializer(many=True, required=False)
 
     class Meta:
         model = Property
         fields = '__all__'
+        # fields = [field.name for field in model._meta.fields]
+        # fields.append("price_modifiers")
+        # fields.append("amenities")
+        # fields.append("property_images")
 
     def create(self, validated_data):
         # Pop "price_modifiers" from our JSON input so that all PriceModifier fields are removed
         # "price_modifiers" is an array of dictionaries mapping month to price_modifier
+        # print(validated_data)
+        # print(self.initial_data)
+        # price_modifiers = self.initial_data["price_modifiers"]
+        # print(price_modifiers)
+        # print(price_modifiers[0])
+        print("VALIDATED DATA: " + str(validated_data))
         price_modifiers = validated_data.pop("price_modifiers")
         property_images = validated_data.pop("property_images")
         amenities = validated_data.pop("amenities")
+        month_availabilities = validated_data.pop("month_availabilities")
 
         # Because we popped "price_modifiers", only fields related to Property are left in validated_data
         property = Property.objects.create(**validated_data)
@@ -59,12 +79,14 @@ class CreatePropertySerializer(serializers.ModelSerializer):
                 if len(PriceModifier.objects.filter(property=property, month=i)) == 0:
                     PriceModifier.objects.create(property=property, month=i, price_modifier=1.0)
 
+        print("GOT HERE 1")
+
         i = 0
-        for image in property_images:
+        for property_image_dict in property_images:
             # Don't create more than NUM IMAGES images, even if more is supplied
             if i > properties.models.NUM_IMAGES:
                 break
-            PropertyImage.objects.create(property=property, image=image)
+            PropertyImage.objects.create(property=property, image=property_image_dict.get("image"))
             i += 1
 
         # If less than NUM IMAGES was passed in, pad the rest with empty images
@@ -85,8 +107,17 @@ class CreatePropertySerializer(serializers.ModelSerializer):
                 added_amenity = Amenity.objects.create(name=amenity_name)
                 added_amenity.properties.add(property)
 
-        return property
+        for month_availability in month_availabilities:
+            MonthAvailability.objects.create(property=property, month=month_availability["month"],
+                                             is_available=month_availability["is_available"])
 
+        if len(month_availabilities) < 12:
+            for i in range(1, 13):
+                if len(MonthAvailability.objects.filter(property=property, month=i)) == 0:
+                    MonthAvailability.objects.create(property=property, month=i, is_available=True)
+
+        return property
+    
 
 class PropertySerializer(CreatePropertySerializer):
     class Meta:
@@ -127,6 +158,9 @@ class PropertySerializer(CreatePropertySerializer):
         price_modifiers = validated_data.pop("price_modifiers")
         property_images = validated_data.pop("property_images")
         amenities = validated_data.pop("amenities")
+        month_availabilities = validated_data.pop("month_availabilities")
+
+        # print(month_availabilities)
 
         self.update_all_direct_property_fields(property_to_update, **validated_data)
 
@@ -138,8 +172,20 @@ class PropertySerializer(CreatePropertySerializer):
 
         PropertyImage.objects.filter(property=property_to_update).delete()
 
-        for image in property_images:
-            PropertyImage.objects.create(property=property_to_update, image=image)
+        i = 0
+        for property_image_dict in property_images:
+            # Don't create more than NUM IMAGES images, even if more is supplied
+            if i > properties.models.NUM_IMAGES:
+                break
+            PropertyImage.objects.create(property=property_to_update, image=property_image_dict.get("image"))
+            i += 1
+
+        num_images_added = len(PropertyImage.objects.filter(property=property_to_update))
+
+        if num_images_added < properties.models.NUM_IMAGES:
+            diff = properties.models.NUM_IMAGES - num_images_added
+            for _ in range(0, diff):
+                PropertyImage.objects.create(property=property_to_update)
 
         Amenity.objects.filter(properties=property_to_update).delete()
 
@@ -152,6 +198,23 @@ class PropertySerializer(CreatePropertySerializer):
                 added_amenity = Amenity.objects.create(name=amenity_name)
                 added_amenity.properties.add(property_to_update)
 
+        MonthAvailability.objects.filter(property=property_to_update).delete()
+
+        for month_availability in month_availabilities:
+            MonthAvailability.objects.create(property=property_to_update, month=month_availability["month"],
+                                             is_available=month_availability["is_available"])
+
+        print("Created month availabilities")
+
+        if len(month_availabilities) < 12:
+            for i in range(1, 13):
+                if len(MonthAvailability.objects.filter(property=property_to_update, month=i)) == 0:
+                    MonthAvailability.objects.create(property=property_to_update, month=i, is_available=True)
+
         property_to_update.save()
 
         return property_to_update
+
+
+class PropertySerializerWithUserSerializer(PropertySerializer):
+    owner = UserSerializer()

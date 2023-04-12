@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
+    url("../../../../backend/resources/img/background-login.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#responseErrorMessage {
+  text-align: center;
+  color: rgb(245, 74, 74);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+main.card {
+  width: min(600px, 100vw - 1rem);
+}
+
+input#inputEmail {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+input#inputPassword {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}

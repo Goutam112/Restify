@@ -1,3 +1,8 @@
+import json
+import urllib
+
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
@@ -6,7 +11,7 @@ from django import forms
 
 from accounts.models import User
 from properties.models import Property
-from properties.serializers import CreatePropertySerializer, PropertySerializer
+from properties.serializers import CreatePropertySerializer, PropertySerializerWithUserSerializer, PropertySerializer
 from properties.paginators import RetrievePropertiesPaginator
 
 
@@ -17,7 +22,7 @@ class PropertyView(generics.GenericAPIView):
     """
     An abstract class meant for views that work with one single property.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -35,13 +40,96 @@ class PropertyView(generics.GenericAPIView):
 class CreatePropertyView(PropertyView, generics.CreateAPIView):
     serializer_class = CreatePropertySerializer
 
+    def create(self, request, *args, **kwargs):
+
+        data = request.data.dict()
+
+        # data["property_images"] = request.data.getlist("property_images")
+        data["property_images"] = [{"image": img} for img in request.data.getlist("property_images")]
+        print(data["property_images"])
+        property_imgs = []
+        for string in data["property_images"]:
+            if not string == "undefined" and not string == "null":
+                property_imgs.append(string)
+
+        data["property_images"] = property_imgs
+
+        data["price_modifiers"] = json.loads(data["price_modifiers"])
+
+        data["amenities"] = json.loads(data["amenities"])
+
+        data["month_availabilities"] = json.loads(data["month_availabilities"])
+
+        serializer = self.get_serializer(data=data)
+        print("SERIALIZER MADE")
+        # print(serializer.initial_data)
+        serializer.is_valid(raise_exception=True)
+        print("SERIALIZER VALIDATED")
+
+        self.perform_create(serializer)
+        print("PERFORM CREATE")
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def create(self, request, *args, **kwargs):
+    # request.data._mutable = True
+    # print(f"REQUEST DATA: {request.data}")
+    # print("")
+    # print(request.data["price_modifiers"])
+    # print(type(request.data["price_modifiers"]))
+    # print("")
+    # print(request.data["price_modifiers"][0])
+    # request.data["price_modifiers"] = json.loads(request.data["price_modifiers"])
+    # print("")
+    # assert type(request.data["price_modifiers"]) != type(str)
+    # print(request.data["price_modifiers"])
+    # return super().create(self, request, args, kwargs)
+    # return super().create(self, request, *args, **kwargs)
+
 
 class UpdatePropertyView(PropertyView, generics.RetrieveUpdateAPIView):
     serializer_class = PropertySerializer
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        data = request.data.dict()
+
+        # data["property_images"] = request.data.getlist("property_images")
+        data["property_images"] = [{"image": img} for img in request.data.getlist("property_images")]
+        print(data["property_images"])
+        property_imgs = []
+        for string in data["property_images"]:
+            if not string == "undefined" and not string == "null":
+                property_imgs.append(string)
+
+        data["property_images"] = property_imgs
+
+        data["price_modifiers"] = json.loads(data["price_modifiers"])
+
+        data["amenities"] = json.loads(data["amenities"])
+
+        print(data["month_availabilities"])
+
+        data["month_availabilities"] = json.loads(data["month_availabilities"])
+
+        print(data["month_availabilities"])
+
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
 
 class DeletePropertyView(PropertyView, generics.DestroyAPIView):
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
 
     def destroy(self, request, *args, **kwargs):
         property = self.get_object()
@@ -53,7 +141,7 @@ class DeletePropertyView(PropertyView, generics.DestroyAPIView):
 
 
 class RetrievePropertyView(PropertyView, generics.RetrieveAPIView):
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     permission_classes = []  # Doesn't require login to access this view
 
 
@@ -61,7 +149,7 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
     """
     Retrieve all properties.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     pagination_class = RetrievePropertiesPaginator
     permission_classes = []  # Doesn't require login to access this view
 
@@ -115,7 +203,7 @@ class RetrieveUserPropertiesView(PropertyView, generics.ListAPIView):
     """
     Retrieve all properties that belong to the requested user.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     pagination_class = RetrievePropertiesPaginator
 
     def get_queryset(self):

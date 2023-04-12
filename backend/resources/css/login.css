@@ -8,6 +8,7 @@ body {
 
 main.card {
     width: min(600px, 100vw - 1rem);
+    margin-top: 25vh;
 }
 
 input#inputEmail {

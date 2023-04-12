@@ -2,7 +2,9 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
+from accounts.serializers import UserSerializer
 from notifications.models import Notification
+from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation
 from reservations.models import Status
 from reservations.paginators import RetrieveReservationsPaginator
@@ -146,6 +148,7 @@ class DeleteReservationView(generics.DestroyAPIView):
 
 class RetrieveReservationsView(generics.ListAPIView):
     serializer_class = ReservationSerializer
+    property = PropertySerializerWithUserSerializer()
     pagination_class = RetrieveReservationsPaginator
 
     def get_queryset(self):
@@ -156,7 +159,7 @@ class RetrieveReservationsView(generics.ListAPIView):
         filtered_reservations = Reservation.objects.all()
 
         if requested_status is not None:
-            statuses = [Status.choices[i][1].lower() for i in range(0, len(Status.choices))]
+            statuses = [Status.choices[i][0].lower() for i in range(0, len(Status.choices))]
 
             if requested_status.lower() in statuses:
                 filtered_reservations = filtered_reservations.filter(status__iexact=requested_status)

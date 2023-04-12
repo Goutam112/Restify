@@ -1,10 +1,10 @@
 from django.conf import settings
 from django.db import models
 
-
 # Create your models here.
 
 NUM_IMAGES = 6
+
 
 class Property(models.Model):
     """
@@ -32,6 +32,12 @@ class Property(models.Model):
 
     def __str__(self):
         return f"{self.pk} | {self.name} owned by {str(self.owner)}"
+
+
+class MonthAvailability(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="month_availabilities")
+    month = models.PositiveIntegerField()
+    is_available = models.BooleanField(default=True)
 
 
 class PriceModifier(models.Model):

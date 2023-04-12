@@ -1,0 +1,143 @@
+body {
+    background: linear-gradient(rgba(128, 128, 128, 0), rgba(64, 64, 64, 0.6)),
+        url("../assets/background-home.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: black;
+
+    margin: 125px 0.5rem;
+    align-content: center;
+
+    flex-direction: column;
+    align-items: center;
+}
+
+nav.navbar {
+    width: 100vw;
+    padding: 5px 100px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+main {
+    width: min(1000px, 100vw - 1rem);
+    padding: 2rem 3rem;
+    margin: auto;
+}
+
+footer {
+    width: 100vw;
+    background-color: rgba(256, 256, 256);
+    border-top: 1px solid rgb(220, 220, 220);
+}
+
+a.notification-btn {
+    margin-right: 1rem;
+}
+
+a.notification-btn>svg:hover {
+    fill: #0045b4;
+}
+
+button.avatar-btn>svg:hover {
+    fill: #0045b4;
+}
+
+.main-searchbar>input#search {
+    font-size: 24px;
+    border-radius: 50px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    padding-left: 18px;
+}
+
+.main-searchbar>button {
+    border-radius: 50px;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    padding-right: 18px;
+}
+
+.dropdown {
+    display: inline;
+}
+
+.property-filter>button {
+    border: 1.5px grey solid;
+    border-radius: 8px;
+    color: grey;
+}
+
+.property-filter>button:hover {
+    border: 1.5px grey solid;
+    background-color: rgb(235, 235, 235);
+    color: grey;
+}
+
+ul#filters>li {
+    padding: 0.1rem 0.25rem;
+}
+
+ul#filters>li input {
+    width: 80px;
+    margin-left: 10px;
+}
+
+.card.property {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.property img {
+    height: 150px;
+    object-fit: cover;
+}
+
+.property h5.card-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.property p.card-text {
+    font-size: 14px;
+}
+
+.property p.property-stats {
+    color: rgb(128, 128, 128);
+}
+
+.property a.btn {
+    font-size: 12px;
+}
+
+@media screen and (max-width: 480px) {
+
+    nav.navbar {
+        width: 100vw;
+        padding: 5px 10px;
+        border-bottom: 1px solid rgb(220, 220, 220);
+    }
+
+    main {
+        padding: 2rem 2.5rem;
+    }
+
+    .main-searchbar>input#search {
+        font-size: 18px;
+        padding-left: 12px;
+    }
+
+    .dropdown>h3 {
+        display: none;
+    }
+
+    .property-filter>button {
+        font-size: 14px;
+    }
+
+    .card.property {
+        width: 300px;
+        margin-bottom: 20px;
+    }
+}
