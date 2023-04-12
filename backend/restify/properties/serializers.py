@@ -99,10 +99,9 @@ class CreatePropertySerializer(serializers.ModelSerializer):
                 added_amenity.properties.add(property)
 
         return property
-
+    
 
 class PropertySerializer(CreatePropertySerializer):
-    owner = UserSerializer()
     class Meta:
         model = Property
         fields = '__all__'
@@ -181,3 +180,7 @@ class PropertySerializer(CreatePropertySerializer):
         property_to_update.save()
 
         return property_to_update
+
+
+class PropertySerializerWithUserSerializer(PropertySerializer):
+    owner = UserSerializer()

@@ -11,7 +11,7 @@ from django import forms
 
 from accounts.models import User
 from properties.models import Property
-from properties.serializers import CreatePropertySerializer, PropertySerializer
+from properties.serializers import CreatePropertySerializer, PropertySerializerWithUserSerializer, PropertySerializer
 from properties.paginators import RetrievePropertiesPaginator
 
 
@@ -22,7 +22,7 @@ class PropertyView(generics.GenericAPIView):
     """
     An abstract class meant for views that work with one single property.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -122,7 +122,7 @@ class UpdatePropertyView(PropertyView, generics.RetrieveUpdateAPIView):
 
 
 class DeletePropertyView(PropertyView, generics.DestroyAPIView):
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
 
     def destroy(self, request, *args, **kwargs):
         property = self.get_object()
@@ -134,7 +134,7 @@ class DeletePropertyView(PropertyView, generics.DestroyAPIView):
 
 
 class RetrievePropertyView(PropertyView, generics.RetrieveAPIView):
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     permission_classes = []  # Doesn't require login to access this view
 
 
@@ -142,7 +142,7 @@ class RetrieveAllPropertiesView(PropertyView, generics.ListAPIView):
     """
     Retrieve all properties.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     pagination_class = RetrievePropertiesPaginator
     permission_classes = []  # Doesn't require login to access this view
 
@@ -196,7 +196,7 @@ class RetrieveUserPropertiesView(PropertyView, generics.ListAPIView):
     """
     Retrieve all properties that belong to the requested user.
     """
-    serializer_class = PropertySerializer
+    serializer_class = PropertySerializerWithUserSerializer
     pagination_class = RetrievePropertiesPaginator
 
     def get_queryset(self):

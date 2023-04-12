@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 
 from accounts.serializers import UserSerializer
 from notifications.models import Notification
-from properties.serializers import PropertySerializer
+from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation
 from reservations.models import Status
 from reservations.paginators import RetrieveReservationsPaginator
@@ -148,7 +148,7 @@ class DeleteReservationView(generics.DestroyAPIView):
 
 class RetrieveReservationsView(generics.ListAPIView):
     serializer_class = ReservationSerializer
-    property = PropertySerializer()
+    property = PropertySerializerWithUserSerializer()
     pagination_class = RetrieveReservationsPaginator
 
     def get_queryset(self):

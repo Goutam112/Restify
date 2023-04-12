@@ -5,12 +5,12 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
-from properties.serializers import PropertySerializer
+from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation, Status
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    property = PropertySerializer()
+    property = PropertySerializerWithUserSerializer()
     class Meta:
         model = Reservation
         exclude = ['reserver']
