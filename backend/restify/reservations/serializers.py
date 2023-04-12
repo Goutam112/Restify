@@ -5,15 +5,18 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
+from accounts.serializers import UserSerializer
 from properties.serializers import PropertySerializerWithUserSerializer
 from reservations.models import Reservation, Status
 
 
 
 class ReservationSerializer(serializers.ModelSerializer):
+    reserver = UserSerializer(required=False)
     class Meta:
         model = Reservation
-        exclude = ['reserver']
+        fields = "__all__"
+        read_only_fields = ['reserver']
 
     def create(self, validated_data):
         validated_data.update({'reserver': self.context.get('request').user})

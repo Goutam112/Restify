@@ -346,7 +346,7 @@ function IncomingActionComponent({reservationID, status, setStatus}) {
     return <IncomingApproveDenyButtons reservationID={reservationID} status={status} setStatus={setStatus}></IncomingApproveDenyButtons>
 }
 
-function IncomingReservationRow({name, reservationID, imgPath, address, status, startDate, endDate, ownerName, ownerPicture}) {
+function IncomingReservationRow({name, reservationID, imgPath, address, status, startDate, endDate, reserverName, reserverPicture}) {
     let statusStyle = "bg-primary";
 
     let [currentStatus, setCurrentStatus] = useState(status);
@@ -394,9 +394,9 @@ function IncomingReservationRow({name, reservationID, imgPath, address, status, 
                 <td class="text-center">
                     <a href="/csc309-restify/views/users/profile_view_host.html" class="no-decor">
                         <img class="reserver-avatar"
-                            src={ownerPicture}
+                            src={reserverPicture}
                             className="reservation-img img-fluid" />
-                        <p class="ms-2 text-nowrap d-inline reservation-row">Albert Einstein</p>
+                        <p class="ms-2 text-nowrap d-inline reservation-row">{reserverName}</p>
                     </a>
                 </td>
                 <td>
@@ -599,8 +599,8 @@ function IncomingTable() {
         let reservationEndDate = incomingReservationDict.end_date;
         let reservationID = incomingReservationDict.id;
 
-        let ownerName = propertyDict.owner.name;
-        let ownerPicture = propertyDict.owner.avatar;
+        let reserverName = incomingReservationDict.reserver.first_name + " " + incomingReservationDict.reserver.last_name;
+        let reserverPicture = incomingReservationDict.reserver.avatar;
 
 
         let propertyName = propertyDict.name;
@@ -617,8 +617,8 @@ function IncomingTable() {
             status={reservationStatus}
             startDate={reservationStartDate}
             endDate={reservationEndDate}
-            ownerName={ownerName}
-            ownerPicture={ownerPicture}
+            reserverName={reserverName}
+            reserverPicture={reserverPicture}
             ></IncomingReservationRow>;
 
         // console.log(`COMPONENTS: ${[...incomingReservationComponents].concat(newComponent)}`);
