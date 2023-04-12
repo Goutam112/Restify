@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-// import ViewProfile from './accounts/pages/viewProfile';
-// import EditProfile from './accounts/pages/editProfile';
+import ViewProfile from './accounts/pages/viewProfile';
+import EditProfile from './accounts/pages/editProfile';
+import { ViewProperty } from './properties/pages/viewProperty';
 
 function App() {
   return (
@@ -9,8 +10,11 @@ function App() {
       <Routes>
         <Route path='/'>
           <Route path='accounts'>
-            {/* <Route path='profile/view/:userID' element={<ViewProfile />} />
-            <Route path='profile/edit' element={<EditProfile />} /> */}
+            <Route path='profile/view/:userID' element={<ViewProfile />} />
+            <Route path='profile/edit' element={<EditProfile />} />
+          </Route>
+          <Route path='properties'>
+            <Route path='view/:propertyID' element={<ViewProperty />} />
           </Route>
           { 
             // TODO: Add remaining routes here. 
