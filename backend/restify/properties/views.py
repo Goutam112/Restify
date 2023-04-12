@@ -58,6 +58,8 @@ class CreatePropertyView(PropertyView, generics.CreateAPIView):
 
         data["amenities"] = json.loads(data["amenities"])
 
+        data["month_availabilities"] = json.loads(data["month_availabilities"])
+
         serializer = self.get_serializer(data=data)
         print("SERIALIZER MADE")
         # print(serializer.initial_data)
@@ -108,6 +110,11 @@ class UpdatePropertyView(PropertyView, generics.RetrieveUpdateAPIView):
 
         data["amenities"] = json.loads(data["amenities"])
 
+        print(data["month_availabilities"])
+
+        data["month_availabilities"] = json.loads(data["month_availabilities"])
+
+        print(data["month_availabilities"])
 
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
