@@ -542,9 +542,41 @@ export function SubmitButton() {
     let { propertyID } = useParams();
 
 
+    let dataIsValid = true;
+
+    let validationStrings = [];
+
+    if (propertyName.length === 0) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property name cannot be empty.</div>);
+    }
+
+    if (country.length === 0 || province.length === 0 || city.length === 0 || propertyAddress.length === 0) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property location fields cannot be empty.</div>);
+    }
+
+    console.log(typeof(propertyDescription));
+    if (propertyDescription === undefined) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property description cannot be empty.</div>);
+    }
+    
+    if (isNaN(nightlyPrice)) {
+        dataIsValid = false;
+        validationStrings.push(<div>Nightly price cannot be empty.</div>);
+    }
+
+    if (priceModifiers.includes(NaN)) {
+        dataIsValid = false;
+        validationStrings.push(<div>Price modifiers cannot be empty.</div>);
+    }
+
+
 
     return (
-        <button type="button" className="btn btn-primary" onClick={(event) => {
+        <>
+        <input type="submit" value={"Edit Property"} className="btn btn-primary" data-bs-toggle={!dataIsValid ? "modal" : ""} data-bs-target={!dataIsValid ? "#exampleModal" : ""} onClick={(event) => {
             event.preventDefault();
 
             let response = fetch("http://localhost:8000/accounts/currentuser/",
@@ -552,6 +584,10 @@ export function SubmitButton() {
                 headers: headers,
                 method: "GET"
             });
+
+            if (!dataIsValid) {
+                return;
+            }
 
             let owner = undefined;
 
@@ -612,10 +648,27 @@ export function SubmitButton() {
                 }).then((json) => {
                     console.log("JSON: ")
                     console.log(json);
-                    // navigate('/properties/')
+                    navigate('/properties/')
                 })
             });
-        }}>Edit Property</button>
+        }} />
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {validationStrings}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        </>
     );
 }
 

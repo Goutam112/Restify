@@ -6,6 +6,7 @@ import '../../assets/app.css'
 // import our page specific CSS file
 import '../../pages/MyRentalUnits/style.css'
 import { MyRentalUnitsContext } from "../../contexts/MyRentalUnitsContext";
+import { Link } from "react-router-dom";
 
 function RentalUnitImgAndName({propertyViewPath, imgPath, propertyName}) {
     return (
@@ -33,9 +34,9 @@ function RentalUnitLocation({location}) {
 //     );
 // }
 
-function EditButton(propertyEditPath) {
+function EditButton({propertyEditPath}) {
     return (
-        <a className="rounded-top dropdown-item" href={propertyEditPath}>Edit this property</a>
+        <Link className="rounded-top dropdown-item" to={propertyEditPath}>Edit this property</Link>
     );
 }
 
@@ -102,6 +103,9 @@ function DeleteButton({propertyID, deletePropertyPath}) {
 }
 
 function RentalUnitThreeDots({propertyID}) {
+
+    console.log(`http://localhost:3000/properties/update/${propertyID}/`)
+
     return (
         <td>
             <div className="dropdown float-end">
@@ -112,7 +116,7 @@ function RentalUnitThreeDots({propertyID}) {
                 </button>
                 <ul className="rounded p-0 dropdown-menu">
                     <li>
-                        <EditButton propertyEditPath={""}/>
+                        <EditButton propertyEditPath={`http://localhost:3000/properties/update/${propertyID}/`}/>
                     </li>
                     <li>
                         <DeleteButton propertyID={propertyID} deletePropertyPath={`http://localhost:8000/properties/delete/${propertyID}/`}></DeleteButton>
@@ -126,6 +130,8 @@ function RentalUnitThreeDots({propertyID}) {
 export default function RentalUnitRow({propertyID, propertyName, location, propertyViewPath, imgPath}) {
 
     // console.log(`Rental units: ${rentalUnits}`)
+
+    // console.log(propertyID);
     
     let row = (
         <tr>

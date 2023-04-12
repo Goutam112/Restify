@@ -19,7 +19,7 @@ export function PropertyNameField() {
     return (
         <div className="row mb-3">
             <label className="form-label">Property Name
-                <input type="email" className="form-control" onChange={(event) => {
+                <input required type="text" className="form-control" onChange={(event) => {
                     setPropertyName(event.target.value);
                 }} />
             </label>
@@ -233,7 +233,7 @@ export function NightlyPrice() {
               <span class="input-group-text" id="">$</span>
             </div>
             <input type="number" min={0} class="form-control" id="nightly-price-input" value={nightlyPrice} onChange={(event) => {
-                setNightlyPrice(event.target.value);
+                setNightlyPrice(parseInt(event.target.value));
                 console.log(event.target.value);
             }} />
           </div>
@@ -402,16 +402,56 @@ export function SubmitButton() {
     const navigate = useNavigate();
 
 
+    let dataIsValid = true;
+
+    let validationStrings = [];
+
+    if (propertyName.length === 0) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property name cannot be empty.</div>);
+    }
+
+    if (country.length === 0 || province.length === 0 || city.length === 0 || propertyAddress.length === 0) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property location fields cannot be empty.</div>);
+    }
+
+    console.log(typeof(propertyDescription));
+    if (propertyDescription === undefined) {
+        dataIsValid = false;
+        validationStrings.push(<div>Property description cannot be empty.</div>);
+    }
+
+    if (isNaN(nightlyPrice)) {
+        dataIsValid = false;
+        validationStrings.push(<div>Nightly price cannot be empty.</div>);
+    }
+
+    if (priceModifiers.includes(NaN)) {
+        dataIsValid = false;
+        validationStrings.push(<div>Price modifiers cannot be empty.</div>);
+    }
+
 
     return (
-        <button type="button" className="btn btn-primary" onClick={(event) => {
+        <>
+        <input value={"Create Property"} type="submit" className="btn btn-primary" data-bs-toggle={!dataIsValid ? "modal" : ""} data-bs-target={!dataIsValid ? "#exampleModal" : ""} onClick={(event) => {
             event.preventDefault();
+
+            // if (propertyName.length === 0) {
+            //     // alert("The property name cannot be empty.");
+            //     return;
+            // }
 
             let response = fetch("http://localhost:8000/accounts/currentuser/",
             {
                 headers: headers,
                 method: "GET"
             });
+
+            if (!dataIsValid) {
+                return;
+            }
 
             let owner = undefined;
 
@@ -456,11 +496,29 @@ export function SubmitButton() {
                         return response.json();
                     }
                 }).then((json) => {
-                    navigate('/properties/')
-                    // Since
+                    if (json !== undefined) {
+                        navigate('/properties/')
+                    }
                 })
             });
-        }}>Create Property</button>
+        }} />
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {validationStrings}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        </>
     );
 }
 
@@ -536,7 +594,7 @@ export default function CreateProperty() {
 
                 <h2 className="mb-3">General</h2>
 
-                <form method="POST">
+                <form>
                     <CreatePropertyContext.Provider value={
                     {
                         propertyName: [propertyName, setPropertyName], 
