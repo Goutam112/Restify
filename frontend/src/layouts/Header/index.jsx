@@ -8,23 +8,34 @@ export default function Header() {
   const [numNotifs, setNumNotifs] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:8000/accounts/currentuser/")
-      .then((res) => setIsLoggedIn(true))
-      .catch((err) =>
-        err.status === 401
-          ? setIsLoggedIn(false)
-          : console.error("Fetch curr_user ERROR:", err)
-      );
-  }, [setIsLoggedIn]);
+    fetch("http://localhost:8000/accounts/currentuser/", {
+      headers: { Authorization: `Bearer ${localStorage.token}` },
+    })
+      .then((res) => {
+        res.status === 401 ? setIsLoggedIn(false) : setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.error("Fetch curr_user ERROR:", err);
+      });
+  }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/notifications/list/")
+    fetch("http://localhost:8000/notifications/list/", {
+      headers: { Authorization: `Bearer ${localStorage.token}` },
+    })
       .then((res) => {
         return res.json();
       })
-      .then((data) => setNumNotifs(data.count))
+      .then((data) => {
+        setNumNotifs(data.count);
+      })
       .catch((err) => console.error("Fetch numNotifs ERROR:", err));
   }, []);
+
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.replace("/");
+  }
 
   return (
     <header>
@@ -81,7 +92,7 @@ export default function Header() {
                     >
                       <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                       />
                     </svg>
@@ -115,12 +126,9 @@ export default function Header() {
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="dropdown-item"
-                        href="/csc309-restify/views/home-2.html"
-                      >
+                      <button className="dropdown-item" onClick={logout}>
                         Log out
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
