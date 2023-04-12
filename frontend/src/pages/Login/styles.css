@@ -6,6 +6,13 @@ body {
   background-attachment: fixed;
 }
 
+#responseErrorMessage {
+  text-align: center;
+  color: rgb(245, 74, 74);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 main.card {
   width: min(600px, 100vw - 1rem);
 }
