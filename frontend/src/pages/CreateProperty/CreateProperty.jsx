@@ -255,11 +255,27 @@ export function NightlyPrice() {
 
 export function MonthPrice({month, monthNumber}) {
     let [priceModifiers, setPriceModifiers] = useContext(CreatePropertyContext).priceModifiers;
+
+    let [monthsAvailable, setMonthsAvailable] = useContext(CreatePropertyContext).monthsAvailable;
     return (
         <tr>
             <td>{month}</td>
             <td class="text-center">
-                <input class="form-check-input" type="checkbox"/>
+            <input class="form-check-input" type="checkbox" onChange={(event) => {
+                    let newMonthsAvailable = [...monthsAvailable];
+                    if (event.target.checked) {
+                        newMonthsAvailable[monthNumber - 1] = false;
+                    } else {
+                        newMonthsAvailable[monthNumber - 1] = true;
+                    }
+
+                    console.log(`Month ${month} is now ${newMonthsAvailable[month - 1]}`);
+                    console.log(monthsAvailable);
+
+                    setMonthsAvailable(newMonthsAvailable);
+                    // setIsChecked(!isChecked);
+                    
+                }}/>
             </td>
             <td class="text-center">
             <div class="input-group input-group-sm mb-3">
@@ -336,6 +352,8 @@ export function SubmitButton() {
 
     let [priceModifiers, ] = context.priceModifiers;
 
+    let [monthsAvailable, ] = context.monthsAvailable;
+
     let transformedAmenities = [];
 
     for (let i = 0; i < amenities.length; i++) {
@@ -351,6 +369,13 @@ export function SubmitButton() {
         // console.log(transformedPriceModifiers);
     }
 
+    let transformedMonthsAvailable = [];
+
+    for (let i = 0; i < monthsAvailable.length; i++) {
+        let isAvailable = monthsAvailable[i];
+        transformedMonthsAvailable.push({"month": Number(i) + 1, "is_available": isAvailable});
+    }
+
     let formData = new FormData();
 
     formData.append('price_modifiers', JSON.stringify(transformedPriceModifiers));
@@ -362,6 +387,7 @@ export function SubmitButton() {
     }
 
     formData.append('amenities', JSON.stringify(transformedAmenities));
+    formData.append('month_availabilities', JSON.stringify(transformedMonthsAvailable));
     formData.append('name', propertyName);
     formData.append('description', propertyDescription);
     formData.append('address', propertyAddress);
@@ -477,6 +503,8 @@ export default function CreateProperty() {
 
     let [priceModifiers, setPriceModifiers] = useState(Array(12).fill(100));
 
+    let [monthsAvailable, setMonthsAvailable] = useState(Array(12).fill(true));
+
 
 
     useEffect(() => {
@@ -525,6 +553,7 @@ export default function CreateProperty() {
                         amenities: [amenities, setAmenities],
                         nightlyPrice: [nightlyPrice, setNightlyPrice],
                         priceModifiers: [priceModifiers, setPriceModifiers],
+                        monthsAvailable: [monthsAvailable, setMonthsAvailable]
                     }}>
                         <PropertyNameField></PropertyNameField>
                         <PropertyLocationFields></PropertyLocationFields>
