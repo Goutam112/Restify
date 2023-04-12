@@ -7,6 +7,9 @@ import '../CreateProperty/style.css';
 
 import { useNavigate, useParams } from 'react-router-dom'
 
+import Header from '../../layouts/Header'
+import Footer from '../../layouts/Footer'
+
 // import {
 //     PropertyNameField,
 //     PropertyLocationFields, 
@@ -914,6 +917,7 @@ export default function UpdateProperty() {
 
     return (
         <main className="card d-block">
+            <Header></Header>
             <div className="container">
                 <div>
                     <h1 className="text-center mb-4">Edit This Property</h1>
@@ -957,6 +961,7 @@ export default function UpdateProperty() {
                     </CreatePropertyContext.Provider>
                 </form>
             </div>
+            <Footer></Footer>
         </main>
     );
 }

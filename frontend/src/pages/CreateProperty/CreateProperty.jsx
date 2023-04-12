@@ -8,6 +8,9 @@ import './style.css'
 
 import { useNavigate } from 'react-router-dom'
 
+import Header from '../../layouts/Header'
+import Footer from '../../layouts/Footer'
+
 const headers = new Headers();
 // headers.append('Content-Type', 'application/json');
 headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
@@ -587,6 +590,7 @@ export default function CreateProperty() {
 
     return (
         <main className="card d-block">
+            <Header></Header>
             <div className="container">
                 <div>
                     <h1 className="text-center mb-4">New Rental Unit Creation</h1>
@@ -629,6 +633,7 @@ export default function CreateProperty() {
                     </CreatePropertyContext.Provider>
                 </form>
             </div>
+            <Footer></Footer>
         </main>
     );
 }
