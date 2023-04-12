@@ -17,7 +17,7 @@ import Footer from '../../layouts/Footer'
 
 const headers = new Headers();
 // headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
 
 
 const MyReservationsContext = createContext();
@@ -734,6 +734,15 @@ function PageNumber({numPages, setPage}) {
 
 
 export default function MyReservations() {
+
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
 
     let [incomingReservations, setIncomingReservations] = useState([]);
 

@@ -13,7 +13,7 @@ import Footer from '../../layouts/Footer'
 
 const headers = new Headers();
 // headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
 
 let CreatePropertyContext = createContext();
 
@@ -526,6 +526,15 @@ export function SubmitButton() {
 }
 
 export default function CreateProperty() {
+
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
 
     let [propertyName, setPropertyName] = useState('');
 

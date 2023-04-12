@@ -16,7 +16,9 @@ import Footer from '../../layouts/Footer'
 
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
+
+// console.log(localStorage.getItem("token"));
 
 
 // export default function MyRentalUnits() {
@@ -127,6 +129,15 @@ export default function MyRentalUnits() {
 
     const [page, setPage] = useState(1);
     const [numPages, setNumPages] = useState(1);
+
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
 
     // let rows = [];
 
