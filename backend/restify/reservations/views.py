@@ -159,7 +159,7 @@ class RetrieveReservationsView(generics.ListAPIView):
         filtered_reservations = Reservation.objects.all()
 
         if requested_status is not None:
-            statuses = [Status.choices[i][1].lower() for i in range(0, len(Status.choices))]
+            statuses = [Status.choices[i][0].lower() for i in range(0, len(Status.choices))]
 
             if requested_status.lower() in statuses:
                 filtered_reservations = filtered_reservations.filter(status__iexact=requested_status)
