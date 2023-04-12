@@ -1,5 +1,7 @@
 import { React, useState, useEffect } from "react";
+
 import "./styles.css";
+import { Link } from "react-router-dom";
 
 // NEED TO FIX LINKS FOR EACH ANCHOR TAG
 
@@ -110,20 +112,20 @@ export default function Header() {
                       </a>
                     </li>
                     <li>
-                      <a
+                      <Link
                         className="dropdown-item"
-                        href="/csc309-restify/views/reservations/my_reservations.html"
+                        to="/reservations/retrieve/all"
                       >
                         My reservations
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
+                      <Link
                         className="dropdown-item"
-                        href="/csc309-restify/views/reservations/my_rental_units.html"
+                        to="/properties/"
                       >
                         My properties
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <button className="dropdown-item" onClick={logout}>
