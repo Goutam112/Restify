@@ -17,7 +17,8 @@ export default function PropertyCard(props) {
     city && state && country ? `${city}, ${state}, ${country}` : "";
 
   const details = amenities.length > 0 ? `${amenities[0]}` : "";
-  const property_image = property_images ? property_images[0].image : "";
+  const property_image =
+    property_images.length > 0 ? property_images[0].image : "";
 
   return (
     <div className="card property">
