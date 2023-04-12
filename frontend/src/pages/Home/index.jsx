@@ -10,6 +10,8 @@ import Searchbar from "../../components/Searchbar";
 import PropertyCard from "../../components/PropertyCard";
 
 function Home() {
+  const [page, setPage] = useState(1);
+  const [nextEnabled, setNextEnabled] = useState(false);
   const [propertyList, setPropertyList] = useState([]);
   const [queryParams, setQueryParams] = useState({
     country: "",
@@ -19,21 +21,40 @@ function Home() {
     orderBy: "",
   });
 
+  const nextPage = async () => {
+    let newPage = page + 1;
+    await setPage(newPage);
+  };
+  const prevPage = async () => {
+    let newPage = page - 1;
+    await setPage(newPage);
+  };
+
   useEffect(() => {
     document.title = "Home - Restify";
   }, []);
 
   useEffect(() => {
-    console.log("FETCH PROPERTIES useEffect EXECUTED");
-    fetch(`http://localhost:8000/properties/retrieve/all`)
+    let queryString = "";
+    queryString += queryParams.country ? `country=${queryParams.country}&` : "";
+    queryString += queryParams.minP ? `minPrice=${queryParams.minP}&` : "";
+    queryString += queryParams.maxP ? `maxPrice=${queryParams.maxP}&` : "";
+    queryString += queryParams.minG ? `minGuests=${queryParams.minG}&` : "";
+    queryString += queryParams.orderBy ? `orderBy=${queryParams.orderBy}&` : "";
+
+    fetch(
+      `http://localhost:8000/properties/retrieve/all/?page=${page}&${queryString}`
+    )
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        setPropertyList && setPropertyList(data.results);
+        setPropertyList(data.results);
+        setNextEnabled(data.next ? true : false);
       })
       .catch((err) => console.error("Fetch properties ERROR:", err));
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   function refetchProperties(event) {
     event.preventDefault();
@@ -44,7 +65,10 @@ function Home() {
     queryString += queryParams.maxP ? `maxPrice=${queryParams.maxP}&` : "";
     queryString += queryParams.minG ? `minGuests=${queryParams.minG}&` : "";
     queryString += queryParams.orderBy ? `orderBy=${queryParams.orderBy}&` : "";
-    fetch(`http://localhost:8000/properties/retrieve/all/?${queryString}`)
+    setPage(1);
+    fetch(
+      `http://localhost:8000/properties/retrieve/all/?page=${page}&${queryString}`
+    )
       .then((res) => {
         return res.json();
       })
@@ -217,6 +241,30 @@ function Home() {
             propertyList.map(function (property, i) {
               return <PropertyCard key={i} property={property} />;
             })}
+        </div>
+
+        <div className="d-flex flex-column justify-content-center paginator-custom">
+          <p>
+            Page: <b>{page}</b>
+          </p>
+          <div className="btn-group" role="group">
+            <button
+              id="notificationPrev"
+              onClick={prevPage}
+              className="btn btn-secondary btn-sm"
+              disabled={page > 1 ? false : true}
+            >
+              Prev
+            </button>
+            <button
+              id="notificationNext"
+              onClick={nextPage}
+              className="btn btn-secondary btn-sm"
+              disabled={!nextEnabled}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </main>
       <Footer />
