@@ -11,9 +11,14 @@ import RentalUnitRow from "../../components/MyRentalUnits/MyRentalUnitRow"
 
 import { MyRentalUnitsContext } from "../../contexts/MyRentalUnitsContext"
 
+import Header from '../../layouts/Header'
+import Footer from '../../layouts/Footer'
+
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
+
+// console.log(localStorage.getItem("token"));
 
 
 // export default function MyRentalUnits() {
@@ -125,6 +130,15 @@ export default function MyRentalUnits() {
     const [page, setPage] = useState(1);
     const [numPages, setNumPages] = useState(1);
 
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
+
     // let rows = [];
 
 
@@ -163,6 +177,7 @@ export default function MyRentalUnits() {
             <body>
                 {/* <MyRentalUnitsHeader /> */}
                 <main className="card d-block">
+                    <Header></Header>
                     <div className="container">
                         <div className="table-responsive text-start overflow-auto">
                             <table className="table border align-middle table-hover">
@@ -192,6 +207,7 @@ export default function MyRentalUnits() {
                             <PageNumber numPages={numPages} setPage={setPage}></PageNumber>
                         </div>
                     </div>
+                    <Footer></Footer>
                 </main>
             </body>
             );

@@ -7,6 +7,9 @@ import '../CreateProperty/style.css';
 
 import { useNavigate, useParams } from 'react-router-dom'
 
+import Header from '../../layouts/Header'
+import Footer from '../../layouts/Footer'
+
 // import {
 //     PropertyNameField,
 //     PropertyLocationFields, 
@@ -26,7 +29,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 const headers = new Headers();
 // headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
 
 let CreatePropertyContext = createContext();
 
@@ -656,7 +659,7 @@ export function SubmitButton() {
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form is incomplete</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -673,6 +676,15 @@ export function SubmitButton() {
 }
 
 export default function UpdateProperty() {
+
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
 
     let [propertyName, setPropertyName] = useState('');
 
@@ -914,6 +926,7 @@ export default function UpdateProperty() {
 
     return (
         <main className="card d-block">
+            <Header></Header>
             <div className="container">
                 <div>
                     <h1 className="text-center mb-4">Edit This Property</h1>
@@ -957,6 +970,7 @@ export default function UpdateProperty() {
                     </CreatePropertyContext.Provider>
                 </form>
             </div>
+            <Footer></Footer>
         </main>
     );
 }

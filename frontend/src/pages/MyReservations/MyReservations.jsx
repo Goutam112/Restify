@@ -11,10 +11,13 @@ import './style.css';
 
 import { useNavigate, useParams } from 'react-router-dom'
 
+import Header from '../../layouts/Header'
+import Footer from '../../layouts/Footer'
+
 
 const headers = new Headers();
 // headers.append('Content-Type', 'application/json');
-headers.append('Authorization', `${localStorage.getItem("authorizationToken")}`);
+headers.append('Authorization', `Bearer ${localStorage.getItem("token")}`);
 
 
 const MyReservationsContext = createContext();
@@ -732,6 +735,15 @@ function PageNumber({numPages, setPage}) {
 
 export default function MyReservations() {
 
+    const loginNavigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            loginNavigate("/login/");
+        }
+
+    }, []);
+
     let [incomingReservations, setIncomingReservations] = useState([]);
 
     let [incomingReservationComponents, setIncomingReservationComponents] = useState([]);
@@ -767,6 +779,7 @@ export default function MyReservations() {
 
     return (
         <main class="card d-block">
+            <Header></Header>
             <MyReservationsContext.Provider value={
             {
                 outgoingReservations: [outgoingReservations, setOutgoingReservations],
@@ -778,6 +791,7 @@ export default function MyReservations() {
                 <Reservations incomingOrOutgoing={"outgoing"} setPage={setOutgoingPage} numPages={numOutgoingPages}></Reservations>
                 <Reservations incomingOrOutgoing={"incoming"} setPage={setIncomingPage} numPages={numIncomingPages}></Reservations>
             </MyReservationsContext.Provider>
+            <Footer></Footer>
         </main>
     );
 }
