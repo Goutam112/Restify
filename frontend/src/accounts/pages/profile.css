@@ -1,0 +1,23 @@
+.profile-pic {
+    object-fit: cover;
+    width: min(250px, 25vw);
+    height: min(250px, 25vw);
+    max-width: 250px;
+    max-height: 250px;
+}
+
+.commenter-pic {
+    object-fit: cover;
+    width: min(80px, 15vw);
+    height: min(80px, 15vw);
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.reviews {
+    max-height: 400px;
+}
+
+.debug {
+    background-color: cyan;
+}

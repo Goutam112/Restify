@@ -21,7 +21,7 @@ export const ProfileCommentModal = ({userID, comments, setComments}) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/JSON',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 'content': content,

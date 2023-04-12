@@ -2,8 +2,8 @@ import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../compon
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../../assets/css/app.css';
-import '../../assets/css/profile.css';
+import '../../assets/app.css';
+import './profile.css';
 import { FormError } from '../components/formError';
 
 const EditProfile = () => {
@@ -24,7 +24,7 @@ const EditProfile = () => {
     const getProfile = async () => {
         let profile_resp = await fetch(`http://localhost:8000/accounts/currentuser/`, {
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         if (!profile_resp.ok) {
@@ -70,7 +70,7 @@ const EditProfile = () => {
             method: 'PUT',
             headers: {
                 // NOTE: Content-Type is explicitly not set to allow multipart/form-data to have a required boundary attribute
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             },
             body: formData
         }).then(response => {

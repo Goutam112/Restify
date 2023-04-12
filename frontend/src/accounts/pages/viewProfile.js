@@ -1,8 +1,8 @@
 import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../components/profileReadOnly';
 import { useEffect, useState } from 'react';
 
-import '../../assets/css/app.css';
-import '../../assets/css/profile.css';
+import '../../assets/app.css';
+import './profile.css';
 import { Link, useParams } from 'react-router-dom';
 import { ProfileComment, ProfileCommentModal } from '../components/profileComment';
 
@@ -33,9 +33,9 @@ const ViewProfile = () => {
             console.log("No user found.");
         }
 
-        let currUserResp = await fetch(`http://localhost:8000/accounts/currentuser`, {
+        let currUserResp = await fetch(`http://localhost:8000/accounts/currentuser/`, {
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         
@@ -67,7 +67,7 @@ const ViewProfile = () => {
 
         let commentsResp = await fetch(nextCommentsPage, {
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
         if (!commentsResp.ok) {
@@ -87,7 +87,7 @@ const ViewProfile = () => {
     const getCanPostComments = async () => {
         let canPostCommentResp = await fetch(`http://localhost:8000/comments/user/${userID}/review/cancreate`, {
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
         if (!canPostCommentResp.ok) {

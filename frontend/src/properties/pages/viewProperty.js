@@ -3,8 +3,8 @@ import { PropertyAmenities, PropertyBookings, PropertyCommentAdd, PropertyCommen
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import $ from 'jquery';
 
-import '../../assets/css/app.css';
-import '../../assets/css/property_view.css';
+import '../../assets/app.css';
+import './property_view.css';
 
 export const ViewProperty = () => {
     const { propertyID } = useParams();
@@ -110,7 +110,7 @@ export const ViewProperty = () => {
     const fetchCurrentUser = async () => {
         let response = await fetch(`http://localhost:8000/accounts/currentuser/`, {
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwODE3OTgwLCJpYXQiOjE2ODA3MzE1ODAsImp0aSI6IjI0NmFhOTRiZGFmZTQyZjliMjUyMjkwZmUxMzI4Nzc0IiwidXNlcl9pZCI6MX0.lwhK2h2rDozPsAiqWMOcH1PZVUNuqPyMeX5V3KlqJL4'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         if (!response.ok) {
@@ -140,7 +140,7 @@ export const ViewProperty = () => {
     const fetchCanCreatePropertyComment = async () => {
         let response = await fetch(`http://localhost:8000/comments/property/${propertyID}/review/cancreate/`, {
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMzY5MDk5LCJpYXQiOjE2ODEyODI2OTksImp0aSI6IjFhZDQ1NzM2NTU2YzRlZTQ5Mzk2Nzc0NTU2ZGIyNDY1IiwidXNlcl9pZCI6OX0.S1egICRCIjIK2p4hwHWYTPWPlz1aPg61az-EzPi0kPc'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         if (!response.ok) {
@@ -161,7 +161,7 @@ export const ViewProperty = () => {
         for (let comment of comments) {
             let response = await fetch(`http://localhost:8000/comments/property/${propertyID}/reply/${comment.id}/cancreate/`, {
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMzY2NjcyLCJpYXQiOjE2ODEyODAyNzIsImp0aSI6IjlmYzhjYmJhMmNiNDQ1MDdiODU0OTg3NDNlNDQ1MmZkIiwidXNlcl9pZCI6MX0.lBR7IMx9zgCrrK6jaGaeCF3YvdTCNFs3uO88GETfe7A'
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
             
@@ -261,7 +261,7 @@ export const ViewProperty = () => {
         let request = fetch("http://localhost:8000/reservations/create/", {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMzY2NjM1LCJpYXQiOjE2ODEyODAyMzUsImp0aSI6IjA3ZDljZTMzYzYyMDRiZGM5ZmI0ZDc0N2QxYzYyMDc1IiwidXNlcl9pZCI6MX0.IHGBK5jBSDkFE4DCZQ3yJsmDqrRDaSqS6xCRClLaILU',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
