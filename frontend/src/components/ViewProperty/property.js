@@ -111,6 +111,9 @@ const PropertyCommentChain = ({rating, replies, hostID, canReply, setReplyID}) =
             commenterID={rating.commenter.id} commenterFirstName={rating.commenter.first_name}
             commenterLastName={rating.commenter.last_name} commenterAvatar={rating.commenter.avatar} />
         {
+            replies?.length === 0 && canReply ? <ReplyButton handleClick={() => setReplyID(rating.id)}/> : <></>
+        }
+        {
             replies.map((reply, i) => {
                 if (i === replies.length - 1) {
                     return <>

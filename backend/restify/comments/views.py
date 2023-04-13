@@ -92,7 +92,7 @@ class CanLeavePropertyReview(generics.RetrieveAPIView):
 
         commenter_completed_or_terminated_property = Reservation.objects.filter(
             reserver=commenter,
-            subject_id=property_id,
+            property__id=property_id,
             status__in=[Status.COMPLETED, Status.TERMINATED]
         ).exists()
 
