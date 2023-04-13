@@ -722,9 +722,6 @@ function PageNumberElement({pageNum, setPage}) {
 function PageNumber({numPages, setPage}) {
     let pageNumberComponents = [];
 
-    console.log("Page number:")
-    console.log(numPages);
-
     for (let i = 0; i < numPages; i++) {
         pageNumberComponents.push(<PageNumberElement setPage={setPage} key={i + 1} pageNum={i + 1}></PageNumberElement>)
     }
@@ -771,13 +768,17 @@ export default function MyReservations() {
     }, []);
 
     useEffect(() => {
-        loadReservations(outgoingReservations, setOutgoingReservations, incomingReservations, setIncomingReservations, outgoingPage, incomingPage, setNumOutgoingPages, setNumIncomingPages, filteredStatus);
-    }, [outgoingPage, incomingPage, filteredStatus]);
-
-    useEffect(() => {
         setIncomingPage(1);
         setOutgoingPage(1);
-    }, [filteredStatus])
+        loadReservations(outgoingReservations, setOutgoingReservations, incomingReservations, setIncomingReservations, 1, 1, setNumOutgoingPages, setNumIncomingPages, filteredStatus);
+        
+    }, [filteredStatus]);
+
+    useEffect(() => {
+        loadReservations(outgoingReservations, setOutgoingReservations, incomingReservations, setIncomingReservations, outgoingPage, incomingPage, setNumOutgoingPages, setNumIncomingPages, filteredStatus);
+    }, [outgoingPage, incomingPage]);
+
+    
 
     
 
