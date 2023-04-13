@@ -3,6 +3,7 @@ import "./styles.css";
 
 export default function PropertyCard(props) {
   const {
+    id,
     name,
     property_images,
     description,
@@ -31,9 +32,9 @@ export default function PropertyCard(props) {
         <p className="card-text property-stats mt-0 mb-2">
           ${nightly_price} per night
         </p>
-        <button href="#" className="btn btn-secondary btn-sm">
+        <a href={`/properties/view/${id}`} className="btn btn-secondary btn-sm">
           View property
-        </button>
+        </a>
       </div>
     </div>
   );
