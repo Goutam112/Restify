@@ -28,6 +28,20 @@ export const ViewProperty = () => {
             {'month': 11, 'price_modifier': 1.00},
             {'month': 12, 'price_modifier': 1.00},
         ],
+        month_availabilities: [
+            {'id': 1, 'month': 1, 'is_available': true},
+            {'id': 2, 'month': 2, 'is_available': true},
+            {'id': 3, 'month': 3, 'is_available': true},
+            {'id': 4, 'month': 4, 'is_available': true},
+            {'id': 5, 'month': 5, 'is_available': true},
+            {'id': 6, 'month': 6, 'is_available': true},
+            {'id': 7, 'month': 7, 'is_available': true},
+            {'id': 8, 'month': 8, 'is_available': true},
+            {'id': 9, 'month': 9, 'is_available': true},
+            {'id': 10, 'month': 10, 'is_available': true},
+            {'id': 11, 'month': 11, 'is_available': true},
+            {'id': 12, 'month': 12, 'is_available': true},
+        ],
         property_images: [{image: null}, {image: null}, {image: null}, {image: null}, {image: null}, {image: null}],
         amenities: [],
         name: "",
@@ -202,7 +216,7 @@ export const ViewProperty = () => {
         let startDateObj = new Date(startYear, startMonth - 1, startDay);
         let endDateObj = new Date(endYear, endMonth - 1, endDay);
 
-        let numDays = Math.ceil((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
+        let numDays = Math.round((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
 
         let baseNightlyPrice = propertyInfo.nightly_price;
 
@@ -319,7 +333,8 @@ export const ViewProperty = () => {
                 canCreatePropertyReview ? <PropertyCommentAdd /> : <></>
             }
             <PropertyBookings startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-                baseNightlyPrice={propertyInfo.nightly_price} monthlyBreakdown={monthlyBreakdown} secondsBeforeExpiry={secondsBeforeExpiry} handleSecondsBeforeExpiry={e => handleSecondsBeforeExpiry(e)}/>
+                baseNightlyPrice={propertyInfo.nightly_price} monthlyBreakdown={monthlyBreakdown} secondsBeforeExpiry={secondsBeforeExpiry} handleSecondsBeforeExpiry={e => handleSecondsBeforeExpiry(e)}
+                monthAvailabilities={propertyInfo.month_availabilities} />
             <ReservationSubmission disabled={startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY" || endDate.month === "MM" || endDate.day === "DD"} 
                 error={submitError} />
         </main>

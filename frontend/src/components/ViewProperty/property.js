@@ -22,7 +22,7 @@ export const PropertyTitle = ({title, avgRating, numRatings}) => {
 }
 
 export const PropertyImageCarousel = ({imgUrls}) => {
-    imgUrls = imgUrls.filter(imgUrl => imgUrl !== "http://localhost:8000/media/empty_image.jpg");
+    imgUrls = imgUrls.filter(imgUrl => !imgUrl?.includes("empty_image"));
     if (imgUrls.length === 0) {
         imgUrls.push("http://localhost:8000/media/empty_image.jpg");
     }
@@ -152,6 +152,16 @@ const daysInMonth = (year, month) => {
     return new Date(year, month, 0).getDate();
 }
 
+const getMonthAvailability = (monthNumber, monthAvailabilities) => {
+    for (let availability of monthAvailabilities) {
+        if (availability.month === parseInt(monthNumber)) {
+            return availability.is_available;
+        }
+    }
+    // should be unreachable
+    return true;
+}
+
 const CheckInYearDropdown = ({startDate, setStartDate, setEndDate}) => {
     let availableYears = [];
 
@@ -184,7 +194,7 @@ const CheckInYearDropdown = ({startDate, setStartDate, setEndDate}) => {
     </>
 }
 
-const CheckOutYearDropdown = ({startDate, endDate, setEndDate}) => {
+const CheckOutYearDropdown = ({startDate, endDate, setEndDate, monthAvailabilities}) => {
     let disabled = false;
     
     if (startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD") {
@@ -198,8 +208,19 @@ const CheckOutYearDropdown = ({startDate, endDate, setEndDate}) => {
     if (startDate.month === "12" && startDate.day === "31") {
         availableYears.push(startYear + 1);
     } else {
-        for (let i = startYear; i <= startYear + 1; i++) {
-            availableYears.push(i)
+        let nextYearUnavailable = false;
+        for (let i = parseInt(startDate.month); i <= 12; i++) {
+            if (getMonthAvailability(i, monthAvailabilities) === false) {
+                nextYearUnavailable = true;
+            }
+        }
+
+        if (nextYearUnavailable) {
+            availableYears.push(startDate.year)
+        } else {
+            for (let i = startYear; i <= startYear + 1; i++) {
+                availableYears.push(i)
+            }
         }
     }
 
@@ -221,7 +242,7 @@ const CheckOutYearDropdown = ({startDate, endDate, setEndDate}) => {
     </>
 }
 
-const CheckInMonthDropdown = ({startDate, setStartDate, setEndDate}) => {
+const CheckInMonthDropdown = ({startDate, setStartDate, setEndDate, monthAvailabilities}) => {    
     let disabled = false;
 
     if (startDate.year === "YYYY") {
@@ -235,11 +256,15 @@ const CheckInMonthDropdown = ({startDate, setStartDate, setEndDate}) => {
 
     if (startDate.year === thisYear) {
         for (let i = thisMonth; i <= 12; i++) {
-            availableMonths.push(i)
+            if (getMonthAvailability(i, monthAvailabilities) === true) {
+                availableMonths.push(i)
+            }
         }
     } else {
         for (let i = 1; i <= 12; i++) {
-            availableMonths.push(i)
+            if (getMonthAvailability(i, monthAvailabilities) === true) {
+                availableMonths.push(i)
+            }
         }
     }
 
@@ -266,7 +291,7 @@ const CheckInMonthDropdown = ({startDate, setStartDate, setEndDate}) => {
     </>
 }
 
-const CheckOutMonthDropdown = ({startDate, endDate, setEndDate}) => {
+const CheckOutMonthDropdown = ({startDate, endDate, setEndDate, monthAvailabilities}) => {
     let disabled = false;
     
     if (startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY") {
@@ -283,15 +308,24 @@ const CheckOutMonthDropdown = ({startDate, endDate, setEndDate}) => {
             if (i === startMonth && parseInt(startDate.day) === daysInMonth(startYear, startMonth)) {
                 continue;
             }
-            availableMonths.push(i)
+            availableMonths.push(i);
+            if (getMonthAvailability(i, monthAvailabilities) === false) {
+                break;
+            }
         }
     } else if (parseInt(endDate.year) === startYear + 1) {
         for (let i = 1; i <= startMonth; i++) {
-            availableMonths.push(i)
+            availableMonths.push(i);
+            if (getMonthAvailability(i, monthAvailabilities) === false) {
+                break;
+            }
         } 
     } else {
         for (let i = 1; i <= 12; i++) {
-            availableMonths.push(i)
+            availableMonths.push(i);
+            if (getMonthAvailability(i, monthAvailabilities) === false) {
+                break;
+            }
         } 
     }
 
@@ -326,7 +360,7 @@ const CheckInDayDropdown = ({startDate, setStartDate, setEndDate}) => {
 
     let availableDays = [];
 
-    if (startDate.month === thisMonth) {
+    if (startDate.year === thisYear && startDate.month === thisMonth) {
         for (let i = thisDay; i <= daysInMonth(startDate.year, startDate.month); i++) {
             availableDays.push(i)
         }
@@ -359,7 +393,7 @@ const CheckInDayDropdown = ({startDate, setStartDate, setEndDate}) => {
     </>
 }
 
-const CheckOutDayDropdown = ({startDate, endDate, setEndDate}) => {
+const CheckOutDayDropdown = ({startDate, endDate, setEndDate, monthAvailabilities}) => {
     let disabled = false;
     
     if (startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY" || endDate.month === "MM") {
@@ -380,13 +414,21 @@ const CheckOutDayDropdown = ({startDate, endDate, setEndDate}) => {
             availableDays.push(i)
         }
     } else if (parseInt(endDate.year) === startYear + 1 && endDate.month === startDate.month) {
-        for (let i = 1; i <= startDay; i++) {
-            availableDays.push(i)
-        } 
+        if (getMonthAvailability(parseInt(endDate.month), monthAvailabilities) === false) {
+            availableDays.push(1);
+        } else {
+            for (let i = 1; i <= startDay; i++) {
+                availableDays.push(i);
+            } 
+        }
     } else {
-        for (let i = 1; i <= daysInMonth(parseInt(endDate.year), parseInt(endDate.month)); i++) {
-            availableDays.push(i)
-        } 
+        if (getMonthAvailability(parseInt(endDate.month), monthAvailabilities) === false) {
+            availableDays.push(1);
+        } else {
+            for (let i = 1; i <= daysInMonth(parseInt(endDate.year), parseInt(endDate.month)); i++) {
+                availableDays.push(i);
+           } 
+        }
     }
 
     return <>
@@ -428,7 +470,7 @@ const getTotal = (monthlyBreakdown) => {
     return total.toFixed(2);
 }
 
-export const PropertyBookings = ({startDate, setStartDate, endDate, setEndDate, baseNightlyPrice, monthlyBreakdown, secondsBeforeExpiry, handleSecondsBeforeExpiry}) => {
+export const PropertyBookings = ({startDate, setStartDate, endDate, setEndDate, baseNightlyPrice, monthlyBreakdown, secondsBeforeExpiry, handleSecondsBeforeExpiry, monthAvailabilities}) => {
     return (
         <>
             <div>
@@ -445,16 +487,16 @@ export const PropertyBookings = ({startDate, setStartDate, endDate, setEndDate, 
                         <div><em>Check-in Date</em></div>
                         <div className="mb-1">
                             <CheckInYearDropdown startDate={startDate} setStartDate={setStartDate} setEndDate={setEndDate} />
-                            <CheckInMonthDropdown startDate={startDate} setStartDate={setStartDate} setEndDate={setEndDate} />
+                            <CheckInMonthDropdown startDate={startDate} setStartDate={setStartDate} setEndDate={setEndDate} monthAvailabilities={monthAvailabilities} />
                             <CheckInDayDropdown startDate={startDate} setStartDate={setStartDate} setEndDate={setEndDate} />
                         </div>
                     </div>
                     <div className="flex-column">
                         <div><em>Check-out Date</em></div>
                         <div className="mb-1">
-                            <CheckOutYearDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} />
-                            <CheckOutMonthDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} />
-                            <CheckOutDayDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} />
+                            <CheckOutYearDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} monthAvailabilities={monthAvailabilities} />
+                            <CheckOutMonthDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} monthAvailabilities={monthAvailabilities} />
+                            <CheckOutDayDropdown startDate={startDate} endDate={endDate} setEndDate={setEndDate} monthAvailabilities={monthAvailabilities} />
                         </div>
                     </div>
                 </div>
