@@ -880,7 +880,15 @@ export default function UpdateProperty() {
                             // setPropertyImages(newPropertyImages);
                         } else {
 
-                            let file = new File([blob], `image_${i}.png`, {type: blob.type, lastModified:new Date()});
+                            let prefix = "http://localhost:8000/media/";
+
+                            let fileName = `image_${i}.png`;
+
+                            if (propertyImageURL.includes(prefix)) {
+                                fileName = propertyImageURL.slice(prefix.length, propertyImageURL.length);
+                            }
+
+                            let file = new File([blob], fileName, {type: blob.type, lastModified:new Date()});
 
                             console.log(file);
 
