@@ -8,16 +8,24 @@ a.notification-btn {
   margin-right: 1rem;
 }
 
-a.notification-btn>svg:hover {
-  fill: #0045b4;
+a.notification-btn:hover {
+  background-color: rgb(227, 227, 227);
 }
 
-button.avatar-btn>svg:hover {
-  fill: #0045b4;
+a.notification-btn>span {
+  background-color: rgb(96, 96, 96);
+}
+
+button.avatar-btn:hover {
+  background-color: rgb(227, 227, 227);
 }
 
 .dropdown {
   display: inline;
+}
+
+#avatarPhoto {
+  border-radius: 200px;
 }
 
 @media screen and (max-width: 480px) {

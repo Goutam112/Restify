@@ -47,7 +47,7 @@ export default function Register() {
           window.location.replace("/login");
         }
       })
-      .catch((err) => console.log("Register API ERROR:", err));
+      .catch((err) => console.error("Register API ERROR:", err));
   }
 
   return (

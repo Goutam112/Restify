@@ -1,6 +1,6 @@
 .card.property {
   width: 200px;
-  margin-bottom: 20px;
+  margin: 10px 12px;
 }
 
 .property img {
@@ -28,6 +28,6 @@
 @media screen and (max-width: 480px) {
   .card.property {
     width: 300px;
-    margin-bottom: 20px;
+    margin: 10px 0;
   }
 }
