@@ -564,7 +564,7 @@ export const PropertyViewModal = ({onSubmit}) => {
 export const PropertyCommentAdd = () => {
     return <>
         <div>
-            <h5>You stayed at this property before.</h5>
+            <h5>Your reservation at this property was completed or terminated.</h5>
             <div className="mb-2">Care to share your thoughts?</div>
             <button type="button" className="btn btn-warning border shadow" data-bs-toggle="modal"
                 data-bs-target="#createComment">Rate Your Experience</button>
