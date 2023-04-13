@@ -135,7 +135,7 @@ export default function RentalUnitRow({propertyID, propertyName, location, prope
     
     let row = (
         <tr>
-            <RentalUnitImgAndName propertyViewPath={"/csc309-restify/views/properties/property_view_host.html"} imgPath={imgPath} propertyName={propertyName} />
+            <RentalUnitImgAndName propertyViewPath={`/properties/view/${propertyID}`} imgPath={imgPath} propertyName={propertyName} />
             <RentalUnitLocation location={location}/>
             <RentalUnitThreeDots propertyID={propertyID} />
         </tr>

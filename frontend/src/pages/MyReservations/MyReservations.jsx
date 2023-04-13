@@ -9,7 +9,7 @@ import '../../assets/app.css'
 
 import './style.css';
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import Header from '../../layouts/Header'
 import Footer from '../../layouts/Footer'
@@ -91,6 +91,7 @@ function OutgoingTable() {
             imgPath={propertyImage}
             name={propertyName}
             reservationID={reservationID}
+            propertyID={propertyID}
             address={propertyLocation}
             status={reservationStatus}
             startDate={reservationStartDate}
@@ -346,7 +347,7 @@ function IncomingActionComponent({reservationID, status, setStatus}) {
     return <IncomingApproveDenyButtons reservationID={reservationID} status={status} setStatus={setStatus}></IncomingApproveDenyButtons>
 }
 
-function IncomingReservationRow({name, reservationID, imgPath, address, status, startDate, endDate, reserverName, reserverPicture}) {
+function IncomingReservationRow({name, reservationID, propertyID, reserverID, imgPath, address, status, startDate, endDate, reserverName, reserverPicture}) {
     let statusStyle = "bg-primary";
 
     let [currentStatus, setCurrentStatus] = useState(status);
@@ -381,23 +382,23 @@ function IncomingReservationRow({name, reservationID, imgPath, address, status, 
             <tr class="reservation-row">
                 <td>
                     <div>
-                        <a href="/csc309-restify/views/properties/property_view.html" class="no-decor">
+                        <Link to={`/properties/view/${propertyID}`} class="no-decor">
                             <img src={imgPath}
                                 class="reservation-img img-fluid" />
                             <p class="ms-2 text-nowrap d-inline reservation-row">{name}</p>
-                        </a>
+                        </Link>
                     </div>
                 </td>
                 <td>
                     {address}
                 </td>
                 <td class="text-center">
-                    <a href="/csc309-restify/views/users/profile_view_host.html" class="no-decor">
+                    <Link to={`/accounts/profile/view/${reserverID}`} class="no-decor">
                         <img class="reserver-avatar"
                             src={reserverPicture}
                             className="reservation-img img-fluid" />
                         <p class="ms-2 text-nowrap d-inline reservation-row">{reserverName}</p>
-                    </a>
+                    </Link>
                 </td>
                 <td>
                     <span className={locationClass}>{currentStatus}</span>
@@ -418,7 +419,7 @@ function IncomingReservationRow({name, reservationID, imgPath, address, status, 
     }
 }
 
-function ReservationRow({name, outgoingOrIncoming, reservationID, imgPath, address, status, startDate, endDate}) {
+function ReservationRow({name, outgoingOrIncoming, reservationID, propertyID, imgPath, address, status, startDate, endDate}) {
 
     let statusStyle = "bg-primary";
 
@@ -456,14 +457,15 @@ function ReservationRow({name, outgoingOrIncoming, reservationID, imgPath, addre
 
     if (currentStatus.toLowerCase() === filteredStatus.toLowerCase() || filteredStatus.toLowerCase() === "no status filtered") {
         return (
+            <>
             <tr class="reservation-row">
                 <td>
                     <div>
-                        <a href="/csc309-restify/views/properties/property_view.html" class="no-decor">
+                        <Link to={`/properties/view/${propertyID}`} class="no-decor">
                             <img src={imgPath}
                                 class="reservation-img img-fluid" />
                             <p class="ms-2 text-nowrap d-inline reservation-row">{name}</p>
-                        </a>
+                        </Link>
                     </div>
                 </td>
                 <td>
@@ -482,6 +484,7 @@ function ReservationRow({name, outgoingOrIncoming, reservationID, imgPath, addre
                     {ActionComponent}
                 </td>
             </tr>
+            </>
         );
     } else {
         return <div></div>
@@ -601,6 +604,7 @@ function IncomingTable() {
 
         let reserverName = incomingReservationDict.reserver.first_name + " " + incomingReservationDict.reserver.last_name;
         let reserverPicture = incomingReservationDict.reserver.avatar;
+        let reserverID = incomingReservationDict.reserver.id;
 
 
         let propertyName = propertyDict.name;
@@ -613,6 +617,8 @@ function IncomingTable() {
             imgPath={propertyImage}
             name={propertyName}
             reservationID={reservationID}
+            propertyID={propertyID}
+            reserverID={reserverID}
             address={propertyLocation}
             status={reservationStatus}
             startDate={reservationStartDate}
@@ -693,8 +699,6 @@ async function loadReservations(outgoingReservations, setOutgoingReservations, i
                 setNumIncomingPages(Math.ceil(parseInt(json.count) / 3));
 
             }
-            console.log("NUM PAGES: ");
-            console.log(Math.ceil(parseInt(json.count) / 3));
             if (type === "outgoing") {
                 setOutgoingReservations(json.results);
             } else {

@@ -45,7 +45,7 @@ async function getRentalUnitsFromBackend(page, setNumPages) {
         }
         let json = await response.json();
 
-        setNumPages(Math.ceil(json.count / 3));
+        setNumPages(Math.ceil(json.count / 8));
 
         return json.results;
     } catch (error) {
@@ -175,7 +175,6 @@ export default function MyRentalUnits() {
 
         return (
             <body>
-                {/* <MyRentalUnitsHeader /> */}
                 <main className="card d-block">
                     <Header></Header>
                     <div className="container">
@@ -185,20 +184,10 @@ export default function MyRentalUnits() {
                                     <tr>
                                         <th>Rental Unit</th>
                                         <th>Location</th>
-                                        {/* <th>Status</th> */}
                                     </tr>
                                 </thead>
                                 <tbody className="table-group-divider">
-                                    <CreatePropertyRedirectButton></CreatePropertyRedirectButton>
-                                    <tr>
-                                        <td colSpan="4" className="text-center">
-                                            <div className="align-middle">
-                                                <a href="/csc309-restify/views/properties/property_create.html">
-                                                    <i className="fs-2 bi bi-plus-square"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <CreatePropertyRedirectButton />
                                     <MyRentalUnitsContext.Provider value={{rentalUnits, setRentalUnits}}>
                                         {rows}
                                     </MyRentalUnitsContext.Provider>
