@@ -102,12 +102,12 @@ export default function Header() {
                     aria-labelledby="dropdownMenuButton"
                   >
                     <li>
-                      <a
+                      <Link
                         className="dropdown-item"
-                        href="/csc309-restify/views/users/profile_view.html"
+                        to={`/accounts/profile/view/${currentUser.id}`}
                       >
                         My profile
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <Link
