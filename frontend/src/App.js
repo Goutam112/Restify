@@ -7,8 +7,6 @@ import MyReservations from './pages/MyReservations/MyReservations';
 import ViewProfile from './pages/Profile/viewProfile';
 import EditProfile from './pages/Profile/editProfile';
 import { ViewProperty } from './pages/ViewProperty/viewProperty';
-
-// ####### HAVEN'T MADE THESE PAGES YET #######
 import Home from './pages/Home';
 import NotificationsPage from './pages/NotificationsPage';
 import Login from './pages/Login';
@@ -24,17 +22,17 @@ function App () {
           <Route path='register' element={ <Register /> } />
           <Route path='notifications' element={ <NotificationsPage /> } />
           <Route path='accounts'>
-            <Route path='profile/view/:userID' element={<ViewProfile />} />
-            <Route path='profile/edit' element={<EditProfile />} />
+            <Route path='profile/view/:userID' element={ <ViewProfile /> } />
+            <Route path='profile/edit' element={ <EditProfile /> } />
           </Route>
           <Route path='properties'>
-            <Route index element={<MyRentalUnits></MyRentalUnits>}></Route>
-            <Route path='create' element={<CreateProperty />} /> 
-            <Route path='update/:propertyID' element={<UpdateProperty />} />
-            <Route path='view/:propertyID' element={<ViewProperty />} />
+            <Route index element={ <MyRentalUnits></MyRentalUnits> }></Route>
+            <Route path='create' element={ <CreateProperty /> } />
+            <Route path='update/:propertyID' element={ <UpdateProperty /> } />
+            <Route path='view/:propertyID' element={ <ViewProperty /> } />
           </Route>
           <Route path='reservations'>
-            <Route path='retrieve/all' element={<MyReservations></MyReservations>}></Route>
+            <Route path='retrieve/all' element={ <MyReservations></MyReservations> }></Route>
           </Route>
         </Route>
       </Routes>
