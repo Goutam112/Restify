@@ -4,9 +4,9 @@ import CreateProperty from './pages/CreateProperty/CreateProperty';
 import MyRentalUnits from './pages/MyRentalUnits/MyRentalUnits';
 import UpdateProperty from './pages/UpdateProperty/UpdateProperty';
 import MyReservations from './pages/MyReservations/MyReservations';
-import ViewProfile from './accounts/pages/viewProfile';
-import EditProfile from './accounts/pages/editProfile';
-import { ViewProperty } from './properties/pages/viewProperty';
+import ViewProfile from './pages/Profile/viewProfile';
+import EditProfile from './pages/Profile/editProfile';
+import { ViewProperty } from './pages/ViewProperty/viewProperty';
 
 // ####### HAVEN'T MADE THESE PAGES YET #######
 import Home from './pages/Home';

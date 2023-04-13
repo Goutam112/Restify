@@ -15,7 +15,7 @@ export const PropertyTitle = ({title, avgRating, numRatings}) => {
                         d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                 </svg>
                 <span className="">{parseFloat(avgRating).toFixed(2)} </span>
-                <a className="" href="#ratings-section">({numRatings} Reviews)</a>
+                <a className="" href="#ratings-section">({numRatings} {numRatings === 1 ? "Review" : "Reviews"})</a>
             </div>
         </>
     );
@@ -541,7 +541,7 @@ export const PropertyCommentAddModal = ({propertyID, comments, setComments}) => 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/JSON',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMzY5MDk5LCJpYXQiOjE2ODEyODI2OTksImp0aSI6IjFhZDQ1NzM2NTU2YzRlZTQ5Mzk2Nzc0NTU2ZGIyNDY1IiwidXNlcl9pZCI6OX0.S1egICRCIjIK2p4hwHWYTPWPlz1aPg61az-EzPi0kPc'
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 'content': content,
@@ -605,7 +605,7 @@ export const PropertyReplyModal = ({propertyID, replyToID, comments, setComments
             method: 'POST',
             headers: {
                 'Content-Type': 'application/JSON',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMzY2NjcyLCJpYXQiOjE2ODEyODAyNzIsImp0aSI6IjlmYzhjYmJhMmNiNDQ1MDdiODU0OTg3NDNlNDQ1MmZkIiwidXNlcl9pZCI6MX0.lBR7IMx9zgCrrK6jaGaeCF3YvdTCNFs3uO88GETfe7A'
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 'content': content,

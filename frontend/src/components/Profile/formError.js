@@ -1,4 +1,4 @@
-import '../pages/error.css';
+import '../../pages/Profile/error.css';
 
 export const FormError = ({errorMsg}) => {
     if (errorMsg !== null && errorMsg !== "") {

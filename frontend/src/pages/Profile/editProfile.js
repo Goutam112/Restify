@@ -1,10 +1,12 @@
-import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../components/profileWrite';
+import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../../components/Profile/profileWrite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../layouts/Header';
+import Footer from '../../layouts/Footer';
 
 import '../../assets/app.css';
 import './profile.css';
-import { FormError } from '../components/formError';
+import { FormError } from '../../components/Profile/formError';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -88,6 +90,7 @@ const EditProfile = () => {
     }, []);
 
     return <>
+        <Header />
         <main className="card d-block">
             <h1 className="mb-3">Profile</h1>
             <form className="p-3 mb-4 border border-3 rounded shadow-sm" id="editForm" onSubmit={e => handleSubmit(e)}>
@@ -108,6 +111,7 @@ const EditProfile = () => {
             </form>
             <button type="submit" className="btn btn-outline-primary mb-3" form="editForm">Save</button>
         </main>
+        <Footer />
     </>
 }
 

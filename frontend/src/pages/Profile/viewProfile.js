@@ -1,10 +1,12 @@
-import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../components/profileReadOnly';
+import { ProfileName, ProfileEmail, ProfilePhone, ProfileImage } from '../../components/Profile/profileReadOnly';
 import { useEffect, useState } from 'react';
+import Header from '../../layouts/Header';
+import Footer from '../../layouts/Footer';
 
 import '../../assets/app.css';
 import './profile.css';
 import { Link, useParams } from 'react-router-dom';
-import { ProfileComment, ProfileCommentModal } from '../components/profileComment';
+import { ProfileComment, ProfileCommentModal } from '../../components/Profile/profileComment';
 
 const ViewProfile = () => {
     const { userID } = useParams();
@@ -138,6 +140,7 @@ const ViewProfile = () => {
     );
 
     return <>
+        <Header />
         <ProfileCommentModal userID={userID} comments={comments} setComments={setComments} />
         <main className="card d-block">
             <h1 className="mb-3">Profile</h1>
@@ -159,6 +162,7 @@ const ViewProfile = () => {
                 commentSection
             }
         </main>
+        <Footer />
     </>
 }
 

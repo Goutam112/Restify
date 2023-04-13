@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { PropertyAmenities, PropertyBookings, PropertyCommentAdd, PropertyCommentAddModal, PropertyComments, PropertyDescription, PropertyHostInfo, PropertyImageCarousel, PropertyInfoPanel, PropertyReplyModal, PropertyTitle, PropertyViewModal, ReservationSubmission } from "../components/property";
+import { PropertyAmenities, PropertyBookings, PropertyCommentAdd, PropertyCommentAddModal, PropertyComments, PropertyDescription, PropertyHostInfo, PropertyImageCarousel, PropertyInfoPanel, PropertyReplyModal, PropertyTitle, PropertyViewModal, ReservationSubmission } from "../../components/ViewProperty/property";
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import Header from '../../layouts/Header';
+import Footer from '../../layouts/Footer';
 import $ from 'jquery';
 
 import '../../assets/app.css';
@@ -88,9 +90,7 @@ export const ViewProperty = () => {
         console.log(json)
         setPropertyInfo(json);
 
-        const hostResponse = await fetch(`http://localhost:8000/accounts/profile/view/${json.owner}`);
-        const hostJson = await hostResponse.json();
-        setHost(hostJson);
+        setHost(json.owner);
     }
 
     const fetchComments = async () => {
@@ -275,6 +275,7 @@ export const ViewProperty = () => {
         request.then(response => {
             if (!response.ok) {
                 response.json().then(json => {
+                    console.log(JSON.stringify(json));
                     setSubmitError(json.non_field_errors);
                     $('.btn-close').trigger('click');
                 });
@@ -282,6 +283,7 @@ export const ViewProperty = () => {
                 response.json().then(json => {
                     console.log(JSON.stringify(json));
                 });
+                $('.btn-close').trigger('click');
                 navigate(`/reservations/retrieve/all/`);
             }
         });
@@ -296,10 +298,14 @@ export const ViewProperty = () => {
     }
 
     return <>
+        <Header />
         <PropertyViewModal onSubmit={e => {submitReservation(e)}}/>
         <PropertyCommentAddModal propertyID={propertyID} comments={comments} setComments={setComments} />
         <PropertyReplyModal propertyID={propertyID} replyToID={replyID} comments={comments} setComments={setComments}/>
         <main className="card d-block">
+            {
+                user?.id === host.id ? <Link class="btn btn-outline-danger shadow-sm mb-2" to={`/properties/update/${propertyID}`}>Edit Details</Link> : <></>
+            }
             <PropertyTitle title={propertyInfo.name} avgRating={avgRating} numRatings={numRatings}/>
             <PropertyImageCarousel imgUrls={propertyInfo.property_images.map(json => json.image)} />
             <PropertyInfoPanel numGuests={propertyInfo.max_num_guests} numBeds={propertyInfo.num_beds} numBaths={propertyInfo.num_baths} />
@@ -317,5 +323,6 @@ export const ViewProperty = () => {
             <ReservationSubmission disabled={startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY" || endDate.month === "MM" || endDate.day === "DD"} 
                 error={submitError} />
         </main>
+        <Footer />
     </>;
 }
