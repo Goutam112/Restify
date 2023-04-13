@@ -26,6 +26,7 @@ button.avatar-btn:hover {
 
 #avatarPhoto {
   border-radius: 200px;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 480px) {

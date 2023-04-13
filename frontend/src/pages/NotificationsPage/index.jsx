@@ -38,13 +38,18 @@ export default function NotificationsPage() {
     <>
       <Header />
       <main className="card d-block" id="notificationsPage">
-        <h4>Notifications</h4>
+        <h3>Notifications</h3>
         <div className="notifications-list-new list-group">
-          {notificationList &&
+          {notificationList.length > 0 &&
             notificationList.map(function (notification, i) {
               return <Notification key={i} notification={notification} />;
             })}
         </div>
+        {notificationList.length === 0 && (
+          <h5 className="m-5 text-center text-muted">
+            You have no notifications!
+          </h5>
+        )}
         <div className="d-flex flex-column justify-content-center paginator-custom">
           <p>
             Page: <b>{page}</b>

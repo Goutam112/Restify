@@ -11,28 +11,25 @@ export default function Register() {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [avatarFile, setAvatarFile] = useState("");
 
   function handleRegister(event) {
-    const body = {
-      email: email,
-      first_name: firstName,
-      last_name: lastName,
-      password: password1,
-      repeat_password: password2,
-      phone_number: phoneNum,
-    };
-    if (avatar !== "") {
-      body.avatar = avatar;
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("password", password1);
+    formData.append("repeat_password", password2);
+    formData.append("phone_number", phoneNum);
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
     }
     event.preventDefault();
     fetch("http://localhost:8000/accounts/signup/", {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(body),
+      body: formData,
     })
       .then((res) => {
-        console.log("res", res);
         return res.json();
       })
       .then((data) => {
@@ -134,10 +131,10 @@ export default function Register() {
             <div className="form-floating">
               <input
                 type="file"
+                accept=".png, .jpg, .jpeg"
                 className="form-control"
                 id="inputProfile"
-                value={avatar}
-                onChange={(event) => setAvatar(event.target.value)}
+                onChange={(event) => setAvatarFile(event.target.files[0])}
               />
               <label htmlFor="inputProfile">Profile Picture (optional)</label>
             </div>

@@ -966,7 +966,11 @@ export default function UpdateProperty() {
                         <PropertyDescription></PropertyDescription>
                         {/* <PropertyImages propertyImageComponents={propertyImageComponents} setPropertyImageComponents={setPropertyImageComponents}></PropertyImages> */}
                         {/* {propertyImageComponents} */}
-                        <PropertyImages></PropertyImages>
+                        <div class="mb-3">
+                            <div class="d-flex flex-wrap flex-row justify-content-evenly">
+                                <PropertyImages></PropertyImages>
+                            </div>
+                        </div>
                         <NumGuestsSlider></NumGuestsSlider>
                         <NumBedsSlider></NumBedsSlider>
                         <NumBathsSlider></NumBathsSlider>

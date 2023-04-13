@@ -74,7 +74,7 @@ async function deleteRentalUnit(propertyID, deletePropertyPath, rentalUnits, set
         let response = await fetch(deletePropertyPath,
             {
                 method: "DELETE",
-                headers: new Headers({'Authorization': `${localStorage.getItem("authorizationToken")}`}),
+                headers: new Headers({'Authorization': `Bearer ${localStorage.getItem("token")}`}),
             });
             // rentalUnits.splice(rentalUnits.indexOf(rentalUnitToDelete), 1)
             // Physically update rentalUnits to cause its useEffect dependency to update in MyRentalUnits.jsx
