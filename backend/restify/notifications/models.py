@@ -10,6 +10,7 @@ CONTENT = [
     ('GUEST', (
         ('guest_approved_reservation', 'Approved reservation'),
         ('guest_cancellation_request', 'Cancellation Request'),
+        ('guest_upcoming_reservation', 'Upcoming Reservation'),
     )),
 ]
 class Notification(models.Model):

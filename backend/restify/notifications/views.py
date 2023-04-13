@@ -18,7 +18,7 @@ class ListNotifications(ListAPIView):
         user = self.request.user
         if not user.is_authenticated:
             raise AuthenticationFailed(detail="Login required", code=401)
-        return Notification.objects.all().filter(receiver=user)
+        return Notification.objects.all().filter(receiver=user).order_by('-created_when')
     
 class ReadNotification(RetrieveAPIView):
     serializer_class = NotificationSerializer
