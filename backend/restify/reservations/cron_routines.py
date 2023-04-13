@@ -11,9 +11,9 @@ from restify import settings
 
 
 def check_for_upcoming_reservations():
-    reservations_to_notify = Reservation.objects.filter(start_date=(timezone.now().date() + datetime.timedelta(days=1)))
+    reservations_to_notify = Reservation.objects.filter(status__iexact=Status.APPROVED, start_date=(timezone.now().date() + datetime.timedelta(days=1)))
     for reservation in reservations_to_notify:
-        Notification.objects.create(content="guest_approved_reservation", receiver=reservation.reserver)
+        Notification.objects.create(content="guest_upcoming_reservation", receiver=reservation.reserver)
         print("Notification sent")
 
 
@@ -43,7 +43,7 @@ def run():
 
     scheduler.add_job(
         check_for_upcoming_reservations,
-        trigger=CronTrigger(second="*/8"),
+        trigger=CronTrigger(second="*/30"),
         id="check_for_upcoming_reservations",
         max_instances=1,
         replace_existing=True,
