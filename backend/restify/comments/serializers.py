@@ -85,6 +85,7 @@ class PropertyReviewCreationSerializer(serializers.ModelSerializer):
 
         commenter_completed_or_terminated_property = Reservation.objects.filter(
             reserver=commenter,
+            subject_id=property_id,
             status__in=[Status.COMPLETED, Status.TERMINATED]
         ).exists()
 
