@@ -26,83 +26,23 @@ function RentalUnitLocation({location}) {
 }
 
 
-// function RentalUnitStatus() {
-//     return (
-//     <td>
-//         <span className="badge rounded-pill bg-success">Reserved</span>
-//     </td>
-//     );
-// }
-
 function EditButton({propertyEditPath}) {
     return (
         <Link className="rounded-top dropdown-item" to={propertyEditPath}>Edit this property</Link>
     );
 }
 
-// function DeletionMsg() {
-//     return (<div className="modal fade" id="deletion-modal" tabindex="-1" aria-labelledby="deletion-modal-label" aria-hidden="true">
-//         <div className="modal-dialog">
-//             <div className="modal-content">
-//                 <div className="modal-header">
-//                     <h1 className="modal-title fs-5" id="deletion-modal-label">Confirm the deletion of this unit</h1>
-//                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//                 </div>
-//                 <div className="modal-body">
-//                     Are you sure you want to delete this unit? Warning: You cannot undo this operation.
-//                 </div>
-//                 <div className="modal-footer">
-//                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Nevermind</button>
-//                     <button type="button" class="btn btn-danger">Yes, please proceed</button>
-//                 </div>
-//             </div>
-//         </div>
-//     </div>
-//     );
-// }
-
-async function deleteRentalUnit(propertyID, deletePropertyPath, rentalUnits, setRentalUnits) {
-    // propertyID will later be used to delete the property from our state
-
-    let rentalUnitToDelete = rentalUnits.find(
-        (rentalUnit) => {
-            return rentalUnit.id === propertyID
-        }
-    );
-
-    try {
-        let response = await fetch(deletePropertyPath,
-            {
-                method: "DELETE",
-                headers: new Headers({'Authorization': `Bearer ${localStorage.getItem("token")}`}),
-            });
-            // rentalUnits.splice(rentalUnits.indexOf(rentalUnitToDelete), 1)
-            // Physically update rentalUnits to cause its useEffect dependency to update in MyRentalUnits.jsx
-            // Note: Mutating an array does NOT cause useEffect dependecies to update
-            // and this is true for ANY mutating operation.
-        if (!response.ok) {
-            console.log("Error while trying to delete a property");
-        } else {
-            // Delete our local copy of the property
-            setRentalUnits(rentalUnits.filter((rentalUnit) => rentalUnit !== rentalUnitToDelete));
-            console.log(JSON.stringify(rentalUnits));
-            console.log(rentalUnits.length);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-function DeleteButton({propertyID, deletePropertyPath}) {
+function DeleteButton({propertyID, setTargetReservationID}) {
     let {rentalUnits, setRentalUnits} = useContext(MyRentalUnitsContext)
     {/* We have to manually make this Delete button darken upon hover because buttons need extra work to match the styling of dropdown-item */}
     return (
-    // <button type="button" className="rounded-bottom dropdown-item delete-btn text-light" data-bs-toggle="modal" data-bs-target="#deletion-modal">
-    <button type="button" onClick={() => deleteRentalUnit(propertyID, deletePropertyPath, rentalUnits, setRentalUnits)} className="rounded-bottom dropdown-item delete-btn text-light">Delete</button>
+        <button type="button" onClick={() => {
+            setTargetReservationID(propertyID);
+        }} data-bs-toggle="modal" data-bs-target="#deletion-modal" className="rounded-bottom dropdown-item delete-btn text-light">Delete</button>
     );
 }
 
-function RentalUnitThreeDots({propertyID}) {
+function RentalUnitThreeDots({propertyID, setTargetReservationID}) {
 
     console.log(`http://localhost:3000/properties/update/${propertyID}/`)
 
@@ -119,7 +59,7 @@ function RentalUnitThreeDots({propertyID}) {
                         <EditButton propertyEditPath={`http://localhost:3000/properties/update/${propertyID}/`}/>
                     </li>
                     <li>
-                        <DeleteButton propertyID={propertyID} deletePropertyPath={`http://localhost:8000/properties/delete/${propertyID}/`}></DeleteButton>
+                        <DeleteButton propertyID={propertyID} setTargetReservationID={setTargetReservationID}></DeleteButton>
                     </li>
                 </ul>
             </div>
@@ -127,7 +67,7 @@ function RentalUnitThreeDots({propertyID}) {
     )
 }
 
-export default function RentalUnitRow({propertyID, propertyName, location, propertyViewPath, imgPath}) {
+export default function RentalUnitRow({propertyID, propertyName, location, propertyViewPath, imgPath, setTargetReservationID}) {
 
     // console.log(`Rental units: ${rentalUnits}`)
 
@@ -137,7 +77,7 @@ export default function RentalUnitRow({propertyID, propertyName, location, prope
         <tr>
             <RentalUnitImgAndName propertyViewPath={`/properties/view/${propertyID}`} imgPath={imgPath} propertyName={propertyName} />
             <RentalUnitLocation location={location}/>
-            <RentalUnitThreeDots propertyID={propertyID} />
+            <RentalUnitThreeDots propertyID={propertyID} setTargetReservationID={setTargetReservationID} />
         </tr>
     );
 

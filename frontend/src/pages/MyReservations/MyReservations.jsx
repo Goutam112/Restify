@@ -152,33 +152,43 @@ function ThreeDots() {
 
 function RequestCancelReservationButton({reservationID, status, setStatus}) {
 
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
     let buttonText = status === ReservationStatus.PENDING ? "Cancel" : "Request to Cancel";
+
+    const handleCancel = () => {
+        let request = fetch(`http://localhost:8000/reservations/req_cancellation/${reservationID}/`,
+                        {
+                            method: "PUT",
+                            headers: headers
+                        });
+            request.then((response) => {
+                if (response.ok) {
+                    if (status === ReservationStatus.PENDING) {
+                        setStatus(ReservationStatus.CANCELLED);
+                    } else { // Status must be APPROVED
+                        setStatus(ReservationStatus.CANCELLATIONREQUESTED);
+                    }
+                } else {
+                    response.json().then((json) => console.log(json));
+                }
+            });
+        };
+
+    const message = "Are you sure that you want to cancel this reservation? Note that if it's already approved, the host must approve your cancellation request."
 
     return (
         <ul class="rounded p-0 dropdown-menu">
             <li>
                 {/* <!-- We have to manually make the terminate button darken upon hover because buttons need extra work to match the styling of dropdown-item --> */}
-                <button type="button"
-                    class="rounded dropdown-item delete-btn text-light"
-
-                    onClick={(event) => {
-                        let request = fetch(`http://localhost:8000/reservations/req_cancellation/${reservationID}/`,
-                        {
-                            method: "PUT",
-                            headers: headers
-                        });
-                        request.then((response) => {
-                            if (response.ok) {
-                                if (status === ReservationStatus.PENDING) {
-                                    setStatus(ReservationStatus.CANCELLED);
-                                } else { // Status must be APPROVED
-                                    setStatus(ReservationStatus.CANCELLATIONREQUESTED)
-                                }
-                            } else {
-                                response.json().then((json) => console.log(json));
-                            }
-                        })}
-                    }>
+                <button class="rounded dropdown-item delete-btn text-light" onClick={(event) => {
+                    // handleCancel;
+                    setHandleRequest(() => handleCancel);
+                    setStatusMessage(message);
+                    console.log(`Current status set to: ${status}`)
+                    
+                }} type="button" data-bs-toggle="modal" data-bs-target="#status-modal">
                     {buttonText}
                 </button>
             </li>
@@ -198,11 +208,41 @@ function OutgoingActionComponent({reservationID, status, setStatus}) {
     }
 }
 
+function StatusMsgModal() {
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+    
+    return (<div className="modal fade" id="status-modal" tabindex="-1">
+        <div className="modal-dialog">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h1 className="modal-title fs-5">Confirm reservation action</h1>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                    {statusMessage}
+                </div>
+                <div className="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nevermind</button>
+                    <button type="button" data-bs-dismiss="modal" onClick={(event) => {
+                        handleRequest();
+                    }}
+                    class="btn btn-primary">Yes, please proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    );
+
+}
+
 function DenyReservationButton({reservationID, setStatus}) {
-    return (
-        <button type="button" class="btn rounded btn-sm delete-btn text-light"
-            onClick={(event) => {
-                let request = fetch(`http://localhost:8000/reservations/deny/${reservationID}/`,
+
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
+    const denyReservation = () => {
+        let request = fetch(`http://localhost:8000/reservations/deny/${reservationID}/`,
                 {
                     method: "PUT",
                     headers: headers
@@ -213,7 +253,15 @@ function DenyReservationButton({reservationID, setStatus}) {
                         setStatus(ReservationStatus.DENIED);
                     }
                 });
-                
+    };
+
+    const message = "Are you sure you want to DENY this reservation request?"
+
+    return (
+        <button type="button" class="btn rounded btn-sm delete-btn text-light" data-bs-toggle="modal" data-bs-target="#status-modal"
+            onClick={(event) => {
+                setHandleRequest(() => denyReservation);
+                setStatusMessage(message);
             }}>
             &#128473;
             </button>
@@ -221,10 +269,12 @@ function DenyReservationButton({reservationID, setStatus}) {
 }
 
 function ApproveReservationButton({reservationID, setStatus}) {
-    return (
-        <button type="button" class="btn rounded btn-sm approve-btn text-light"
-            onClick={(event) => {
-                let request = fetch(`http://localhost:8000/reservations/approve/${reservationID}/`,
+
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
+    const approveReservation = () => {
+        let request = fetch(`http://localhost:8000/reservations/approve/${reservationID}/`,
                 {
                     method: "PUT",
                     headers: headers
@@ -235,6 +285,15 @@ function ApproveReservationButton({reservationID, setStatus}) {
                         setStatus(ReservationStatus.APPROVED);
                     }
                 });
+    };
+
+    const message = "Are you sure you want to APPROVE this reservation request?"
+
+    return (
+        <button type="button" class="btn rounded btn-sm approve-btn text-light" data-bs-toggle="modal" data-bs-target="#status-modal"
+            onClick={(event) => {
+                setHandleRequest(() => approveReservation);
+                setStatusMessage(message);
                 
             }}>
             &#10003;
@@ -243,10 +302,12 @@ function ApproveReservationButton({reservationID, setStatus}) {
 }
 
 function TerminateReservationButton({reservationID, setStatus}) {
-    return (
-        <button type="button" class="btn rounded btn-sm delete-btn text-light"
-            onClick={(event) => {
-                let request = fetch(`http://localhost:8000/reservations/terminate/${reservationID}/`,
+
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
+    const terminateReservation = () => {
+        let request = fetch(`http://localhost:8000/reservations/terminate/${reservationID}/`,
                 {
                     method: "PUT",
                     headers: headers
@@ -257,6 +318,15 @@ function TerminateReservationButton({reservationID, setStatus}) {
                         setStatus(ReservationStatus.TERMINATED);
                     }
                 });
+    };
+
+    const message = "Are you sure you want to TERMINATE this reservation request?"
+
+    return (
+        <button type="button" class="btn rounded btn-sm delete-btn text-light" data-bs-toggle="modal" data-bs-target="#status-modal"
+            onClick={(event) => {
+                setHandleRequest(() => terminateReservation);
+                setStatusMessage(message);
                 
             }}>
             &#128473;
@@ -265,10 +335,12 @@ function TerminateReservationButton({reservationID, setStatus}) {
 }
 
 function DenyCancellationButton({reservationID, setStatus}) {
-    return (
-        <button type="button" class="btn rounded btn-sm delete-btn text-light"
-            onClick={(event) => {
-                let request = fetch(`http://localhost:8000/reservations/deny_cancellation_req/${reservationID}/`,
+
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
+    const denyCancellationReservation = () => {
+        let request = fetch(`http://localhost:8000/reservations/deny_cancellation_req/${reservationID}/`,
                 {
                     method: "PUT",
                     headers: headers
@@ -279,6 +351,16 @@ function DenyCancellationButton({reservationID, setStatus}) {
                         setStatus(ReservationStatus.APPROVED);
                     }
                 });
+    };
+
+    const message = "Are you sure you want to DENY this cancellation request?"
+
+    
+    return (
+        <button type="button" class="btn rounded btn-sm delete-btn text-light" data-bs-toggle="modal" data-bs-target="#status-modal"
+            onClick={(event) => {
+                setHandleRequest(() => denyCancellationReservation);
+                setStatusMessage(message);
                 
             }}>
             &#128473;
@@ -287,10 +369,12 @@ function DenyCancellationButton({reservationID, setStatus}) {
 }
 
 function ApproveCancellationButton({reservationID, setStatus}) {
-    return (
-        <button type="button" class="btn rounded btn-sm approve-btn text-light"
-            onClick={(event) => {
-                let request = fetch(`http://localhost:8000/reservations/cancel/${reservationID}/`,
+
+    let [handleRequest, setHandleRequest] = useContext(MyReservationsContext).handleRequest;
+    let [statusMessage, setStatusMessage] = useContext(MyReservationsContext).statusMessage;
+
+    const approveCancellationReservation = () => {
+        let request = fetch(`http://localhost:8000/reservations/cancel/${reservationID}/`,
                 {
                     method: "PUT",
                     headers: headers
@@ -301,6 +385,15 @@ function ApproveCancellationButton({reservationID, setStatus}) {
                         setStatus(ReservationStatus.CANCELLED);
                     }
                 });
+    };
+
+    const message = "Are you sure you want to APPROVE this cancellation request?"
+
+    return (
+        <button type="button" class="btn rounded btn-sm approve-btn text-light" data-bs-toggle="modal" data-bs-target="#status-modal"
+            onClick={(event) => {
+                setHandleRequest(() => approveCancellationReservation);
+                setStatusMessage(message);
                 
             }}>
             &#10003;
@@ -454,6 +547,8 @@ function ReservationRow({name, outgoingOrIncoming, reservationID, propertyID, im
         // TODO: IMPLEMENT THIS TO HAVE IncomingActionComponent
     }
 
+    console.log(`currentStatus: ${currentStatus}`);
+
 
     if (currentStatus.toLowerCase() === filteredStatus.toLowerCase() || filteredStatus.toLowerCase() === "no status filtered") {
         return (
@@ -491,57 +586,6 @@ function ReservationRow({name, outgoingOrIncoming, reservationID, propertyID, im
     }
 }
 
-function TestIncomingRow() {
-    return (
-        <tr class="reservation-row">
-            <td>
-                <div>
-                    <a href="/csc309-restify/views/properties/property_view_host.html" class="no-decor">
-                        <img src="/csc309-restify/resources/img/house.jpg"
-                            class="reservation-img img-fluid" />
-                        <p class="ms-2 text-nowrap d-inline reservation-row">Property 1</p>
-                    </a>
-                </div>
-            </td>
-            <td>
-                123 Random Street, Boring, Oregon, USA
-            </td>
-            <td class="text-center">
-                <a href="/csc309-restify/views/users/profile_view_host.html" class="no-decor">
-                    <img class="reserver-avatar"
-                        src="https://vectorified.com/images/generic-avatar-icon-1.jpg"
-                        class="reservation-img img-fluid" />
-                    <p class="ms-2 text-nowrap d-inline reservation-row">Albert Einstein</p>
-                </a>
-            </td>
-            <td>
-                <span class="badge rounded-pill bg-secondary">Pending</span>
-            </td>
-            <td>
-                01/01/2023
-            </td>
-            <td>
-                02/01/2023
-            </td>
-            <td>
-                <div>
-                    <div>
-                        <button type="button" class="btn rounded btn-sm delete-btn text-light"
-                            data-bs-toggle="modal" data-bs-target="#deny-modal">
-                            &#128473;
-                        </button>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <button type="button" class="btn rounded btn-sm approve-btn text-light"
-                    data-bs-toggle="modal" data-bs-target="#accept-modal">
-                    &#10003;
-                </button>
-            </td>
-        </tr>
-    );
-}
 
 function Reservations({incomingOrOutgoing, setPage, numPages}) {
     if (incomingOrOutgoing === "outgoing") {
@@ -763,6 +807,10 @@ export default function MyReservations() {
 
     let [numIncomingPages, setNumIncomingPages] = useState(1);
 
+    let [handleRequest, setHandleRequest] = useState(undefined); // The function that should be called for a modal to change a status
+
+    let [statusMessage, setStatusMessage] = useState("");
+
     useEffect(() => {
         loadReservations(outgoingReservations, setOutgoingReservations, incomingReservations, setIncomingReservations, outgoingPage, incomingPage, setNumOutgoingPages, setNumIncomingPages, filteredStatus);
     }, []);
@@ -790,8 +838,12 @@ export default function MyReservations() {
                 outgoingReservations: [outgoingReservations, setOutgoingReservations],
                 outgoingReservationComponents: [outgoingReservationComponents, setOutgoingReservationComponents],
                 incomingReservations: [incomingReservations, setIncomingReservations],
-                filteredStatus: [filteredStatus, setFilteredStatus]
+                filteredStatus: [filteredStatus, setFilteredStatus],
+                handleRequest: [handleRequest, setHandleRequest],
+                statusMessage: [statusMessage, setStatusMessage]
             }}>
+                <StatusMsgModal></StatusMsgModal>
+
                 <NavigationTabs></NavigationTabs>
                 <Reservations incomingOrOutgoing={"outgoing"} setPage={setOutgoingPage} numPages={numOutgoingPages}></Reservations>
                 <Reservations incomingOrOutgoing={"incoming"} setPage={setIncomingPage} numPages={numIncomingPages}></Reservations>

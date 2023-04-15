@@ -1,4 +1,4 @@
-import { useEffect, useState, React, createContext } from "react"
+import { useEffect, useState, React, createContext, useContext } from "react"
 import { useNavigate } from 'react-router-dom'
 
 // import the global app CSS
@@ -54,7 +54,41 @@ async function getRentalUnitsFromBackend(page, setNumPages) {
     }
 }
 
-function DeletionMsg() {
+async function deleteRentalUnit(propertyID, deletePropertyPath, rentalUnits, setRentalUnits) {
+    // propertyID will later be used to delete the property from our state
+
+    let rentalUnitToDelete = rentalUnits.find(
+        (rentalUnit) => {
+            return rentalUnit.id === propertyID
+        }
+    );
+
+    try {
+        let response = await fetch(deletePropertyPath,
+            {
+                method: "DELETE",
+                headers: new Headers({'Authorization': `Bearer ${localStorage.getItem("token")}`}),
+            });
+            // rentalUnits.splice(rentalUnits.indexOf(rentalUnitToDelete), 1)
+            // Physically update rentalUnits to cause its useEffect dependency to update in MyRentalUnits.jsx
+            // Note: Mutating an array does NOT cause useEffect dependecies to update
+            // and this is true for ANY mutating operation.
+        if (!response.ok) {
+            console.log("Error while trying to delete a property");
+        } else {
+            // Delete our local copy of the property
+            setRentalUnits(rentalUnits.filter((rentalUnit) => rentalUnit !== rentalUnitToDelete));
+            console.log(JSON.stringify(rentalUnits));
+            console.log(rentalUnits.length);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function DeletionMsg({propertyID}) {
+    let deletePropertyPath = `http://localhost:8000/properties/delete/${propertyID}/`;
+    let {rentalUnits, setRentalUnits} = useContext(MyRentalUnitsContext);;
     return (<div className="modal fade" id="deletion-modal" tabindex="-1" aria-labelledby="deletion-modal-label" aria-hidden="true">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -67,7 +101,8 @@ function DeletionMsg() {
                 </div>
                 <div className="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Nevermind</button>
-                    <button type="button" class="btn btn-danger">Yes, please proceed</button>
+                    <button type="button" data-bs-dismiss="modal" onClick={() => deleteRentalUnit(propertyID, deletePropertyPath, rentalUnits, setRentalUnits)} 
+                    class="btn btn-danger">Yes, please proceed</button>
                 </div>
             </div>
         </div>
@@ -132,6 +167,8 @@ export default function MyRentalUnits() {
 
     const loginNavigate = useNavigate();
 
+    const [selectedPropertyID, setSelectedProperty] = useState(undefined);
+
     useEffect(() => {
         if (localStorage.getItem("token") === null) {
             loginNavigate("/login/");
@@ -166,7 +203,7 @@ export default function MyRentalUnits() {
 
         for (let rentalUnit of rentalUnits) {
             console.log(`ROW: ${rentalUnit}`)
-            newRows.push(<RentalUnitRow key={rentalUnit.id} propertyID={rentalUnit.id} location={rentalUnit.address} imgPath={rentalUnit.property_images[0].image} propertyName={rentalUnit.name}/>)
+            newRows.push(<RentalUnitRow key={rentalUnit.id} propertyID={rentalUnit.id} location={rentalUnit.address} imgPath={rentalUnit.property_images[0].image} propertyName={rentalUnit.name} setTargetReservationID={setSelectedProperty}/>)
         }
 
         setRows(newRows);
@@ -176,6 +213,7 @@ export default function MyRentalUnits() {
         return (
             <body>
                 <main className="card d-block">
+                
                     <Header></Header>
                     <div className="container">
                         <div className="table-responsive text-start overflow-auto">
@@ -189,6 +227,7 @@ export default function MyRentalUnits() {
                                 <tbody className="table-group-divider">
                                     <CreatePropertyRedirectButton />
                                     <MyRentalUnitsContext.Provider value={{rentalUnits, setRentalUnits}}>
+                                        <DeletionMsg propertyID={selectedPropertyID}></DeletionMsg>
                                         {rows}
                                     </MyRentalUnitsContext.Provider>
                                 </tbody>
