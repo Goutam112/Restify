@@ -335,7 +335,7 @@ export const ViewProperty = () => {
             <PropertyBookings startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
                 baseNightlyPrice={propertyInfo.nightly_price} monthlyBreakdown={monthlyBreakdown} secondsBeforeExpiry={secondsBeforeExpiry} handleSecondsBeforeExpiry={e => handleSecondsBeforeExpiry(e)}
                 monthAvailabilities={propertyInfo.month_availabilities} />
-            <ReservationSubmission disabled={startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY" || endDate.month === "MM" || endDate.day === "DD"} 
+            <ReservationSubmission disabled={startDate.year === "YYYY" || startDate.month === "MM" || startDate.day === "DD" || endDate.year === "YYYY" || endDate.month === "MM" || endDate.day === "DD" || user.id === undefined} 
                 error={submitError} />
         </main>
         <Footer />

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.contenttypes.models import ContentType
 
 from accounts.models import User
 from accounts.serializers import UserSerializer
@@ -91,7 +92,8 @@ class PropertyReviewCreationSerializer(serializers.ModelSerializer):
 
         commenter_already_left_review = Review.objects.filter(
             commenter=commenter,
-            subject_id=property_id
+            subject_id=property_id,
+            subject_content_type=ContentType.objects.get_for_model(model=Property)
         ).exists()
 
         # TODO: host is allowed to review their own property - should this be allowed?

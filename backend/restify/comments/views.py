@@ -98,7 +98,8 @@ class CanLeavePropertyReview(generics.RetrieveAPIView):
 
         commenter_already_left_review = Review.objects.filter(
             commenter=commenter,
-            subject_id=property_id
+            subject_id=property_id,
+            subject_content_type=ContentType.objects.get_for_model(model=Property)
         ).exists()
 
         can_leave_review = True
@@ -207,7 +208,7 @@ class RetrieveRatingInfo(generics.RetrieveAPIView):
 
     def get_object(self):
         property_id = self.kwargs.get('property_id')
-        reviews = Review.objects.filter(subject_id=property_id)
+        reviews = Review.objects.filter(subject_id=property_id, subject_content_type=ContentType.objects.get_for_model(model=Property))
 
         avg_rating = 0
         for review in reviews:
