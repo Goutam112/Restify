@@ -72,7 +72,10 @@ function Home() {
       .then((res) => {
         return res.json();
       })
-      .then((data) => setPropertyList && setPropertyList(data.results))
+      .then((data) => {
+        setNextEnabled(data.next !== null)
+        setPropertyList && setPropertyList(data.results)
+      })
       .catch((err) => console.error("REFETCH PROPERTIES ERROR:", err));
   }
 
